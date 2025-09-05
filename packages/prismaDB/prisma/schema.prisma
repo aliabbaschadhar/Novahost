@@ -7,3 +7,42 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum DeploymentStatus {
+  NOT_STARTED
+  QUEUED
+  IN_PROGRESS
+  SUCCESS
+  FAILED
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  firstName String?
+  lastName  String?
+  password  String
+  projects  Project[]
+}
+
+model Project {
+  id           String       @id @default(uuid())
+  name         String
+  gitURL       String
+  subdomain    String
+  customDomain String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  Deployments  Deployment[]
+  User         User?        @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+model Deployment {
+  id        String           @id @default(uuid())
+  status    DeploymentStatus @default(NOT_STARTED)
+  createdAt DateTime         @default(now())
+  updateAt  DateTime         @updatedAt
+  Project   Project?         @relation(fields: [projectId], references: [id])
+  projectId String?
+}

@@ -1,8 +1,11 @@
 {
-  "name": "prismadb",
+  "name": "@repo/prismadb",
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "exports": {
+    "./client": "./index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -10,6 +13,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/client": "^6.15.0",
     "prisma": "^6.15.0"
   }
 }
