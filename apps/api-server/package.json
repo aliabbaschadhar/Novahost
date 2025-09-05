@@ -1,0 +1,25 @@
+{
+  "name": "api-server",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@repo/prismadb": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@clickhouse/client": "^1.12.1",
+    "@kubernetes/client-node": "^1.3.0",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "http-status-codes": "^2.3.0",
+    "kafkajs": "^2.2.4",
+    "zod": "^4.1.5"
+  }
+}
