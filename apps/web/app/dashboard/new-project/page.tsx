@@ -6,10 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { 
-  Github, 
-  ArrowLeft, 
-  Search, 
+import {
+  Github,
+  ArrowLeft,
+  Search,
   ExternalLink,
   GitBranch,
   Star,
@@ -89,15 +89,30 @@ export default function NewProjectPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Premium Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900" />
+
+      {/* Animated gradient orbs */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute top-1/3 -right-4 w-96 h-96 bg-gradient-to-r from-blue-600/15 to-cyan-600/15 rounded-full blur-3xl animate-pulse delay-700" />
+      <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-gradient-to-r from-purple-600/15 to-pink-600/15 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-2/3 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-600/10 to-green-600/10 rounded-full blur-3xl animate-pulse delay-500" />
+
+      {/* Grid pattern overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:6rem_6rem]" />
+
+      {/* Noise texture overlay */}
+      <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9Im5vaXNlRmlsdGVyIj4KICAgICAgPGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz4KICAgIDwvZmlsdGVyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] bg-repeat" />
+
       <DashboardSidebar />
-      
-      <div className="md:ml-64 p-6">
+
+      <div className="md:ml-64 p-6 relative z-10">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <Link href="/dashboard">
-              <Button variant="ghost" className="text-gray-400 hover:text-white mb-4">
+              <Button variant="ghost" className="text-gray-300 hover:text-white hover:bg-white/10 mb-4 transition-colors">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Dashboard
               </Button>
@@ -110,17 +125,15 @@ export default function NewProjectPage() {
           <div className="flex items-center space-x-4 mb-8">
             {[1, 2, 3].map((stepNumber) => (
               <div key={stepNumber} className="flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step >= stepNumber 
-                    ? 'bg-emerald-600 text-white' 
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= stepNumber
+                    ? 'bg-emerald-600 text-white'
                     : 'bg-gray-800 text-gray-400'
-                }`}>
+                  }`}>
                   {stepNumber}
                 </div>
                 {stepNumber < 3 && (
-                  <div className={`w-16 h-0.5 mx-2 ${
-                    step > stepNumber ? 'bg-emerald-600' : 'bg-gray-800'
-                  }`} />
+                  <div className={`w-16 h-0.5 mx-2 ${step > stepNumber ? 'bg-emerald-600' : 'bg-gray-800'
+                    }`} />
                 )}
               </div>
             ))}
@@ -148,7 +161,7 @@ export default function NewProjectPage() {
                         />
                         <Github className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                       </div>
-                      <Button 
+                      <Button
                         className="bg-emerald-600 hover:bg-emerald-700 text-white"
                         onClick={() => setStep(2)}
                       >
@@ -195,8 +208,8 @@ export default function NewProjectPage() {
                                   </div>
                                 </div>
                               </div>
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 className="bg-emerald-600 hover:bg-emerald-700"
                                 onClick={() => setStep(2)}
                               >
@@ -215,8 +228,8 @@ export default function NewProjectPage() {
                 <p className="text-gray-500 mb-4">Don't have a repository? Start with a template</p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {frameworks.map((framework, index) => (
-                    <Card 
-                      key={index} 
+                    <Card
+                      key={index}
                       className="bg-gray-900/50 border-gray-800 hover:bg-gray-900/70 hover:border-emerald-500/50 transition-all cursor-pointer group"
                       onClick={() => setStep(2)}
                     >
@@ -290,14 +303,14 @@ export default function NewProjectPage() {
                 </div>
 
                 <div className="flex space-x-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="border-gray-700 text-gray-300 hover:bg-gray-800"
                     onClick={() => setStep(1)}
                   >
                     Back
                   </Button>
-                  <Button 
+                  <Button
                     className="bg-emerald-600 hover:bg-emerald-700 text-white"
                     onClick={() => setStep(3)}
                   >
@@ -314,7 +327,7 @@ export default function NewProjectPage() {
                 <div className="animate-spin w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full mx-auto mb-4"></div>
                 <h3 className="text-xl font-semibold text-white mb-2">Deploying your project...</h3>
                 <p className="text-gray-400 mb-6">This usually takes 30-60 seconds</p>
-                
+
                 <div className="space-y-2 text-left max-w-md mx-auto">
                   <div className="flex items-center space-x-2 text-sm">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>

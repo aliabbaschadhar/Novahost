@@ -84,29 +84,44 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Premium Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900" />
+
+      {/* Animated gradient orbs */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute top-1/3 -right-4 w-96 h-96 bg-gradient-to-r from-blue-600/15 to-cyan-600/15 rounded-full blur-3xl animate-pulse delay-700" />
+      <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-gradient-to-r from-purple-600/15 to-pink-600/15 rounded-full blur-3xl animate-pulse delay-1000" />
+      <div className="absolute top-2/3 left-1/4 w-64 h-64 bg-gradient-to-r from-emerald-600/10 to-green-600/10 rounded-full blur-3xl animate-pulse delay-500" />
+
+      {/* Grid pattern overlay - more visible */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+
+      {/* Noise texture overlay */}
+      <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9Im5vaXNlRmlsdGVyIj4KICAgICAgPGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz4KICAgIDwvZmlsdGVyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] bg-repeat" />
+
       <DashboardSidebar />
 
-      <div className="md:ml-64 p-6">
+      <div className="md:ml-64 p-6 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2">Welcome back!</h1>
-            <p className="text-gray-400">Here's what's happening with your projects today.</p>
+            <p className="text-gray-300">Here's what's happening with your projects today.</p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
-              <Card key={index} className="bg-gray-900/50 border-gray-800">
+              <Card key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-400 text-sm">{stat.title}</p>
+                      <p className="text-gray-300 text-sm">{stat.title}</p>
                       <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
-                      <p className="text-gray-500 text-xs mt-1">{stat.change}</p>
+                      <p className="text-gray-400 text-xs mt-1">{stat.change}</p>
                     </div>
-                    <div className={`p-3 rounded-lg bg-gray-800 ${stat.color}`}>
+                    <div className={`p-3 rounded-lg bg-white/10 ${stat.color}`}>
                       <stat.icon className="h-6 w-6" />
                     </div>
                   </div>
@@ -130,7 +145,7 @@ export default function DashboardPage() {
 
           {/* Recent Deployments */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <Card className="bg-gray-900/50 border-gray-800 lg:col-span-2">
+            <Card className="bg-white/5 backdrop-blur-sm border border-white/10 lg:col-span-2">
               <CardHeader>
                 <CardTitle className="text-white">Recent Activity</CardTitle>
                 <CardDescription className="text-gray-400">
@@ -144,39 +159,39 @@ export default function DashboardPage() {
                     { project: 'portfolio-site', status: 'building', time: '1 hour ago', commit: 'Add new project section' },
                     { project: 'vue-dashboard', status: 'failed', time: '3 hours ago', commit: 'Fix API integration' },
                   ].map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-gray-800/50">
+                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
                       <div className={`w-2 h-2 rounded-full ${activity.status === 'deployed' ? 'bg-emerald-500' :
-                          activity.status === 'building' ? 'bg-blue-500' : 'bg-red-500'
+                        activity.status === 'building' ? 'bg-blue-500' : 'bg-red-500'
                         }`} />
                       <div className="flex-1">
                         <p className="text-white font-medium">{activity.project}</p>
-                        <p className="text-gray-400 text-sm">{activity.commit}</p>
+                        <p className="text-gray-300 text-sm">{activity.commit}</p>
                       </div>
-                      <div className="text-gray-500 text-sm">{activity.time}</div>
+                      <div className="text-gray-400 text-sm">{activity.time}</div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900/50 border-gray-800">
+            <Card className="bg-white/5 backdrop-blur-sm border border-white/10">
               <CardHeader>
                 <CardTitle className="text-white">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="p-6 space-y-4">
-                <Button className="w-full bg-emerald-600 hover:bg-emerald-700 text-white">
+                <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer">
                   <Plus className="h-4 w-4 mr-2" />
                   New Project
                 </Button>
-                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800">
+                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
                   <Zap className="h-4 w-4 mr-2" />
                   Import from Git
                 </Button>
-                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800">
+                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
                   <TrendingUp className="h-4 w-4 mr-2" />
                   View Analytics
                 </Button>
-                <Button variant="outline" className="w-full border-gray-700 text-gray-300 hover:bg-gray-800">
+                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
                   <Users className="h-4 w-4 mr-2" />
                   Team Settings
                 </Button>
