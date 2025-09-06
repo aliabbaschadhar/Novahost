@@ -524,7 +524,7 @@ const useMobileDetection = () => {
 };
 
 export function Features() {
-  const gridRef = useRef(null);
+  const gridRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useMobileDetection();
   const shouldDisableAnimations = isMobile;
 
@@ -559,7 +559,7 @@ export function Features() {
           spotlightRadius={DEFAULT_SPOTLIGHT_RADIUS}
           glowColor={DEFAULT_GLOW_COLOR}
         />
-        //@ts-ignore
+
         <BentoCardGrid gridRef={gridRef}>
           {featureCardsData.map((card, index) => {
             const baseClassName = `card card--text-autohide card--border-glow`;
