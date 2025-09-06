@@ -2,13 +2,14 @@
 
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
+import { UptimeMonitor } from '@/components/dashboard/UptimeMonitor';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Plus, 
-  Rocket, 
-  Globe, 
-  Clock, 
+import {
+  Plus,
+  Rocket,
+  Globe,
+  Clock,
   TrendingUp,
   Users,
   Activity,
@@ -85,7 +86,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-black">
       <DashboardSidebar />
-      
+
       <div className="md:ml-64 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -114,6 +115,19 @@ export default function DashboardPage() {
             ))}
           </div>
 
+          {/* Uptime Monitor */}
+          <div className="mb-8">
+            <UptimeMonitor
+              variant="dashboard"
+              title="Application Uptime"
+              subtitle="Last 24 Hours"
+              currentUptime={99.8}
+              averageUptime={99.6}
+              showStats={true}
+              className="w-full"
+            />
+          </div>
+
           {/* Recent Deployments */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
             <Card className="bg-gray-900/50 border-gray-800 lg:col-span-2">
@@ -131,10 +145,9 @@ export default function DashboardPage() {
                     { project: 'vue-dashboard', status: 'failed', time: '3 hours ago', commit: 'Fix API integration' },
                   ].map((activity, index) => (
                     <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-gray-800/50">
-                      <div className={`w-2 h-2 rounded-full ${
-                        activity.status === 'deployed' ? 'bg-emerald-500' :
-                        activity.status === 'building' ? 'bg-blue-500' : 'bg-red-500'
-                      }`} />
+                      <div className={`w-2 h-2 rounded-full ${activity.status === 'deployed' ? 'bg-emerald-500' :
+                          activity.status === 'building' ? 'bg-blue-500' : 'bg-red-500'
+                        }`} />
                       <div className="flex-1">
                         <p className="text-white font-medium">{activity.project}</p>
                         <p className="text-gray-400 text-sm">{activity.commit}</p>
@@ -185,7 +198,7 @@ export default function DashboardPage() {
               {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
-              
+
               {/* Add New Project Card */}
               <Card className="bg-gray-900/30 border-gray-700 border-dashed hover:bg-gray-900/50 hover:border-emerald-500/50 transition-all duration-300 cursor-pointer group">
                 <CardContent className="p-6 flex flex-col items-center justify-center h-full text-center min-h-[200px]">

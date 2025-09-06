@@ -2,6 +2,7 @@
 
 import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/landing/Hero';
+import { UptimeChart } from '@/components/landing/UptimeChart';
 import { Features } from '@/components/landing/Features';
 import { TechStack } from '@/components/landing/TechStack';
 import { CTA } from '@/components/landing/CTA';
@@ -22,6 +23,7 @@ export default function HomePage() {
       <main className="pt-20 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto relative">
         <div className="space-y-40">
           <Hero />
+          <UptimeChart />
           <Features />
           <TechStack />
           <CTA />
