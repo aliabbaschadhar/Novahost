@@ -8,14 +8,14 @@ export function Hero() {
   const router = useRouter();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden -mx-6 sm:-mx-8 lg:-mx-12">
       {/* Gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 green-gradient opacity-20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 green-gradient opacity-20 rounded-full blur-3xl animate-pulse delay-1000" />
       {/* Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 via-black to-orange-500/20" />
 
-      <div className="relative z-10 text-center max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 text-center max-w-5xl mx-auto px-6 sm:px-8 lg:px-12">
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 text-white leading-tight tracking-tight">
           Build and deploy on the{' '}
           <span className="bg-gradient-to-r from-emerald-400 to-green-400 bg-clip-text text-transparent animate-pulse">
@@ -32,7 +32,7 @@ export function Hero() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
           <Button
             size="lg"
-            className="group glass-effect green-gradient text-white px-8 py-4 rounded-full font-semibold text-lg hover:green-gradient-hover transition-all duration-300 flex items-center gap-2 shadow-2xl hover:shadow-green-500/20 hover:scale-105"
+            className="group glass-effect green-gradient text-white px-8 py-4 rounded-full font-semibold text-lg hover:green-gradient-hover transition-all duration-300 flex items-center gap-2 shadow-2xl hover:shadow-green-500/20 hover:scale-105 cursor-pointer"
             onClick={() => router.push('/auth/signup')}
           >
             <Triangle className="h-5 w-5 mr-2 fill-current" />
@@ -42,7 +42,7 @@ export function Hero() {
           <Button
             size="lg"
             variant="outline"
-            className="border-gray-600 text-white hover:bg-white/10 font-semibold px-8 py-4 text-lg"
+            className="border-gray-600 text-white hover:bg-white/10 font-semibold px-8 py-4 text-lg cursor-pointer transition-all duration-300 hover:border-white/30"
           >
             Get a Demo
           </Button>
@@ -82,7 +82,7 @@ export function Hero() {
 
                 {/* Play Button */}
                 <div className="flex justify-center mt-6">
-                  <button className="w-12 h-12 rounded-full glass-effect flex items-center justify-center group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
+                  <button className="w-12 h-12 rounded-full glass-effect flex items-center justify-center hover:bg-white/20 transition-all duration-300 hover:scale-110 cursor-pointer group">
                     <Play className="w-5 h-5 group-hover:text-green-400 transition-colors duration-300" />
                   </button>
                 </div>

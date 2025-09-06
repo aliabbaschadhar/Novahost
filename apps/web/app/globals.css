@@ -98,6 +98,13 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.glass-navbar {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .green-gradient {
   background: linear-gradient(135deg, #10B981, #34D399);
 }

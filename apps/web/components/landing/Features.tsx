@@ -44,10 +44,10 @@ export function Features() {
   ];
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden -mx-6 sm:-mx-8 lg:-mx-12">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
             Develop with your favorite tools{' '}
@@ -59,7 +59,7 @@ export function Features() {
             <span className="text-emerald-400">🚀</span>
           </h2>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Card
@@ -72,16 +72,16 @@ export function Features() {
                     <feature.icon className="h-6 w-6 text-black" />
                   </div>
                 </div>
-                
+
                 <div className="flex items-center text-gray-400 text-sm mb-2">
                   <span className="text-emerald-400 mr-2">▷</span>
                   <span>{feature.title}</span>
                 </div>
-                
+
                 <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-emerald-400 transition-colors">
                   {feature.description}
                 </h3>
-                
+
                 <p className="text-gray-400 leading-relaxed">
                   {feature.subtitle}
                 </p>

@@ -1,5 +1,4 @@
 'use client';
-'use client';
 
 import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/landing/Hero';
@@ -14,10 +13,14 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
 
       <Header />
-      <Hero />
-      <Features />
-      <TechStack />
-      <CTA />
+
+      {/* Main content with proper spacing for fixed header */}
+      <main className="pt-20 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+        <Hero />
+        <Features />
+        <TechStack />
+        <CTA />
+      </main>
     </div>
   );
 }

@@ -37,20 +37,20 @@ export function TechStack() {
   ];
 
   return (
-    <section className="py-24 relative">
+    <section className="py-24 relative -mx-6 sm:-mx-8 lg:-mx-12">
       <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent" />
-      
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-6">
             Supported Technologies
           </h2>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Deploy any frontend framework with zero configuration. 
+            Deploy any frontend framework with zero configuration.
             NovaHost automatically detects and optimizes your project.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {technologies.map((tech, index) => (
             <Card
