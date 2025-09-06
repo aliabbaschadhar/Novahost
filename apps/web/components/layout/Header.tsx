@@ -9,8 +9,8 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
       {/* Glass effect background */}
-      <div className="absolute inset-0 glass-navbar">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-blue-500/5" />
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-md border-b border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-blue-500/10" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
@@ -24,19 +24,19 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <a
               href="#features"
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm"
+              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
             >
               Features
             </a>
             <a
               href="#pricing"
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm"
+              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
             >
               Pricing
             </a>
             <a
               href="#docs"
-              className="text-gray-300 hover:text-white transition-all duration-300 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full backdrop-blur-sm"
+              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
             >
               Docs
             </a>
