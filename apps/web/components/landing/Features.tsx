@@ -592,7 +592,7 @@ export function Features() {
                   <h3 className="card__title text-white font-bold text-lg mb-2">
                     {card.title}
                   </h3>
-                  <p className="card__description text-gray-300 text-sm leading-relaxed mb-3">
+                  <p className="card__description text-gray-300 text-md leading-relaxed mb-3">
                     {card.description}
                   </p>
 
