@@ -19,58 +19,115 @@ export const GoogleGeminiEffect = ({
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"],
+    offset: ["start center", "end center"],
   });
 
-  // Track animation progress
+  // Create multiple scroll-driven animations
   const allPathsProgress = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
+  // Ray animations - all start together but with different effects
   const pathLengths = [
-    useTransform(allPathsProgress, [0, 0.2], [0, 1]),
-    useTransform(allPathsProgress, [0.2, 0.4], [0, 1]),
-    useTransform(allPathsProgress, [0.4, 0.6], [0, 1]),
-    useTransform(allPathsProgress, [0.6, 0.8], [0, 1]),
-    useTransform(allPathsProgress, [0.8, 1], [0, 1]),
+    useTransform(allPathsProgress, [0, 1], [0, 1]),
+    useTransform(allPathsProgress, [0, 1], [0, 1]),
+    useTransform(allPathsProgress, [0, 1], [0, 1]),
+    useTransform(allPathsProgress, [0, 1], [0, 1]),
+    useTransform(allPathsProgress, [0, 1], [0, 1]),
   ];
+
+  // Additional scroll-driven effects
+  const backgroundRotation = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const rayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const pulseScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 0.8]);
+  const gradientRotation = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const centralGlow = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 0.3]);
 
   const handleGetStarted = () => {
     router.push('/auth/signup');
   };
 
   return (
-    <section ref={ref} className={cn("py-24 relative -mx-6 sm:-mx-8 lg:-mx-12 overflow-hidden min-h-[200vh]", className)}>
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent" />
+    <section ref={ref} className={cn("relative -mx-6 sm:-mx-8 lg:-mx-12 overflow-hidden h-[200vh]", className)}>
+      {/* Animated background gradient */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-b from-emerald-500/5 to-transparent"
+        style={{ rotate: gradientRotation }}
+      />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2 mb-6">
-            <span className="text-md font-medium text-emerald-400">Deploy Anything</span>
-          </div>
-          <h2 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
-            Experience Lightning Fast Deployments
-          </h2>
-          <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Watch our deployment magic come to life. Zero configuration, infinite possibilities.
-            Your code, deployed in seconds.
-          </p>
-        </div>
+      {/* Rotating background rays */}
+      <motion.div
+        className="absolute inset-0 opacity-30"
+        style={{ rotate: backgroundRotation }}
+      >
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg,transparent_0deg,rgba(16,185,129,0.1)_45deg,transparent_90deg,rgba(59,130,246,0.1)_135deg,transparent_180deg,rgba(139,92,246,0.1)_225deg,transparent_270deg,rgba(239,68,68,0.1)_315deg,transparent_360deg)]" />
+      </motion.div>
 
-        <div className="relative">
-          <div className="sticky top-0 min-h-[100vh] flex items-center justify-center">
-            <div className="w-full h-[890px] flex items-center justify-center relative">
-              <button
-                onClick={handleGetStarted}
-                className="font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-700 text-white rounded-full px-8 py-4 md:px-10 md:py-5 text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-emerald-500/30 z-50 cursor-pointer"
-              >
-                Let's Deploy
-              </button>
+      {/* Central pulsing glow */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full"
+        style={{
+          scale: pulseScale,
+          opacity: centralGlow,
+          background: "radial-gradient(circle, rgba(16,185,129,0.3) 0%, transparent 70%)"
+        }}
+      />
+
+      {/* Pinned content that stays in place */}
+      <div className="sticky top-0 h-screen flex items-center justify-center z-10">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2 mb-6">
+              <span className="text-md font-medium text-emerald-400">Deploy Anything</span>
             </div>
-            <svg
+            <h2 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+              Experience Lightning Fast Deployments
+            </h2>
+            <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8">
+              Watch our deployment magic come to life. Zero configuration, infinite possibilities.
+              Your code, deployed in seconds.
+            </p>
+          </div>
+
+          <div className="relative w-full h-[890px] flex items-center justify-center">
+            {/* Animated rings around the button */}
+            <motion.div
+              className="absolute w-32 h-32 rounded-full border border-emerald-500/20"
+              style={{
+                scale: pulseScale,
+                opacity: rayOpacity
+              }}
+            />
+            <motion.div
+              className="absolute w-48 h-48 rounded-full border border-emerald-500/10"
+              style={{
+                scale: useTransform(scrollYProgress, [0, 0.5, 1], [1.2, 0.8, 1.2]),
+                opacity: rayOpacity,
+                rotate: backgroundRotation
+              }}
+            />
+            <motion.div
+              className="absolute w-64 h-64 rounded-full border border-emerald-500/5"
+              style={{
+                scale: useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.4, 0.8]),
+                opacity: centralGlow,
+                rotate: useTransform(scrollYProgress, [0, 1], [0, -180])
+              }}
+            />
+
+            <button
+              onClick={handleGetStarted}
+              className="font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-700 text-white rounded-full px-8 py-4 md:px-10 md:py-5 text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-emerald-500/30 z-50 cursor-pointer relative"
+            >
+              Let's Deploy
+            </button>
+
+            {/* SVG with scroll-driven ray animations */}
+            <motion.svg
               width="1440"
               height="890"
               viewBox="0 0 1440 890"
               xmlns="http://www.w3.org/2000/svg"
               className="absolute inset-0 w-full h-full"
+              style={{ opacity: rayOpacity }}
             >
               <motion.path
                 d="M0 663C145.5 663 191 666.265 269 647C326.5 630 339.5 621 397.5 566C439 531.5 455 529.5 490 523C509.664 519.348 521 503.736 538 504.236C553.591 504.236 562.429 514.739 584.66 522.749C592.042 525.408 600.2 526.237 607.356 523.019C624.755 515.195 641.446 496.324 657 496.735C673.408 496.735 693.545 519.572 712.903 526.769C718.727 528.934 725.184 528.395 730.902 525.965C751.726 517.115 764.085 497.106 782 496.735C794.831 496.47 804.103 508.859 822.469 518.515C835.13 525.171 850.214 526.815 862.827 520.069C875.952 513.049 889.748 502.706 903.5 503.736C922.677 505.171 935.293 510.562 945.817 515.673C954.234 519.76 963.095 522.792 972.199 524.954C996.012 530.611 1007.42 534.118 1034 549C1077.5 573.359 1082.5 594.5 1140 629C1206 670 1328.5 662.5 1440 662.5"
@@ -199,7 +256,7 @@ export const GoogleGeminiEffect = ({
                   <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
                 </filter>
               </defs>
-            </svg>
+            </motion.svg>
           </div>
         </div>
       </div>
