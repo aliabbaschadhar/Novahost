@@ -6,7 +6,7 @@ import {
   useScroll,
   useVelocity,
   useSpring,
-} from "framer-motion";
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const TracingBeam = ({
@@ -15,30 +15,51 @@ export const TracingBeam = ({
   className?: string;
 }) => {
   const { scrollYProgress } = useScroll();
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 50,
+    mass: 1,
+  });
   const [svgHeight, setSvgHeight] = useState(0);
 
   useEffect(() => {
-    // Set the SVG height to match viewport height
+    // Set the SVG height to match document height for full page coverage
     const updateHeight = () => {
-      setSvgHeight(window.innerHeight);
+      const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.clientHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
+      );
+      setSvgHeight(documentHeight);
     };
     updateHeight();
     window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
+    // Also update on content changes
+    const observer = new MutationObserver(updateHeight);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      observer.disconnect();
+    };
   }, []);
 
   const y1 = useSpring(
-    useTransform(scrollYProgress, [0, 0.8], [50, svgHeight * 4]),
+    useTransform(smoothProgress, [0, 0.8], [50, svgHeight - 100]),
     {
-      stiffness: 200,
-      damping: 40,
+      stiffness: 100,
+      damping: 50,
+      mass: 1,
     },
   );
   const y2 = useSpring(
-    useTransform(scrollYProgress, [0, 1], [50, svgHeight * 4 - 100]),
+    useTransform(smoothProgress, [0, 1], [50, svgHeight - 200]),
     {
-      stiffness: 200,
-      damping: 40,
+      stiffness: 100,
+      damping: 50,
+      mass: 1,
     },
   );
 
@@ -49,12 +70,12 @@ export const TracingBeam = ({
       <div className="relative top-20">
         <motion.div
           transition={{
-            duration: 0.8,
-            delay: 0.3,
+            duration: 0.5,
+            ease: "easeOut",
           }}
           animate={{
             boxShadow:
-              scrollYProgress.get() > 0
+              smoothProgress.get() > 0
                 ? "none"
                 : "rgba(0, 0, 0, 0.24) 0px 3px 8px",
           }}
@@ -62,41 +83,43 @@ export const TracingBeam = ({
         >
           <motion.div
             transition={{
-              duration: 0.8,
-              delay: 0.3,
+              duration: 0.5,
+              ease: "easeOut",
             }}
             animate={{
-              backgroundColor: scrollYProgress.get() > 0 ? "white" : "#10b981",
-              borderColor: scrollYProgress.get() > 0 ? "white" : "#059669",
+              backgroundColor: smoothProgress.get() > 0 ? "white" : "#10b981",
+              borderColor: smoothProgress.get() > 0 ? "white" : "#059669",
             }}
             className="h-4 w-4 rounded-full border border-neutral-300 bg-white"
           />
         </motion.div>
         <svg
-          viewBox={`0 0 80 ${svgHeight * 4}`}
+          viewBox={`0 0 80 ${svgHeight}`}
           width="80"
-          height={svgHeight * 4}
+          height={svgHeight}
           className="ml-4 block"
           aria-hidden="true"
         >
           <motion.path
-            d={`M 16 0V -36 l 16 24 V ${svgHeight * 3.2} l -16 24V ${svgHeight * 4}`}
+            d={`M 16 0V -36 l 16 24 V ${svgHeight * 0.8} l -16 24V ${svgHeight}`}
             fill="none"
             stroke="#9091A0"
             strokeOpacity="0.16"
             strokeWidth="4"
             transition={{
-              duration: 2,
+              duration: 1,
+              ease: "easeInOut",
             }}
           ></motion.path>
           <motion.path
-            d={`M 16 0V -36 l 16 24 V ${svgHeight * 3.2} l -16 24V ${svgHeight * 4}`}
+            d={`M 16 0V -36 l 16 24 V ${svgHeight * 0.8} l -16 24V ${svgHeight}`}
             fill="none"
             stroke="url(#gradient)"
             strokeWidth="6"
             className="motion-reduce:hidden"
             transition={{
-              duration: 2,
+              duration: 1,
+              ease: "easeInOut",
             }}
           ></motion.path>
           <defs>

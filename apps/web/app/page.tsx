@@ -4,7 +4,7 @@ import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/landing/Hero';
 import { UptimeChart } from '@/components/landing/UptimeChart';
 import { Features } from '@/components/landing/Features';
-import { TechStack } from '@/components/landing/TechStack';
+import { GoogleGeminiEffect } from '@/components/ui/google-gemini-effect';
 import { CTA } from '@/components/landing/CTA';
 import { TracingBeam } from '@/components/ui/tracing-beam';
 
@@ -25,7 +25,7 @@ export default function HomePage() {
           <Hero />
           <UptimeChart />
           <Features />
-          <TechStack />
+          <GoogleGeminiEffect />
           <CTA />
         </div>
       </main>
