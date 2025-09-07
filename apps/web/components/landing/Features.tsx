@@ -530,20 +530,21 @@ export function Features() {
 
   return (
     <section className="py-24 relative overflow-hidden -mx-6 sm:-mx-8 lg:-mx-12">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2 mb-6 transition-all duration-300 hover:bg-emerald-500/15 hover:scale-105">
-            <Terminal className="w-4 h-4 text-emerald-400" />
-            <span className="text-sm font-medium text-emerald-400">Feature Suite</span>
+          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-4 py-2 mb-6 transition-all duration-300 hover:bg-blue-500/15 hover:scale-105 cursor-pointer group">
+            <Terminal className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+            <span className="text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors">Feature Suite</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
           </div>
 
-          <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
             Everything you need to{' '}
-            <span className="text-emerald-400">deploy</span>
+            <span className="text-blue-400">deploy</span>
             <br />
-            and <span className="text-emerald-400">scale</span> with confidence
+            and <span className="text-purple-400">scale</span> with confidence
           </h2>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -629,15 +630,15 @@ export function Features() {
                           <TrendingUp className="w-3 h-3 text-green-400" />
                           <span className="text-gray-400">99.8% avg</span>
                         </div>
-                        <div className="text-emerald-400 font-semibold">Live</div>
+                        <div className="text-blue-400 font-semibold">Live</div>
                       </div>
                     </div>
                   ) : card.isBuildCard ? (
                     <div className="mt-3">
                       <div className="bg-gray-900/50 rounded-lg p-4 text-sm font-mono">
                         <div className="flex items-center gap-2 mb-3">
-                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                          <span className="text-green-400 font-medium">Building deployment...</span>
+                          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                          <span className="text-blue-400 font-medium">Building deployment...</span>
                         </div>
                         <div className="space-y-1.5 text-gray-300">
                           <div>→ git clone repository</div>
@@ -646,12 +647,12 @@ export function Features() {
                           <div>→ optimizing assets</div>
                           <div>→ deploying to edge</div>
                           <div>→ configuring domains</div>
-                          <div className="text-emerald-400 font-medium">✓ Live at example.com</div>
-                          <div className="text-emerald-400 font-medium">✓ Deployed in 2.1s</div>
+                          <div className="text-purple-400 font-medium">✓ Live at example.com</div>
+                          <div className="text-purple-400 font-medium">✓ Deployed in 2.1s</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-3 text-xs mt-2">
-                        <div className="text-emerald-400 font-semibold">Auto-deploy</div>
+                        <div className="text-purple-400 font-semibold">Auto-deploy</div>
                         <div className="text-gray-400">avg 2.1s</div>
                       </div>
                     </div>

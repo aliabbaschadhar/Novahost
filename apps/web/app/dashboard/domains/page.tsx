@@ -76,6 +76,7 @@ const mockDomains: Domain[] = [
 ];
 
 export default function DomainsPage() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [domains] = useState<Domain[]>(mockDomains);
 
@@ -119,9 +120,13 @@ export default function DomainsPage() {
       {/* Noise texture overlay */}
       <div className="absolute inset-0 opacity-20 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8ZGVmcz4KICAgIDxmaWx0ZXIgaWQ9Im5vaXNlRmlsdGVyIj4KICAgICAgPGZlVHVyYnVsZW5jZSBiYXNlRnJlcXVlbmN5PSIwLjkiIG51bU9jdGF2ZXM9IjQiIHNlZWQ9IjIiLz4KICAgIDwvZmlsdGVyPgogIDwvZGVmcz4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2VGaWx0ZXIpIiBvcGFjaXR5PSIwLjEiLz4KPC9zdmc+')] bg-repeat" />
 
-      <DashboardSidebar />
+      <DashboardSidebar
+        isCollapsed={sidebarCollapsed}
+        onToggle={setSidebarCollapsed}
+      />
 
-      <div className="md:ml-64 p-6 relative z-10">
+      <div className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? 'md:ml-16 p-6' : 'md:ml-64 pl-12 pr-6 pt-6 pb-6'
+        } ml-0`}>
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8">

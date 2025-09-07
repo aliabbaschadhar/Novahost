@@ -9,8 +9,8 @@ export function CTA() {
 
   return (
     <section className="py-24 relative overflow-hidden -mx-6 sm:-mx-8 lg:-mx-12">
-      <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/20 via-blue-600/20 to-purple-600/20" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1f2937_1px,transparent_1px),linear-gradient(to_bottom,#1f2937_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 via-blue-600/20 to-cyan-600/20" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff15_1px,transparent_1px),linear-gradient(to_bottom,#ffffff15_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-30" />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
@@ -28,24 +28,29 @@ export function CTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Button
             size="lg"
-            className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-4 text-lg group cursor-pointer transition-all duration-300 hover:shadow-lg"
+            className="relative bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-semibold px-8 py-4 text-lg group cursor-pointer transition-all duration-300 hover:shadow-lg shadow-purple-500/25 hover:scale-105 overflow-hidden"
             onClick={() => router.push('/auth/signup')}
           >
-            Start Deploying
-            <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            <span className="relative z-10 flex items-center gap-2">
+              Start Deploying
+              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" />
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="border-gray-600 text-white hover:bg-white/10 font-semibold px-8 py-4 text-lg cursor-pointer transition-all duration-300 hover:border-white/30"
+            className="relative border-white/20 text-white font-semibold px-8 py-4 text-lg cursor-pointer transition-all duration-300 backdrop-blur-sm group overflow-hidden hover:scale-105"
           >
-            Talk to an Expert
+            <span className="relative z-10">Talk to an Expert</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-0 border border-white/30 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </Button>
         </div>
 
         <div className="mt-12 text-right">
           <p className="text-gray-400 mb-2">
-            <span className="text-emerald-400 font-semibold">Explore NovaHost Enterprise</span>{' '}
+            <span className="text-blue-400 font-semibold">Explore NovaHost Enterprise</span>{' '}
             with an interactive product tour, trial, or a personalized demo.
           </p>
           <Button

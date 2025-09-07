@@ -10,13 +10,13 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
       {/* Glass effect background */}
       <div className="absolute inset-0 bg-black/20 backdrop-blur-md border-b border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-blue-500/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-blue-500/10" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between h-20">
-          <div className="flex items-center cursor-pointer" onClick={() => router.push('/')}>
-            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-blue-500 bg-clip-text text-transparent hover:from-emerald-300 hover:to-blue-400 transition-all duration-300">
+          <div className="flex items-center cursor-pointer group" onClick={() => router.push('/')}>
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent hover:from-blue-300 hover:to-purple-400 transition-all duration-300 group-hover:scale-105">
               NovaHost
             </h1>
           </div>
@@ -24,37 +24,42 @@ export function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <a
               href="#features"
-              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
+              className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
             >
-              Features
+              <span className="relative z-10">Features</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
             </a>
             <a
               href="#pricing"
-              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
+              className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
             >
-              Pricing
+              <span className="relative z-10">Pricing</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
             </a>
             <a
               href="#docs"
-              className="text-gray-300 hover:text-gray-100 transition-colors duration-150 cursor-pointer font-medium hover:bg-white/5 px-4 py-2 rounded-full"
+              className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
             >
-              Docs
+              <span className="relative z-10">Docs</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
             </a>
           </nav>
 
           <div className="flex items-center space-x-4">
             <Button
               variant="ghost"
-              className="text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer backdrop-blur-sm transition-all duration-300 font-medium"
+              className="relative text-gray-300 hover:text-white cursor-pointer backdrop-blur-sm transition-all duration-300 font-medium group overflow-hidden"
               onClick={() => router.push('/auth/login')}
             >
-              Sign In
+              <span className="relative z-10">Sign In</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
             <Button
-              className="bg-gradient-to-r from-emerald-400 to-blue-500 hover:from-emerald-500 hover:to-blue-600 text-white cursor-pointer shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all duration-300 font-medium backdrop-blur-sm border border-white/10"
+              className="relative bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white cursor-pointer shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40 transition-all duration-300 font-medium backdrop-blur-sm border border-white/10 group overflow-hidden"
               onClick={() => router.push('/auth/signup')}
             >
-              Get Started
+              <span className="relative z-10">Get Started</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
           </div>
         </div>

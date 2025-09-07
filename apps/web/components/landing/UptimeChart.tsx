@@ -17,18 +17,19 @@ export function UptimeChart() {
   return (
     <section className="py-20 sm:py-32 px-4 sm:px-6 relative overflow-hidden">
       {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/5 to-transparent" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#10b981_1px,transparent_1px),linear-gradient(to_bottom,#10b981_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-5" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f6_1px,transparent_1px),linear-gradient(to_bottom,#3b82f6_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-5" />
 
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Section Header */}
         <div className="text-center mb-16 sm:mb-20">
-          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6 transition-all duration-300 hover:bg-emerald-500/15 hover:scale-105">
-            <Activity className="w-4 h-4 text-emerald-400" />
-            <span className="text-xs sm:text-sm font-medium text-emerald-400">Real-time Monitoring</span>
+          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 rounded-full px-3 sm:px-4 py-2 mb-4 sm:mb-6 transition-all duration-300 hover:bg-blue-500/15 hover:scale-105 cursor-pointer group relative overflow-hidden">
+            <Activity className="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-colors" />
+            <span className="text-xs sm:text-sm font-medium text-blue-400 group-hover:text-blue-300 transition-colors relative z-10">Real-time Monitoring</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
           </div>
 
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent">
             Uptime at a Glance
           </h2>
 
@@ -39,11 +40,11 @@ export function UptimeChart() {
         </div>
 
         {/* Graph Container */}
-        <div className="bg-gradient-to-br from-gray-900/80 to-black/90 rounded-2xl sm:rounded-3xl p-4 sm:p-8 backdrop-blur-sm border border-gray-800/50 shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-500/30 transition-all duration-500 group">
+        <div className="bg-gradient-to-br from-gray-900/80 to-black/90 rounded-2xl sm:rounded-3xl p-4 sm:p-8 backdrop-blur-sm border border-gray-800/50 shadow-2xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-500 group">
           {/* Graph Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4">
             <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-2 text-white group-hover:text-emerald-100 transition-colors duration-300">
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 text-white group-hover:text-blue-100 transition-colors duration-300">
                 Last 24 Hours
               </h3>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-400">
@@ -117,14 +118,15 @@ export function UptimeChart() {
             ].map((stat, index) => (
               <div
                 key={stat.label}
-                className="text-center group/stat hover:scale-105 transition-all duration-300 cursor-pointer p-3 rounded-lg hover:bg-gray-800/50"
+                className="text-center group/stat hover:scale-105 transition-all duration-300 cursor-pointer p-3 rounded-lg hover:bg-gray-800/50 relative overflow-hidden"
                 style={{ transitionDelay: `${index * 50}ms` }}
               >
-                <div className="text-xl sm:text-2xl font-bold text-white mb-1 group-hover/stat:text-emerald-400 transition-colors duration-200">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-600/5 opacity-0 group-hover/stat:opacity-100 transition-opacity duration-300 rounded-lg" />
+                <div className="text-xl sm:text-2xl font-bold text-white mb-1 group-hover/stat:text-blue-400 transition-colors duration-200 relative z-10">
                   {stat.value}
                 </div>
-                <div className="text-xs sm:text-sm text-gray-400 mb-1">{stat.label}</div>
-                <div className={`text-xs ${stat.positive ? 'text-green-400' : 'text-red-400'}`}>
+                <div className="text-xs sm:text-sm text-gray-400 mb-1 relative z-10">{stat.label}</div>
+                <div className={`text-xs ${stat.positive ? 'text-green-400' : 'text-red-400'} relative z-10`}>
                   {stat.change}
                 </div>
               </div>
