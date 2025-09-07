@@ -6,6 +6,19 @@ import { useRouter } from 'next/navigation';
 export function Header() {
   const router = useRouter();
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 80; // Height of fixed header
+      const targetPosition = element.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full">
       {/* Glass effect background */}
@@ -22,27 +35,20 @@ export function Header() {
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">
-            <a
-              href="#features"
+            <button
+              onClick={() => scrollToSection('features')}
               className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
             >
               <span className="relative z-10">Features</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-            </a>
-            <a
-              href="#pricing"
+            </button>
+            <button
+              onClick={() => scrollToSection('uptime')}
               className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
             >
-              <span className="relative z-10">Pricing</span>
+              <span className="relative z-10">Uptime</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-            </a>
-            <a
-              href="#docs"
-              className="relative text-gray-300 hover:text-gray-100 transition-all duration-300 cursor-pointer font-medium px-4 py-2 rounded-full group overflow-hidden"
-            >
-              <span className="relative z-10">Docs</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" />
-            </a>
+            </button>
           </nav>
 
           <div className="flex items-center space-x-4">

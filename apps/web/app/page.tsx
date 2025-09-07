@@ -4,7 +4,6 @@ import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/landing/Hero';
 import { UptimeChart } from '@/components/landing/UptimeChart';
 import { Features } from '@/components/landing/Features';
-import { GoogleGeminiEffect } from '@/components/ui/google-gemini-effect';
 import { CTA } from '@/components/landing/CTA';
 import { TracingBeam } from '@/components/ui/tracing-beam';
 
@@ -26,9 +25,14 @@ export default function HomePage() {
       <main className="pt-20 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto relative">
         <div className="space-y-40">
           <Hero />
-          <UptimeChart />
-          <Features />
-          <GoogleGeminiEffect />
+          <section id="uptime">
+            <UptimeChart />
+          </section>
+          <section id="features">
+            <Features />
+          </section>
+        </div>
+        <div className="mt-40">
           <CTA />
         </div>
       </main>

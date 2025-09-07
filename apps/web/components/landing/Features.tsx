@@ -358,7 +358,7 @@ const ParticleCard = ({
 };
 
 interface GlobalSpotlightProps {
-  gridRef: React.RefObject<HTMLDivElement>;
+  gridRef: React.RefObject<HTMLDivElement | null>;
   disableAnimations?: boolean;
   enabled?: boolean;
   spotlightRadius?: number;
@@ -499,7 +499,7 @@ const GlobalSpotlight = ({
 
 interface BentoCardGridProps {
   children: React.ReactNode;
-  gridRef: React.RefObject<HTMLDivElement>;
+  gridRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const BentoCardGrid = ({ children, gridRef }: BentoCardGridProps) => (

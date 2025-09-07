@@ -8,12 +8,14 @@ import {
   useSpring,
 } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useIsDesktop } from "@/hooks/use-mobile";
 
 export const TracingBeam = ({
   className,
 }: {
   className?: string;
 }) => {
+  const isDesktop = useIsDesktop();
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -62,6 +64,11 @@ export const TracingBeam = ({
       mass: 1,
     },
   );
+
+  // Don't render on tablet and mobile devices
+  if (!isDesktop) {
+    return null;
+  }
 
   return (
     <motion.div
