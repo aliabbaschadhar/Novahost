@@ -75,7 +75,7 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id,
             email: user.email,
-            name: `${user.firstName} ${user.lastName}` || "Shaka G"
+            name: user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` || "Shaka G" : user.email
           }
         },
       })
@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {
   session: { strategy: "jwt" },
   //
   pages: {
-    signIn: "auth/login",
+    signIn: "/auth/login",
   },
   callbacks: {
     async jwt({ token, user }) {
