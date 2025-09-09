@@ -8,22 +8,37 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Zap, Eye, EyeOff, Github, Mail, Check } from 'lucide-react';
+import { signupAction } from '@/lib/auth-actions';
+import { toast } from "sonner"
+import LoadingPage from '@/app/loading';
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
-    // Simulate signup
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/dashboard');
-    }, 2000);
+    try {
+      const result = await signupAction(formData)
+      if (result.success) {
+        toast.success(result.message)
+        router.push("/dashboard")
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   };
+
+  // Show loading page 
+  if (isLoading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -61,7 +76,7 @@ export default function SignUpPage() {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form action={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -70,6 +85,7 @@ export default function SignUpPage() {
                     </Label>
                     <Input
                       id="firstName"
+                      name='firstName'
                       type="text"
                       placeholder="John"
                       required
@@ -82,6 +98,7 @@ export default function SignUpPage() {
                     </Label>
                     <Input
                       id="lastName"
+                      name='lastName'
                       type="text"
                       placeholder="Doe"
                       required
@@ -96,6 +113,7 @@ export default function SignUpPage() {
                   </Label>
                   <Input
                     id="email"
+                    name='email'
                     type="email"
                     placeholder="john@example.com"
                     required
@@ -110,6 +128,7 @@ export default function SignUpPage() {
                   <div className="relative">
                     <Input
                       id="password"
+                      name='password'
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Create a strong password"
                       required
@@ -163,9 +182,8 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer"
-                disabled={isLoading}
               >
-                {isLoading ? 'Creating account...' : 'Create account'}
+                Create account
               </Button>
 
               <div className="relative">
