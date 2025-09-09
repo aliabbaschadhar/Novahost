@@ -199,7 +199,7 @@ export default function SignUpPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   <Github className="h-5 w-5" />
                   <span className="ml-2">GitHub</span>
@@ -207,7 +207,7 @@ export default function SignUpPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   <Mail className="h-5 w-5" />
                   <span className="ml-2">Google</span>
