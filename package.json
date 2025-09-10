@@ -17,10 +17,10 @@
     "node": ">=18"
   },
   "packageManager": "bun@1.2.0",
-  "workspaces":{
-    "packages": ["apps/*", "packages/*"],
-    "nohoist": []
-  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "trustedDependencies": [
     "@prisma/client",
     "@prisma/engines",
@@ -28,5 +28,9 @@
     "prisma",
     "sharp",
     "unrs-resolver"
-  ]
+  ],
+  "dependencies": {
+    "@types/react": "^19.1.12",
+    "@types/react-dom": "^19.1.9"
+  }
 }

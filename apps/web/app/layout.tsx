@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { SessionProvider } from '@/components/providers/SessionProvider';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { Toaster } from 'sonner';
 
 
 const geistSans = localFont({
@@ -28,16 +29,28 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions) // Get's users session on server side  for better performance
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
-        {/* Passed the server session to client  */}
         <SessionProvider session={session}>
           {children}
         </SessionProvider>
+        {/* Premium Enhanced Sonner Toaster */}
+        <Toaster
+          position="top-right"
+          richColors
+          closeButton
+          expand
+          duration={5000}
+          gap={16}
+          visibleToasts={4}
+          toastOptions={{
+            className: 'premium-toast',
+          }}
+        />
       </body>
     </html>
   );

@@ -1,41 +1,64 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Zap, Eye, EyeOff, Github, Mail, Check } from 'lucide-react';
-import { signupAction } from '@/lib/auth-actions';
-import { toast } from "sonner"
-import LoadingPage from '@/app/loading';
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Zap, Eye, EyeOff, Github, Mail, Check } from "lucide-react";
+import { signupAction } from "@/lib/auth-actions";
+import { toast } from "sonner";
+import LoadingPage from "@/app/loading";
+import { signIn } from "next-auth/react";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  // ✅ Fixed signup handler
   const handleSubmit = async (formData: FormData) => {
     setIsLoading(true);
 
     try {
-      const result = await signupAction(formData)
+      const result = await signupAction(formData);
       if (result.success) {
-        toast.success(result.message)
-        router.push("/dashboard")
+        toast.success(result.message);
+        // Don't redirect to dashboard - user needs to verify email first
+        router.push(
+          "/auth/login?message=Please check your email to verify your account"
+        );
       } else {
-        toast.error(result.message)
+        toast.error(result.message);
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
-  // Show loading page 
+  // New OAuth signup handler
+  const handleOAuthSignUp = async (provider: "google" | "github") => {
+    try {
+      await signIn(provider, {
+        callbackUrl: "/dashboard",
+        redirect: true,
+      });
+    } catch (error) {
+      toast.error(`Failed to sign up with ${provider}`);
+    }
+  };
+
+  // Show loading page
   if (isLoading) {
     return <LoadingPage />;
   }
@@ -60,7 +83,10 @@ export default function SignUpPage() {
         <Card className="bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 text-white">
           <CardHeader className="space-y-4 pb-8">
             <div className="flex justify-center">
-              <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
@@ -68,7 +94,9 @@ export default function SignUpPage() {
               </Link>
             </div>
             <div className="text-center">
-              <CardTitle className="text-2xl font-bold text-white">Create your account</CardTitle>
+              <CardTitle className="text-2xl font-bold text-white">
+                Create your account
+              </CardTitle>
               <CardDescription className="text-gray-300 mt-2">
                 Start deploying in seconds
               </CardDescription>
@@ -80,12 +108,15 @@ export default function SignUpPage() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="firstName" className="text-gray-200 font-medium">
+                    <Label
+                      htmlFor="firstName"
+                      className="text-gray-200 font-medium"
+                    >
                       First name
                     </Label>
                     <Input
                       id="firstName"
-                      name='firstName'
+                      name="firstName"
                       type="text"
                       placeholder="John"
                       required
@@ -93,12 +124,15 @@ export default function SignUpPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName" className="text-gray-200 font-medium">
+                    <Label
+                      htmlFor="lastName"
+                      className="text-gray-200 font-medium"
+                    >
                       Last name
                     </Label>
                     <Input
                       id="lastName"
-                      name='lastName'
+                      name="lastName"
                       type="text"
                       placeholder="Doe"
                       required
@@ -113,7 +147,7 @@ export default function SignUpPage() {
                   </Label>
                   <Input
                     id="email"
-                    name='email'
+                    name="email"
                     type="email"
                     placeholder="john@example.com"
                     required
@@ -128,8 +162,8 @@ export default function SignUpPage() {
                   <div className="relative">
                     <Input
                       id="password"
-                      name='password'
-                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Create a strong password"
                       required
                       className="h-12 pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
@@ -139,7 +173,11 @@ export default function SignUpPage() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -155,26 +193,20 @@ export default function SignUpPage() {
                     />
                   </div>
                   <div className="text-sm text-gray-300 leading-5">
-                    I agree to the{' '}
-                    <Link href="#" className="text-blue-400 hover:text-blue-300 font-medium">
+                    I agree to the{" "}
+                    <Link
+                      href="#"
+                      className="text-blue-400 hover:text-blue-300 font-medium"
+                    >
                       Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link href="#" className="text-blue-400 hover:text-blue-300 font-medium">
+                    </Link>{" "}
+                    and{" "}
+                    <Link
+                      href="#"
+                      className="text-blue-400 hover:text-blue-300 font-medium"
+                    >
                       Privacy Policy
                     </Link>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-2">
-                  <div className="flex items-center h-5">
-                    <input
-                      type="checkbox"
-                      className="rounded border-white/20 bg-white/10 text-emerald-600 focus:ring-emerald-500"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-300 leading-5">
-                    Send me updates about NovaHost features and best practices
                   </div>
                 </div>
               </div>
@@ -191,7 +223,9 @@ export default function SignUpPage() {
                   <div className="w-full border-t border-white/20" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-transparent text-gray-400">Or continue with</span>
+                  <span className="px-2 bg-transparent text-gray-400">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
@@ -199,6 +233,7 @@ export default function SignUpPage() {
                 <Button
                   type="button"
                   variant="outline"
+                  onClick={() => handleOAuthSignUp("github")}
                   className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   <Github className="h-5 w-5" />
@@ -207,6 +242,7 @@ export default function SignUpPage() {
                 <Button
                   type="button"
                   variant="outline"
+                  onClick={() => handleOAuthSignUp("google")}
                   className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                 >
                   <Mail className="h-5 w-5" />
@@ -215,8 +251,11 @@ export default function SignUpPage() {
               </div>
 
               <div className="text-center text-sm text-gray-300">
-                Already have an account?{' '}
-                <Link href="/auth/login" className="text-blue-400 hover:text-blue-300 font-medium">
+                Already have an account?{" "}
+                <Link
+                  href="/auth/login"
+                  className="text-blue-400 hover:text-blue-300 font-medium"
+                >
                   Sign in
                 </Link>
               </div>

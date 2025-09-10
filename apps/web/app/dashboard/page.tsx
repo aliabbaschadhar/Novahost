@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
 import { ProjectCard } from '@/components/dashboard/ProjectCard';
 import { UptimeMonitor } from '@/components/dashboard/UptimeMonitor';
@@ -16,10 +16,31 @@ import {
   Activity,
   Zap
 } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Loading from '@/app/loading';
+
+
 
 export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    //Redirect to login if not authenticated
+    if (status === "unauthenticated") {
+      useRouter().push('/auth/login');
+    }
+  }, [status])
+
+  if (status === 'loading') {
+    return <Loading />;
+  }
+
+  if (status === 'unauthenticated') {
+    return null; // Don't render anything if not authenticated
+  }
   // Mock data
   const projects = [
     {

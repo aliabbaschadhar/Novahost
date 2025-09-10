@@ -33,12 +33,13 @@ export default function LoginPage() {
     setRememberMe(remembered);
   }, []);
 
+  // ✅ Fixed credentials sign-in handler
   const handleCredentialsSignIn = async (formData: FormData) => {
     setIsLoading(true);
     try {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
-      const rememberMe = formData.get("rememberMe") === "on"; // Get checkbox value
+      const rememberMe = formData.get("rememberMe") === "on";
 
       // Set Cookie based on remember me checkbox
       setClientRememberMeCookie(rememberMe);
@@ -46,28 +47,46 @@ export default function LoginPage() {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        redirect: false, // Important: prevent automatic redirect
       });
 
-      if (result?.error) {
-        toast.error("Invalid credentials. Please try again!")
-      } else {
-        toast.success("Welcome back!")
+      console.log('SignIn result:', result); // Debug log
 
-        router.push(callbackUrl)
+      if (result?.error) {
+        // Handle different types of errors
+        if (result.error === 'CredentialsSignin') {
+          toast.error("Invalid email or password. Please try again.");
+        } else if (result.error === 'AccessDenied') {
+          toast.error("Access denied. Please verify your email first.");
+        } else if (result.error === 'Configuration') {
+          toast.error("Authentication configuration error. Please contact support.");
+        } else {
+          toast.error("Authentication failed. Please try again.");
+        }
+      } else if (result?.ok) {
+        toast.success("Welcome back!");
+        setTimeout(() => {
+          router.push(callbackUrl);
+        }, 1000); // Give user time to see the toast
+        // Immediately redirecting might prevent the toast from being seen
+      } else {
+        toast.error("Something went wrong. Please try again.");
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again!")
+      console.error('Login error:', error);
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   const handleOAuthSignIn = async (provider: Provider) => {
     try {
+      setIsLoading(true);
       await signIn(provider, { callbackUrl: callbackUrl });
     } catch (error) {
       toast.error(`Failed to signIn using ${provider}`)
+      setIsLoading(false);
     }
     //! how it works:
 
@@ -79,6 +98,7 @@ export default function LoginPage() {
   if (isLoading) {
     return <Loading />
   }
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Premium Gradient Background */}
@@ -198,6 +218,7 @@ export default function LoginPage() {
                   variant="outline"
                   className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                   onClick={() => handleOAuthSignIn(Provider.GITHUB)}
+                  disabled={isLoading}
                 >
                   <Github className="h-5 w-5" />
                   <span className="ml-2">GitHub</span>
@@ -207,6 +228,7 @@ export default function LoginPage() {
                   variant="outline"
                   className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
                   onClick={() => handleOAuthSignIn(Provider.GOOGLE)}
+                  disabled={isLoading}
                 >
                   <Mail className="h-5 w-5" />
                   <span className="ml-2">Google</span>
