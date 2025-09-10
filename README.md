@@ -1,135 +1,92 @@
-# Turborepo starter
+# Novahost Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+Novahost is a modern cloud hosting platform built with Next.js, TypeScript, and Bun, featuring project deployment, authentication, and management tools. This monorepo uses [Turborepo](https://turbo.build/) for high-performance monorepo management.
 
-## Using this example
+## Project Structure
 
-Run the following command:
-
-```sh
-npx create-turbo@latest
+```
+apps/
+  api-server/       # API backend (Bun)
+  build-server/     # Build orchestration server
+  reverse-proxy/    # Reverse proxy server
+  web/              # Next.js frontend (dashboard, auth, etc.)
+packages/
+  eslint-config/    # Shared ESLint config
+  prismaDB/         # Prisma schema & client
+  typescript-config/# Shared TS config
+  ui/               # Shared UI components
+docker/             # Dockerfiles for deployment
+.turbo/             # Turborepo cache and state
+.github/            # GitHub Actions workflows
 ```
 
-## What's inside?
+## Getting Started
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- [Bun](https://bun.sh/) v1.2+
+- [Node.js](https://nodejs.org/) v18+
+- [PostgreSQL](https://www.postgresql.org/) database
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Install Dependencies
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+bun install
+```
 
-### Utilities
+### Environment Variables
 
-This Turborepo has some additional tools already setup for you:
+Create `.env.local` files as needed (see `apps/web/README.md` for details).
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### Development
+
+Start all apps in development mode:
+
+```bash
+bun run dev
+```
+
+Or run a specific app (e.g., Next.js frontend):
+
+```bash
+cd apps/web
+bun run dev
+```
 
 ### Build
 
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+bun run build
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+## Database
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+Prisma is used for database access. See [`packages/prismaDB`](packages/prismaDB/README.md) for schema and migration instructions.
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Authentication
 
-### Develop
+- NextAuth.js with credentials, Google, and GitHub providers
+- Email verification and password reset via Resend
+- Secure session and "Remember Me" support
 
-To develop all apps and packages, run the following command:
+See [`apps/web/README.md`](apps/web/README.md) for full authentication setup.
 
-```
-cd my-turborepo
+## Deployment
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+- Dockerfiles provided in [`docker/`](docker/)
+- See each app's README for deployment instructions
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+## Contributing
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+1. Fork the repo
+2. Create a feature branch
+3. Commit your changes
+4. Open a pull request
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+## License
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+MIT
 
-### Remote Caching
+---
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+For detailed documentation, see
