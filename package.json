@@ -17,10 +17,10 @@
     "node": ">=18"
   },
   "packageManager": "bun@1.2.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces":{
+    "packages": ["apps/*", "packages/*"],
+    "nohoist": []
+  },
   "trustedDependencies": [
     "@prisma/client",
     "@prisma/engines",
