@@ -196,6 +196,7 @@ export async function requestPasswordReset(formData: FormData) {
 export async function setNewPassword(formData: FormData) {
   try {
     const data = {
+      // Added token to formData on reset-password page
       token: formData.get("token") as string,
       password: formData.get("password") as string,
     }

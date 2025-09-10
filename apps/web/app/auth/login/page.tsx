@@ -2,29 +2,71 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Zap, Eye, EyeOff, Github, Mail } from 'lucide-react';
+import Loading from '@/app/loading';
+import { toast } from "sonner"
+import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || '/dashboard'
+  // Flow ==> when user tries to access a protected page, they might be redirected to the login page with a callbackUrl parameter in the URL (e.g. /auth/login?callbackUrl=/protected-page)
+  // After successful logIn, in our code at line 44 router.push(callback) we send the user back to the page they wanted to visit. (Isn't it awesome?)
+  // If there is not callback we send them by default to dashboard
+  enum Provider {
+    GOOGLE = "google",
+    GITHUB = "github"
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCredentialsSignIn = async (formData: FormData) => {
     setIsLoading(true);
+    try {
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
 
-    // Simulate login
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/dashboard');
-    }, 2000);
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        toast.error("Invalid credentials. Please try again!")
+      } else {
+        toast.success("Welcome back!")
+        router.push(callbackUrl)
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again!")
+    } finally {
+      setIsLoading(false)
+    }
   };
 
+  const handleOAuthSignIn = async (provider: Provider) => {
+    try {
+      await signIn(provider, { callbackUrl: callbackUrl });
+    } catch (error) {
+      toast.error(`Failed to signIn using ${provider}`)
+    }
+    //! how it works:
+
+    // Calls signIn from next - auth / react with the provider name and a callbackUrl.
+    // This starts the OAuth login flow(redirects the user to the provider's login page).
+    // callbackUrl tells NextAuth where to send the user after successful authentication.
+    // If the sign -in fails(e.g., network error), it shows a toast notification with an error message.
+  }
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Premium Gradient Background */}
@@ -61,7 +103,7 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form action={handleCredentialsSignIn} className="space-y-6">
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-gray-200 font-medium">
@@ -69,6 +111,7 @@ export default function LoginPage() {
                   </Label>
                   <Input
                     id="email"
+                    name='email'
                     type="email"
                     placeholder="Enter your email"
                     required
@@ -83,6 +126,7 @@ export default function LoginPage() {
                   <div className="relative">
                     <Input
                       id="password"
+                      name='password'
                       type={showPassword ? 'text' : 'password'}
                       placeholder="Enter your password"
                       required
@@ -90,6 +134,7 @@ export default function LoginPage() {
                     />
                     <button
                       type="button"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                     >
@@ -130,7 +175,8 @@ export default function LoginPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
+                  onClick={() => handleOAuthSignIn(Provider.GITHUB)}
                 >
                   <Github className="h-5 w-5" />
                   <span className="ml-2">GitHub</span>
@@ -138,7 +184,8 @@ export default function LoginPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
+                  className="h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
+                  onClick={() => handleOAuthSignIn(Provider.GOOGLE)}
                 >
                   <Mail className="h-5 w-5" />
                   <span className="ml-2">Google</span>

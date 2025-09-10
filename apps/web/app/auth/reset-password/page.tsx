@@ -1,28 +1,81 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Zap, ArrowLeft, Mail } from 'lucide-react';
+import Loading from '@/app/loading';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { requestPasswordReset, setNewPassword } from '@/lib/auth-actions';
+import { toast } from "sonner"
+
 
 export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
+  const [isResetMode, setIsResetMode] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const token = searchParams.get("token")
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
 
-    // Simulate password reset
-    setTimeout(() => {
-      setIsLoading(false);
-      setIsSubmitted(true);
-    }, 2000);
+  useEffect(() => {
+    if (token) {
+      setIsResetMode(true);
+    }
+  }, [token])
+
+  const handleRequestReset = async (formData: FormData) => {
+    setIsLoading(true)
+    try {
+      const result = await requestPasswordReset(formData);
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      toast.error(`Something went wrong. Please try again!`)
+      console.error(`Error happened while resetting password:${error}`)
+    } finally {
+      setIsLoading(false)
+    }
   };
 
+  const handleSetNewPassword = async (formData: FormData) => {
+    setIsLoading(true);
+
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Add token to formData
+      formData.append('token', token || "");
+      const result = await setNewPassword(formData);
+      if (result.success) {
+        toast.success(result.message)
+        router.push("/auth/login")
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  if (isLoading) {
+    return <Loading />
+  }
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Premium Gradient Background */}
@@ -52,7 +105,12 @@ export default function ResetPasswordPage() {
             </div>
             <div className="text-center">
               <CardTitle className="text-2xl font-bold text-white">
-                {isSubmitted ? 'Check your email' : 'Reset your password'}
+                {isSubmitted
+                  ? 'Check your email'
+                  : token
+                    ? 'Set new password'
+                    : 'Reset your password'
+                }
               </CardTitle>
               <CardDescription className="text-gray-300 mt-2">
                 {isSubmitted
@@ -88,8 +146,9 @@ export default function ResetPasswordPage() {
                     Send another email
                   </Button>
 
-                  <Link href="/auth/login">
+                  <Link href="/auth/login" className='cursor-pointer'>
                     <Button
+                      asChild
                       variant="outline"
                       className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
                     >
@@ -100,37 +159,74 @@ export default function ResetPasswordPage() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-200 font-medium">
-                    Email address
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email address"
-                    required
-                    className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
-                  />
-                </div>
+              <form action={!token ? handleRequestReset : handleSetNewPassword} className="space-y-6">
+                {!token ? (
+                  // Email form (when no token)
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-gray-200 font-medium">
+                      Email address
+                    </Label>
+                    <Input
+                      id="email"
+                      name='email'
+                      type="email"
+                      placeholder="Enter your email address"
+                      required
+                      className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+                ) : (
+                  // New password form (when token exists)
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="password" className="text-gray-200 font-medium">
+                        New Password
+                      </Label>
+                      <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter your new password"
+                        required
+                        minLength={8}
+                        className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="confirmPassword" className="text-gray-200 font-medium">
+                        Confirm New Password
+                      </Label>
+                      <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm your new password"
+                        required
+                        minLength={8}
+                        className="h-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <Button
                   type="submit"
                   className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer"
                   disabled={isLoading}
                 >
-                  {isLoading ? 'Sending reset link...' : 'Send reset link'}
+                  {isLoading
+                    ? (token ? 'Updating password...' : 'Sending reset link...')
+                    : (token ? 'Update password' : 'Send reset link')
+                  }
                 </Button>
 
-                <Link href="/auth/login">
-                  <Button
-                    variant="outline"
-                    className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors"
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-2" />
+                <Button asChild variant="outline" className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer">
+                  <Link href="/auth/login" className="cursor-pointer">
+                    <ArrowLeft className="h-4 w-4 mr-2" aria-label="Back to sign in" />
                     Back to sign in
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </form>
             )}
           </CardContent>
