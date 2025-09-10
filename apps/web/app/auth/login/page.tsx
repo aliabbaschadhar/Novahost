@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
@@ -11,10 +11,12 @@ import { Zap, Eye, EyeOff, Github, Mail } from 'lucide-react';
 import Loading from '@/app/loading';
 import { toast } from "sonner"
 import { signIn } from 'next-auth/react';
+import { setClientRememberMeCookie, getClientRememberMeCookie } from '@/lib/client-cookie-utils';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false)
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || '/dashboard'
@@ -26,11 +28,20 @@ export default function LoginPage() {
     GITHUB = "github"
   }
 
+  useEffect(() => {
+    const remembered = getClientRememberMeCookie();
+    setRememberMe(remembered);
+  }, []);
+
   const handleCredentialsSignIn = async (formData: FormData) => {
     setIsLoading(true);
     try {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
+      const rememberMe = formData.get("rememberMe") === "on"; // Get checkbox value
+
+      // Set Cookie based on remember me checkbox
+      setClientRememberMeCookie(rememberMe);
 
       const result = await signIn("credentials", {
         email,
@@ -42,6 +53,7 @@ export default function LoginPage() {
         toast.error("Invalid credentials. Please try again!")
       } else {
         toast.success("Welcome back!")
+
         router.push(callbackUrl)
       }
     } catch (error) {
@@ -59,7 +71,7 @@ export default function LoginPage() {
     }
     //! how it works:
 
-    // Calls signIn from next - auth / react with the provider name and a callbackUrl.
+    // Calls signIn from next-auth/react with the provider name and a callbackUrl.
     // This starts the OAuth login flow(redirects the user to the provider's login page).
     // callbackUrl tells NextAuth where to send the user after successful authentication.
     // If the sign -in fails(e.g., network error), it shows a toast notification with an error message.
@@ -146,10 +158,19 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center space-x-2 cursor-pointer">
-                  <input type="checkbox" className="rounded border-white/20 bg-white/10 text-emerald-600 focus:ring-emerald-500" />
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    name="rememberMe"
+                    className="rounded border-white/20 bg-white/10 text-emerald-600 focus:ring-emerald-500"
+                  />
                   <span className="text-sm text-gray-300">Remember me</span>
                 </label>
-                <Link href="/auth/reset-password" className="text-sm text-blue-400 hover:text-blue-300 font-medium">
+                <Link
+                  href="/auth/reset-password"
+                  className="text-sm text-blue-400 hover:text-blue-300 font-medium"
+                >
                   Forgot password?
                 </Link>
               </div>

@@ -6,6 +6,9 @@ import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { Resend } from "resend"
 import bcrypt from "bcryptjs"
+import { cookies } from "next/headers"
+import { REMEMBER_ME_COOKIE } from "./server-cookie-utils"
+
 
 const nextAuthUrl = process.env.NEXTAUTH_URL
 const nextAuthSecret = process.env.NEXTAUTH_SECRET
@@ -75,14 +78,22 @@ export const authOptions: NextAuthOptions = {
           return {
             id: user.id,
             email: user.email,
-            name: user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` || "Shaka G" : user.email
+            name: user.firstName && user.lastName ? (`
+              ${user.firstName} ${user.lastName}` || "Shaka G"
+            ) : user.email
           }
         },
       })
   ],
   // Configure the session to use JWTs
-  session: { strategy: "jwt" },
-  //
+  session: {
+    strategy: "jwt",
+    maxAge: 7 * 24 * 60 * 60, // Default 7 days
+  },
+  jwt: {
+    maxAge: 7 * 24 * 60 * 60, // Default 7 days
+  },
+  secret: nextAuthSecret,
   pages: {
     signIn: "/auth/login",
   },
@@ -90,13 +101,32 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+
+        // Check rememberMe cookie and extend session
+        const cookieStore = await cookies();
+        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
+        if (rememberMe) {
+          //Extend the expiry for remember me(90 days)
+          const extendedExpiry = Math.floor(Date.now() / 1000) + (90 * 24 * 60 * 60)
+          token.exp = extendedExpiry
+        }
       }
       return token;
     },
+
     async session({ session, token }) {
       if (token && session.user) {
         //@ts-ignore
         session.user.id = token.id as string
+
+        // Check if this an extended session
+        const cookieStore = await cookies()
+        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === 'true'
+
+        if (rememberMe) {
+          //update the session expiry
+          session.expires = new Date(Date.now() + (90 * 24 * 60 * 60 * 1000)).toISOString()
+        }
       }
       return session
     },
@@ -122,6 +152,11 @@ export const authOptions: NextAuthOptions = {
         `
         })
       }
-    }
+    },
+    async signOut() {
+      //Clear remember me cookie to sign out
+      const cookieStore = await cookies();
+      cookieStore.delete(REMEMBER_ME_COOKIE)
+    },
   }
 }
