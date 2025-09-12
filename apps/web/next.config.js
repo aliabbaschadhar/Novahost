@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,9 +7,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
-  outputFileTracingRoot: path.join(__dirname, '../../'),
+  outputFileTracingRoot: path.join(__dirname, "../../"),
   turbopack: {
-    root: path.join(__dirname, '../../'),
+    root: path.join(__dirname, "../../"),
   },
 };
 

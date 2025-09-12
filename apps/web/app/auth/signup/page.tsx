@@ -34,7 +34,7 @@ export default function SignUpPage() {
         toast.success(result.message);
         // Don't redirect to dashboard - user needs to verify email first
         router.push(
-          "/auth/login?message=Please check your email to verify your account"
+          "/auth/login?message=Please check your email to verify your account",
         );
       } else {
         toast.error(result.message);
@@ -156,7 +156,10 @@ export default function SignUpPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-200 font-medium">
+                  <Label
+                    htmlFor="password"
+                    className="text-gray-200 font-medium"
+                  >
                     Password
                   </Label>
                   <div className="relative">

@@ -67,16 +67,16 @@ EMAIL_FROM="noreply@yourdomain.com"
 Create `apps/web/lib/auth.ts`:
 
 ```typescript
-import { NextAuthOptions } from "next-auth"
-import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from "next-auth/providers/google"
-import GitHubProvider from "next-auth/providers/github"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { prisma } from "@repo/prismadb/client"
-import bcrypt from "bcryptjs"
-import { cookies } from 'next/headers'
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { prisma } from "@repo/prismadb/client";
+import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
 
-const REMEMBER_ME_COOKIE = 'remember-me'
+const REMEMBER_ME_COOKIE = "remember-me";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -93,36 +93,42 @@ export const authOptions: NextAuthOptions = {
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null
+          return null;
         }
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
-        })
+          where: { email: credentials.email },
+        });
 
         if (!user || !user.password) {
-          return null
+          return null;
         }
 
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password)
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
 
         if (!isPasswordValid) {
-          return null
+          return null;
         }
 
         return {
           id: user.id,
           email: user.email,
-          name: user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email,
-        }
-      }
-    })
+          name:
+            user.firstName && user.lastName
+              ? `${user.firstName} ${user.lastName}`
+              : user.email,
+        };
+      },
+    }),
   ],
-  session: { 
+  session: {
     strategy: "jwt",
     maxAge: 7 * 24 * 60 * 60, // Default 7 days
   },
@@ -135,48 +141,53 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
-        
+        token.id = user.id;
+
         // Check remember me cookie and extend session
-        const cookieStore = await cookies()
-        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === 'true'
-        
+        const cookieStore = await cookies();
+        const rememberMe =
+          cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
+
         if (rememberMe) {
           // Extend token expiry for remember me (90 days)
-          const extendedExpiry = Math.floor(Date.now() / 1000) + (90 * 24 * 60 * 60)
-          token.exp = extendedExpiry
+          const extendedExpiry =
+            Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60;
+          token.exp = extendedExpiry;
         }
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       if (token && session.user) {
         //@ts-ignore
-        session.user.id = token.id as string
-        
+        session.user.id = token.id as string;
+
         // Check if this is an extended session
-        const cookieStore = await cookies()
-        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === 'true'
-        
+        const cookieStore = await cookies();
+        const rememberMe =
+          cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
+
         if (rememberMe) {
           // Update session expiry for remember me
-          session.expires = new Date(Date.now() + (90 * 24 * 60 * 60 * 1000)).toISOString()
+          session.expires = new Date(
+            Date.now() + 90 * 24 * 60 * 60 * 1000,
+          ).toISOString();
         }
       }
-      return session
+      return session;
     },
   },
   events: {
     async createUser({ user }) {
-      console.log("New user created:", user.email)
+      console.log("New user created:", user.email);
     },
     async signOut() {
       // Clear remember me cookie on sign out
-      const cookieStore = await cookies()
-      cookieStore.delete(REMEMBER_ME_COOKIE)
-    }
-  }
-}
+      const cookieStore = await cookies();
+      cookieStore.delete(REMEMBER_ME_COOKIE);
+    },
+  },
+};
 ```
 
 ## Step 4: Create API Routes for NextAuth
@@ -184,15 +195,15 @@ export const authOptions: NextAuthOptions = {
 Create `apps/web/app/api/auth/[...nextauth]/route.ts`:
 
 ```typescript
-import NextAuth from "next-auth"
-import { authOptions } from "@/lib/auth"
+import NextAuth from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-const handler = NextAuth(authOptions)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
 
 // Configure route as dynamic
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 ```
 
 ## Step 5: Set up Database Schema
@@ -248,11 +259,11 @@ model User {
   lastName      String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  
+
   // NextAuth relations
   accounts      Account[]
   sessions      Session[]
-  
+
   // Your app relations
   projects      Project[]
 }
@@ -280,7 +291,7 @@ model Project {
   userId      String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   deployments Deployment[]
 }
@@ -291,7 +302,7 @@ model Deployment {
   status    DeploymentStatus @default(NOT_STARTED)
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
-  
+
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 ```
@@ -363,7 +374,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
-  
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -381,15 +392,15 @@ export default async function RootLayout({
 Create `apps/web/lib/auth-actions.ts`:
 
 ```typescript
-"use server"
+"use server";
 
-import { prisma } from "@repo/prismadb/client"
-import bcrypt from "bcryptjs"
-import { Resend } from "resend"
-import { z } from "zod"
-import crypto from "crypto"
+import { prisma } from "@repo/prismadb/client";
+import bcrypt from "bcryptjs";
+import { Resend } from "resend";
+import { z } from "zod";
+import crypto from "crypto";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Validation schemas
 const signupSchema = z.object({
@@ -397,16 +408,16 @@ const signupSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-})
+});
 
 const resetPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
-})
+});
 
 const newPasswordSchema = z.object({
   token: z.string().min(1, "Token is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-})
+});
 
 // Signup action
 export async function signupAction(formData: FormData) {
@@ -416,25 +427,25 @@ export async function signupAction(formData: FormData) {
       lastName: formData.get("lastName") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
-    }
+    };
 
     // Validate input
-    const validatedData = signupSchema.parse(data)
+    const validatedData = signupSchema.parse(data);
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+      where: { email: validatedData.email },
+    });
 
     if (existingUser) {
-      return { 
-        success: false, 
-        message: "User with this email already exists" 
-      }
+      return {
+        success: false,
+        message: "User with this email already exists",
+      };
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(validatedData.password, 12)
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
 
     // Create user
     const user = await prisma.user.create({
@@ -444,20 +455,20 @@ export async function signupAction(formData: FormData) {
         email: validatedData.email,
         password: hashedPassword,
         name: `${validatedData.firstName} ${validatedData.lastName}`,
-      }
-    })
+      },
+    });
 
     // Generate verification token
-    const verificationToken = crypto.randomBytes(32).toString('hex')
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
     await prisma.verificationToken.create({
       data: {
         identifier: user.email,
         token: verificationToken,
         expires,
-      }
-    })
+      },
+    });
 
     // Send verification email
     await resend.emails.send({
@@ -478,56 +489,57 @@ export async function signupAction(formData: FormData) {
           <p>This link expires in 24 hours.</p>
           <p>Best regards,<br>The NovaHost Team</p>
         </div>
-      `
-    })
+      `,
+    });
 
-    return { 
-      success: true, 
-      message: "Account created successfully! Please check your email to verify your account." 
-    }
-
+    return {
+      success: true,
+      message:
+        "Account created successfully! Please check your email to verify your account.",
+    };
   } catch (error) {
-    console.error("Signup error:", error)
+    console.error("Signup error:", error);
     if (error instanceof z.ZodError) {
-      return { 
-        success: false, 
-        message: error.errors[0].message 
-      }
+      return {
+        success: false,
+        message: error.errors[0].message,
+      };
     }
-    return { 
-      success: false, 
-      message: "Something went wrong. Please try again." 
-    }
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
 // Password reset request
 export async function requestPasswordReset(formData: FormData) {
   try {
-    const email = formData.get("email") as string
-    const validatedData = resetPasswordSchema.parse({ email })
+    const email = formData.get("email") as string;
+    const validatedData = resetPasswordSchema.parse({ email });
 
     // Check if user exists
     const user = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+      where: { email: validatedData.email },
+    });
 
     if (!user) {
       // Don't reveal if user exists or not
-      return { 
-        success: true, 
-        message: "If an account with this email exists, you will receive a password reset link." 
-      }
+      return {
+        success: true,
+        message:
+          "If an account with this email exists, you will receive a password reset link.",
+      };
     }
 
     // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex')
-    const expires = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
     // Delete any existing reset tokens for this user
     await prisma.verificationToken.deleteMany({
-      where: { identifier: user.email }
-    })
+      where: { identifier: user.email },
+    });
 
     // Create new reset token
     await prisma.verificationToken.create({
@@ -535,8 +547,8 @@ export async function requestPasswordReset(formData: FormData) {
         identifier: user.email,
         token: resetToken,
         expires,
-      }
-    })
+      },
+    });
 
     // Send password reset email
     await resend.emails.send({
@@ -546,7 +558,7 @@ export async function requestPasswordReset(formData: FormData) {
       html: `
         <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
           <h1 style="color: #10b981;">Reset Your Password</h1>
-          <p>Hi ${user.firstName || 'there'},</p>
+          <p>Hi ${user.firstName || "there"},</p>
           <p>We received a request to reset your password. Click the button below to create a new password:</p>
           <a href="${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}" 
              style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">
@@ -558,20 +570,20 @@ export async function requestPasswordReset(formData: FormData) {
           <p>If you didn't request this, please ignore this email.</p>
           <p>Best regards,<br>The NovaHost Team</p>
         </div>
-      `
-    })
+      `,
+    });
 
-    return { 
-      success: true, 
-      message: "If an account with this email exists, you will receive a password reset link." 
-    }
-
+    return {
+      success: true,
+      message:
+        "If an account with this email exists, you will receive a password reset link.",
+    };
   } catch (error) {
-    console.error("Password reset error:", error)
-    return { 
-      success: false, 
-      message: "Something went wrong. Please try again." 
-    }
+    console.error("Password reset error:", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
@@ -581,59 +593,59 @@ export async function setNewPassword(formData: FormData) {
     const data = {
       token: formData.get("token") as string,
       password: formData.get("password") as string,
-    }
+    };
 
-    const validatedData = newPasswordSchema.parse(data)
+    const validatedData = newPasswordSchema.parse(data);
 
     // Find valid reset token
     const resetToken = await prisma.verificationToken.findUnique({
-      where: { token: validatedData.token }
-    })
+      where: { token: validatedData.token },
+    });
 
     if (!resetToken || resetToken.expires < new Date()) {
-      return { 
-        success: false, 
-        message: "Invalid or expired reset token." 
-      }
+      return {
+        success: false,
+        message: "Invalid or expired reset token.",
+      };
     }
 
     // Find user
     const user = await prisma.user.findUnique({
-      where: { email: resetToken.identifier }
-    })
+      where: { email: resetToken.identifier },
+    });
 
     if (!user) {
-      return { 
-        success: false, 
-        message: "User not found." 
-      }
+      return {
+        success: false,
+        message: "User not found.",
+      };
     }
 
     // Hash new password
-    const hashedPassword = await bcrypt.hash(validatedData.password, 12)
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
 
     // Update user password
     await prisma.user.update({
       where: { id: user.id },
-      data: { password: hashedPassword }
-    })
+      data: { password: hashedPassword },
+    });
 
     // Delete the reset token
     await prisma.verificationToken.delete({
-      where: { token: validatedData.token }
-    })
+      where: { token: validatedData.token },
+    });
 
-    return { 
-      success: true, 
-      message: "Password updated successfully! You can now sign in with your new password." 
-    }
-
+    return {
+      success: true,
+      message:
+        "Password updated successfully! You can now sign in with your new password.",
+    };
   } catch (error) {
-    console.error("Set new password error:", error)
-    return { 
-      success: false, 
-      message: "Something went wrong. Please try again." 
-    }
+    console.error("Set new password error:", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
@@ -642,38 +654,37 @@ export async function verifyEmail(token: string) {
   try {
     // Find verification token
     const verificationToken = await prisma.verificationToken.findUnique({
-      where: { token }
-    })
+      where: { token },
+    });
 
     if (!verificationToken || verificationToken.expires < new Date()) {
-      return { 
-        success: false, 
-        message: "Invalid or expired verification token." 
-      }
+      return {
+        success: false,
+        message: "Invalid or expired verification token.",
+      };
     }
 
     // Update user as verified
     await prisma.user.update({
       where: { email: verificationToken.identifier },
-      data: { emailVerified: new Date() }
-    })
+      data: { emailVerified: new Date() },
+    });
 
     // Delete the verification token
     await prisma.verificationToken.delete({
-      where: { token }
-    })
+      where: { token },
+    });
 
-    return { 
-      success: true, 
-      message: "Email verified successfully! You can now sign in." 
-    }
-
+    return {
+      success: true,
+      message: "Email verified successfully! You can now sign in.",
+    };
   } catch (error) {
-    console.error("Email verification error:", error)
-    return { 
-      success: false, 
-      message: "Something went wrong. Please try again." 
-    }
+    console.error("Email verification error:", error);
+    return {
+      success: false,
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 ```
@@ -683,46 +694,48 @@ export async function verifyEmail(token: string) {
 Create `apps/web/lib/cookie-utils.ts`:
 
 ```typescript
-import { cookies } from 'next/headers'
+import { cookies } from "next/headers";
 
-export const REMEMBER_ME_COOKIE = 'remember-me'
+export const REMEMBER_ME_COOKIE = "remember-me";
 
 // Server-side cookie functions
 export const getRememberMeCookie = async () => {
-  const cookieStore = await cookies()
-  return cookieStore.get(REMEMBER_ME_COOKIE)?.value === 'true'
-}
+  const cookieStore = await cookies();
+  return cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
+};
 
 export const setRememberMeCookie = async (remember: boolean) => {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
   if (remember) {
-    cookieStore.set(REMEMBER_ME_COOKIE, 'true', {
+    cookieStore.set(REMEMBER_ME_COOKIE, "true", {
       maxAge: 90 * 24 * 60 * 60, // 90 days
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
-    })
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
   } else {
-    cookieStore.delete(REMEMBER_ME_COOKIE)
+    cookieStore.delete(REMEMBER_ME_COOKIE);
   }
-}
+};
 
 // Client-side cookie functions (for browser)
 export const setClientRememberMeCookie = (remember: boolean) => {
   if (remember) {
-    document.cookie = `${REMEMBER_ME_COOKIE}=true; Max-Age=${90 * 24 * 60 * 60}; Path=/; SameSite=Lax${process.env.NODE_ENV === 'production' ? '; Secure' : ''}`
+    document.cookie = `${REMEMBER_ME_COOKIE}=true; Max-Age=${90 * 24 * 60 * 60}; Path=/; SameSite=Lax${process.env.NODE_ENV === "production" ? "; Secure" : ""}`;
   } else {
-    document.cookie = `${REMEMBER_ME_COOKIE}=; Max-Age=0; Path=/`
+    document.cookie = `${REMEMBER_ME_COOKIE}=; Max-Age=0; Path=/`;
   }
-}
+};
 
 export const getClientRememberMeCookie = () => {
-  if (typeof document === 'undefined') return false
-  return document.cookie
-    .split('; ')
-    .find(row => row.startsWith(`${REMEMBER_ME_COOKIE}=`))
-    ?.split('=')[1] === 'true'
-}
+  if (typeof document === "undefined") return false;
+  return (
+    document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(`${REMEMBER_ME_COOKIE}=`))
+      ?.split("=")[1] === "true"
+  );
+};
 ```
 
 ## Step 10: Update Authentication Pages
@@ -730,13 +743,16 @@ export const getClientRememberMeCookie = () => {
 ### Login Page (`apps/web/app/auth/login/page.tsx`)
 
 ```typescript
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useState, useEffect } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { setClientRememberMeCookie, getClientRememberMeCookie } from '@/lib/cookie-utils';
+import {
+  setClientRememberMeCookie,
+  getClientRememberMeCookie,
+} from "@/lib/cookie-utils";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -744,7 +760,7 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || '/dashboard';
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
   // Load remember me preference from cookie on component mount
   useEffect(() => {
@@ -780,7 +796,7 @@ export default function LoginPage() {
     }
   };
 
-  const handleOAuthSignIn = async (provider: 'google' | 'github') => {
+  const handleOAuthSignIn = async (provider: "google" | "github") => {
     try {
       await signIn(provider, { callbackUrl });
     } catch (error) {
@@ -795,12 +811,12 @@ export default function LoginPage() {
 ### Signup Page (`apps/web/app/auth/signup/page.tsx`)
 
 ```typescript
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { signupAction } from '@/lib/auth-actions';
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { signupAction } from "@/lib/auth-actions";
 import { toast } from "sonner";
 
 export default function SignUpPage() {
@@ -826,11 +842,11 @@ export default function SignUpPage() {
     }
   };
 
-  const handleOAuthSignUp = async (provider: 'google' | 'github') => {
+  const handleOAuthSignUp = async (provider: "google" | "github") => {
     try {
-      await signIn(provider, { 
-        callbackUrl: '/dashboard',
-        redirect: true 
+      await signIn(provider, {
+        callbackUrl: "/dashboard",
+        redirect: true,
       });
     } catch (error) {
       toast.error(`Failed to sign up with ${provider}`);
@@ -844,39 +860,41 @@ export default function SignUpPage() {
 ### Email Verification Page (`apps/web/app/auth/verify-email/page.tsx`)
 
 ```typescript
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { verifyEmail } from '@/lib/auth-actions';
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { verifyEmail } from "@/lib/auth-actions";
 
 export default function VerifyEmailPage() {
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
+  const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get('token');
+  const token = searchParams.get("token");
 
   useEffect(() => {
     const verify = async () => {
       if (!token) {
-        setStatus('error');
-        setMessage('Invalid verification link.');
+        setStatus("error");
+        setMessage("Invalid verification link.");
         return;
       }
 
       try {
         const result = await verifyEmail(token);
         if (result.success) {
-          setStatus('success');
+          setStatus("success");
           setMessage(result.message);
         } else {
-          setStatus('error');
+          setStatus("error");
           setMessage(result.message);
         }
       } catch (error) {
-        setStatus('error');
-        setMessage('Something went wrong. Please try again.');
+        setStatus("error");
+        setMessage("Something went wrong. Please try again.");
       }
     };
 
@@ -892,56 +910,50 @@ export default function VerifyEmailPage() {
 Create `apps/web/middleware.ts` (at root level):
 
 ```typescript
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { getToken } from 'next-auth/jwt'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-  
+  const { pathname } = request.nextUrl;
+
   // Get the token from the request
-  const token = await getToken({ 
-    req: request, 
-    secret: process.env.NEXTAUTH_SECRET 
-  })
-  
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
   // Define protected routes
-  const protectedRoutes = [
-    '/dashboard',
-    '/api/projects',
-    '/api/deployments',
-  ]
-  
+  const protectedRoutes = ["/dashboard", "/api/projects", "/api/deployments"];
+
   // Check if the current path is protected
-  const isProtectedRoute = protectedRoutes.some(route => 
-    pathname.startsWith(route)
-  )
-  
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
   // If it's a protected route and user is not authenticated
   if (isProtectedRoute && !token) {
     // Redirect to login with callback URL
-    const loginUrl = new URL('/auth/login', request.url)
-    loginUrl.searchParams.set('callbackUrl', pathname)
-    return NextResponse.redirect(loginUrl)
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
-  
+
   // If user is authenticated and trying to access auth pages
-  if (token && (
-    pathname.startsWith('/auth/login') ||
-    pathname.startsWith('/auth/signup')
-  )) {
+  if (
+    token &&
+    (pathname.startsWith("/auth/login") || pathname.startsWith("/auth/signup"))
+  ) {
     // Redirect to dashboard
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
-  
-  return NextResponse.next()
+
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|public).*)',
-  ],
-}
+  matcher: ["/((?!api/auth|_next/static|_next/image|favicon.ico|public).*)"],
+};
 ```
 
 ## Step 12: Update Dashboard Components
@@ -1001,11 +1013,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 ### Dashboard Sidebar (`apps/web/components/dashboard/DashboardSidebar.tsx`)
 
 ```typescript
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function DashboardSidebar() {
   const { data: session, status } = useSession();
@@ -1015,12 +1027,12 @@ export function DashboardSidebar() {
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      await signOut({ 
-        callbackUrl: '/',
-        redirect: true 
+      await signOut({
+        callbackUrl: "/",
+        redirect: true,
       });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
       setIsLoggingOut(false);
     }
   };
@@ -1028,13 +1040,13 @@ export function DashboardSidebar() {
   const getUserInitials = () => {
     if (session?.user?.name) {
       return session.user.name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
         .toUpperCase()
         .slice(0, 2);
     }
-    return session?.user?.email?.[0]?.toUpperCase() || 'U';
+    return session?.user?.email?.[0]?.toUpperCase() || "U";
   };
 
   // Your JSX with navigation, user profile dropdown, and logout functionality
@@ -1095,7 +1107,7 @@ npx prisma generate
 ✅ **Session Management**: Server-side session handling  
 ✅ **Type Safety**: Full TypeScript integration  
 ✅ **Database Integration**: Prisma ORM with PostgreSQL  
-✅ **Security**: Password hashing, CSRF protection, secure cookies  
+✅ **Security**: Password hashing, CSRF protection, secure cookies
 
 ## Production Deployment
 

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function CTA() {
   const router = useRouter();
@@ -14,14 +14,15 @@ export function CTA() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-          Ready to deploy?{' '}
-          <span className="text-gray-400">Start building with a free account.</span>
+          Ready to deploy?{" "}
+          <span className="text-gray-400">
+            Start building with a free account.
+          </span>
         </h2>
         <p className="text-xl text-gray-300 mb-8">
-          Speak to an expert for your{' '}
-          <span className="text-blue-400 font-semibold">Pro</span>{' '}
-          or{' '}
-          <span className="text-purple-400 font-semibold">Enterprise</span>{' '}
+          Speak to an expert for your{" "}
+          <span className="text-blue-400 font-semibold">Pro</span> or{" "}
+          <span className="text-purple-400 font-semibold">Enterprise</span>{" "}
           needs.
         </p>
 
@@ -29,7 +30,7 @@ export function CTA() {
           <Button
             size="lg"
             className="relative bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-400 hover:to-purple-500 text-white font-semibold px-8 py-4 text-lg group cursor-pointer transition-all duration-300 hover:shadow-lg shadow-purple-500/25 hover:scale-105 overflow-hidden"
-            onClick={() => router.push('/auth/signup')}
+            onClick={() => router.push("/auth/signup")}
           >
             <span className="relative z-10 flex items-center gap-2">
               Start Deploying
@@ -50,7 +51,9 @@ export function CTA() {
 
         <div className="mt-12 text-right">
           <p className="text-gray-400 mb-2">
-            <span className="text-blue-400 font-semibold">Explore NovaHost Enterprise</span>{' '}
+            <span className="text-blue-400 font-semibold">
+              Explore NovaHost Enterprise
+            </span>{" "}
             with an interactive product tour, trial, or a personalized demo.
           </p>
           <Button

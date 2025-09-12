@@ -1,11 +1,17 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
-import { ProjectCard } from '@/components/dashboard/ProjectCard';
-import { UptimeMonitor } from '@/components/dashboard/UptimeMonitor';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { ProjectCard } from "@/components/dashboard/ProjectCard";
+import { UptimeMonitor } from "@/components/dashboard/UptimeMonitor";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
   Plus,
   Rocket,
@@ -14,13 +20,11 @@ import {
   TrendingUp,
   Users,
   Activity,
-  Zap
-} from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import Loading from '@/app/loading';
-
-
+  Zap,
+} from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Loading from "@/app/loading";
 
 export default function DashboardPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -30,80 +34,80 @@ export default function DashboardPage() {
   useEffect(() => {
     //Redirect to login if not authenticated
     if (status === "unauthenticated") {
-      useRouter().push('/auth/login');
+      useRouter().push("/auth/login");
     }
-  }, [status])
+  }, [status]);
 
-  if (status === 'loading') {
+  if (status === "loading") {
     return <Loading />;
   }
 
-  if (status === 'unauthenticated') {
+  if (status === "unauthenticated") {
     return null; // Don't render anything if not authenticated
   }
   // Mock data
   const projects = [
     {
-      id: '1',
-      name: 'my-react-app',
-      description: 'A modern React application with TypeScript',
-      status: 'deployed' as const,
-      url: 'https://my-react-app.novahost.app',
-      repository: 'github.com/user/my-react-app',
-      framework: 'React',
-      lastDeploy: '2 minutes ago',
+      id: "1",
+      name: "my-react-app",
+      description: "A modern React application with TypeScript",
+      status: "deployed" as const,
+      url: "https://my-react-app.novahost.app",
+      repository: "github.com/user/my-react-app",
+      framework: "React",
+      lastDeploy: "2 minutes ago",
       deployments: 24,
     },
     {
-      id: '2',
-      name: 'portfolio-site',
-      description: 'Personal portfolio built with Next.js',
-      status: 'building' as const,
-      repository: 'github.com/user/portfolio',
-      framework: 'Next.js',
-      lastDeploy: '1 hour ago',
+      id: "2",
+      name: "portfolio-site",
+      description: "Personal portfolio built with Next.js",
+      status: "building" as const,
+      repository: "github.com/user/portfolio",
+      framework: "Next.js",
+      lastDeploy: "1 hour ago",
       deployments: 8,
     },
     {
-      id: '3',
-      name: 'vue-dashboard',
-      description: 'Admin dashboard using Vue 3 and Composition API',
-      status: 'failed' as const,
-      repository: 'github.com/user/vue-dashboard',
-      framework: 'Vue',
-      lastDeploy: '3 hours ago',
+      id: "3",
+      name: "vue-dashboard",
+      description: "Admin dashboard using Vue 3 and Composition API",
+      status: "failed" as const,
+      repository: "github.com/user/vue-dashboard",
+      framework: "Vue",
+      lastDeploy: "3 hours ago",
       deployments: 15,
     },
   ];
 
   const stats = [
     {
-      title: 'Total Projects',
-      value: '12',
+      title: "Total Projects",
+      value: "12",
       icon: Rocket,
-      change: '+2 this month',
-      color: 'text-blue-500',
+      change: "+2 this month",
+      color: "text-blue-500",
     },
     {
-      title: 'Deployments',
-      value: '47',
+      title: "Deployments",
+      value: "47",
       icon: Globe,
-      change: '+8 this week',
-      color: 'text-emerald-500',
+      change: "+8 this week",
+      color: "text-emerald-500",
     },
     {
-      title: 'Build Time',
-      value: '2.4s',
+      title: "Build Time",
+      value: "2.4s",
       icon: Clock,
-      change: '-0.8s avg',
-      color: 'text-purple-500',
+      change: "-0.8s avg",
+      color: "text-purple-500",
     },
     {
-      title: 'Uptime',
-      value: '99.9%',
+      title: "Uptime",
+      value: "99.9%",
       icon: Activity,
-      change: 'Last 30 days',
-      color: 'text-green-500',
+      change: "Last 30 days",
+      color: "text-green-500",
     },
   ];
 
@@ -129,25 +133,39 @@ export default function DashboardPage() {
         onToggle={setSidebarCollapsed}
       />
 
-      <div className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? 'md:ml-16 p-6' : 'md:ml-64 pl-12 pr-6 pt-6 pb-6'
-        } ml-0`}>
+      <div
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Welcome back!</h1>
-            <p className="text-gray-300">Here's what's happening with your projects today.</p>
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Welcome back!
+            </h1>
+            <p className="text-gray-300">
+              Here's what's happening with your projects today.
+            </p>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => (
-              <Card key={index} className="bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+              <Card
+                key={index}
+                className="bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-gray-300 text-sm">{stat.title}</p>
-                      <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
-                      <p className="text-gray-400 text-xs mt-1">{stat.change}</p>
+                      <p className="text-2xl font-bold text-white mt-1">
+                        {stat.value}
+                      </p>
+                      <p className="text-gray-400 text-xs mt-1">
+                        {stat.change}
+                      </p>
                     </div>
                     <div className={`p-3 rounded-lg bg-white/10 ${stat.color}`}>
                       <stat.icon className="h-6 w-6" />
@@ -183,19 +201,49 @@ export default function DashboardPage() {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   {[
-                    { project: 'my-react-app', status: 'deployed', time: '2 minutes ago', commit: 'Update header styles' },
-                    { project: 'portfolio-site', status: 'building', time: '1 hour ago', commit: 'Add new project section' },
-                    { project: 'vue-dashboard', status: 'failed', time: '3 hours ago', commit: 'Fix API integration' },
+                    {
+                      project: "my-react-app",
+                      status: "deployed",
+                      time: "2 minutes ago",
+                      commit: "Update header styles",
+                    },
+                    {
+                      project: "portfolio-site",
+                      status: "building",
+                      time: "1 hour ago",
+                      commit: "Add new project section",
+                    },
+                    {
+                      project: "vue-dashboard",
+                      status: "failed",
+                      time: "3 hours ago",
+                      commit: "Fix API integration",
+                    },
                   ].map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10">
-                      <div className={`w-2 h-2 rounded-full ${activity.status === 'deployed' ? 'bg-emerald-500' :
-                        activity.status === 'building' ? 'bg-blue-500' : 'bg-red-500'
-                        }`} />
+                    <div
+                      key={index}
+                      className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10"
+                    >
+                      <div
+                        className={`w-2 h-2 rounded-full ${
+                          activity.status === "deployed"
+                            ? "bg-emerald-500"
+                            : activity.status === "building"
+                              ? "bg-blue-500"
+                              : "bg-red-500"
+                        }`}
+                      />
                       <div className="flex-1">
-                        <p className="text-white font-medium">{activity.project}</p>
-                        <p className="text-gray-300 text-sm">{activity.commit}</p>
+                        <p className="text-white font-medium">
+                          {activity.project}
+                        </p>
+                        <p className="text-gray-300 text-sm">
+                          {activity.commit}
+                        </p>
                       </div>
-                      <div className="text-gray-400 text-sm">{activity.time}</div>
+                      <div className="text-gray-400 text-sm">
+                        {activity.time}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -211,15 +259,24 @@ export default function DashboardPage() {
                   <Plus className="h-4 w-4 mr-2" />
                   New Project
                 </Button>
-                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
+                <Button
+                  variant="outline"
+                  className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+                >
                   <Zap className="h-4 w-4 mr-2" />
                   Import from Git
                 </Button>
-                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
+                <Button
+                  variant="outline"
+                  className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+                >
                   <TrendingUp className="h-4 w-4 mr-2" />
                   View Analytics
                 </Button>
-                <Button variant="outline" className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white">
+                <Button
+                  variant="outline"
+                  className="w-full bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+                >
                   <Users className="h-4 w-4 mr-2" />
                   Team Settings
                 </Button>

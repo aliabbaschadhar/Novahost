@@ -1,41 +1,43 @@
 // Create: apps/web/app/auth/verify-email/page.tsx
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { verifyEmail } from '@/lib/auth-actions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Loader2, Zap } from 'lucide-react';
-import Link from 'next/link';
+import { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { verifyEmail } from "@/lib/auth-actions";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, XCircle, Loader2, Zap } from "lucide-react";
+import Link from "next/link";
 
 export default function VerifyEmailPage() {
-  const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
-  const [message, setMessage] = useState('');
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
+  const [message, setMessage] = useState("");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get('token');
+  const token = searchParams.get("token");
 
   useEffect(() => {
     const verify = async () => {
       if (!token) {
-        setStatus('error');
-        setMessage('Invalid verification link.');
+        setStatus("error");
+        setMessage("Invalid verification link.");
         return;
       }
 
       try {
         const result = await verifyEmail(token);
         if (result.success) {
-          setStatus('success');
+          setStatus("success");
           setMessage(result.message);
         } else {
-          setStatus('error');
+          setStatus("error");
           setMessage(result.message);
         }
       } catch (error) {
-        setStatus('error');
-        setMessage('Something went wrong. Please try again.');
+        setStatus("error");
+        setMessage("Something went wrong. Please try again.");
       }
     };
 
@@ -53,29 +55,34 @@ export default function VerifyEmailPage() {
         <Card className="bg-white/10 backdrop-blur-xl border border-white/20 text-white">
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
-              <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-white font-bold text-xl">NovaHost</span>
               </Link>
             </div>
-            <CardTitle className="text-2xl font-bold">Email Verification</CardTitle>
+            <CardTitle className="text-2xl font-bold">
+              Email Verification
+            </CardTitle>
           </CardHeader>
           <CardContent className="text-center space-y-6">
-            {status === 'loading' && (
+            {status === "loading" && (
               <>
                 <Loader2 className="h-12 w-12 animate-spin mx-auto text-blue-500" />
                 <p className="text-gray-300">Verifying your email...</p>
               </>
             )}
 
-            {status === 'success' && (
+            {status === "success" && (
               <>
                 <CheckCircle className="h-12 w-12 mx-auto text-green-500" />
                 <p className="text-gray-300">{message}</p>
                 <Button
-                  onClick={() => router.push('/auth/login')}
+                  onClick={() => router.push("/auth/login")}
                   className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500"
                 >
                   Continue to Login
@@ -83,18 +90,21 @@ export default function VerifyEmailPage() {
               </>
             )}
 
-            {status === 'error' && (
+            {status === "error" && (
               <>
                 <XCircle className="h-12 w-12 mx-auto text-red-500" />
                 <p className="text-gray-300">{message}</p>
                 <div className="space-y-3">
                   <Button
-                    onClick={() => router.push('/auth/signup')}
+                    onClick={() => router.push("/auth/signup")}
                     className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 cursor-pointer hover:from-blue-500 hover:to-purple-500"
                   >
                     Back to Signup
                   </Button>
-                  <Link href="/auth/login" className="block text-blue-400 hover:text-blue-300">
+                  <Link
+                    href="/auth/login"
+                    className="block text-blue-400 hover:text-blue-300"
+                  >
                     Or sign in instead
                   </Link>
                 </div>

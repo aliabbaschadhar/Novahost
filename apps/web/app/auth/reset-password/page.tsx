@@ -1,17 +1,22 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Zap, ArrowLeft, Mail } from 'lucide-react';
-import Loading from '@/app/loading';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { requestPasswordReset, setNewPassword } from '@/lib/auth-actions';
-import { toast } from "sonner"
-
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Zap, ArrowLeft, Mail } from "lucide-react";
+import Loading from "@/app/loading";
+import { useSearchParams, useRouter } from "next/navigation";
+import { requestPasswordReset, setNewPassword } from "@/lib/auth-actions";
+import { toast } from "sonner";
 
 export default function ResetPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,37 +24,36 @@ export default function ResetPasswordPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token")
-
+  const token = searchParams.get("token");
 
   useEffect(() => {
     if (token) {
       setIsResetMode(true);
     }
-  }, [token])
+  }, [token]);
 
   const handleRequestReset = async (formData: FormData) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const result = await requestPasswordReset(formData);
       if (result.success) {
         toast.success(result.message);
       } else {
-        toast.error(result.message)
+        toast.error(result.message);
       }
     } catch (error) {
-      toast.error(`Something went wrong. Please try again!`)
-      console.error(`Error happened while resetting password:${error}`)
+      toast.error(`Something went wrong. Please try again!`);
+      console.error(`Error happened while resetting password:${error}`);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   const handleSetNewPassword = async (formData: FormData) => {
     setIsLoading(true);
 
-    const password = formData.get('password');
-    const confirmPassword = formData.get('confirmPassword');
+    const password = formData.get("password");
+    const confirmPassword = formData.get("confirmPassword");
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
       setIsLoading(false);
@@ -58,23 +62,23 @@ export default function ResetPasswordPage() {
 
     try {
       // Add token to formData
-      formData.append('token', token || "");
+      formData.append("token", token || "");
       const result = await setNewPassword(formData);
       if (result.success) {
-        toast.success(result.message)
-        router.push("/auth/login")
+        toast.success(result.message);
+        router.push("/auth/login");
       } else {
-        toast.error(result.message)
+        toast.error(result.message);
       }
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -96,7 +100,10 @@ export default function ResetPasswordPage() {
         <Card className="bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 text-white">
           <CardHeader className="space-y-4 pb-8">
             <div className="flex justify-center">
-              <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
@@ -106,17 +113,15 @@ export default function ResetPasswordPage() {
             <div className="text-center">
               <CardTitle className="text-2xl font-bold text-white">
                 {isSubmitted
-                  ? 'Check your email'
+                  ? "Check your email"
                   : token
-                    ? 'Set new password'
-                    : 'Reset your password'
-                }
+                    ? "Set new password"
+                    : "Reset your password"}
               </CardTitle>
               <CardDescription className="text-gray-300 mt-2">
                 {isSubmitted
-                  ? 'We sent a password reset link to your email address'
-                  : 'Enter your email address and we\'ll send you a reset link'
-                }
+                  ? "We sent a password reset link to your email address"
+                  : "Enter your email address and we'll send you a reset link"}
               </CardDescription>
             </div>
           </CardHeader>
@@ -131,10 +136,12 @@ export default function ResetPasswordPage() {
                 <div className="space-y-2">
                   <p className="text-gray-300">
                     We've sent a password reset link to your email address.
-                    Please check your inbox and click the link to reset your password.
+                    Please check your inbox and click the link to reset your
+                    password.
                   </p>
                   <p className="text-sm text-gray-400">
-                    Didn't receive the email? Check your spam folder or try again.
+                    Didn't receive the email? Check your spam folder or try
+                    again.
                   </p>
                 </div>
 
@@ -146,7 +153,7 @@ export default function ResetPasswordPage() {
                     Send another email
                   </Button>
 
-                  <Link href="/auth/login" className='cursor-pointer'>
+                  <Link href="/auth/login" className="cursor-pointer">
                     <Button
                       asChild
                       variant="outline"
@@ -159,16 +166,22 @@ export default function ResetPasswordPage() {
                 </div>
               </div>
             ) : (
-              <form action={!token ? handleRequestReset : handleSetNewPassword} className="space-y-6">
+              <form
+                action={!token ? handleRequestReset : handleSetNewPassword}
+                className="space-y-6"
+              >
                 {!token ? (
                   // Email form (when no token)
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-200 font-medium">
+                    <Label
+                      htmlFor="email"
+                      className="text-gray-200 font-medium"
+                    >
                       Email address
                     </Label>
                     <Input
                       id="email"
-                      name='email'
+                      name="email"
                       type="email"
                       placeholder="Enter your email address"
                       required
@@ -179,7 +192,10 @@ export default function ResetPasswordPage() {
                   // New password form (when token exists)
                   <div className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="password" className="text-gray-200 font-medium">
+                      <Label
+                        htmlFor="password"
+                        className="text-gray-200 font-medium"
+                      >
                         New Password
                       </Label>
                       <Input
@@ -194,7 +210,10 @@ export default function ResetPasswordPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="confirmPassword" className="text-gray-200 font-medium">
+                      <Label
+                        htmlFor="confirmPassword"
+                        className="text-gray-200 font-medium"
+                      >
                         Confirm New Password
                       </Label>
                       <Input
@@ -216,14 +235,24 @@ export default function ResetPasswordPage() {
                   disabled={isLoading}
                 >
                   {isLoading
-                    ? (token ? 'Updating password...' : 'Sending reset link...')
-                    : (token ? 'Update password' : 'Send reset link')
-                  }
+                    ? token
+                      ? "Updating password..."
+                      : "Sending reset link..."
+                    : token
+                      ? "Update password"
+                      : "Send reset link"}
                 </Button>
 
-                <Button asChild variant="outline" className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full h-12 bg-white/10 border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer"
+                >
                   <Link href="/auth/login" className="cursor-pointer">
-                    <ArrowLeft className="h-4 w-4 mr-2" aria-label="Back to sign in" />
+                    <ArrowLeft
+                      className="h-4 w-4 mr-2"
+                      aria-label="Back to sign in"
+                    />
                     Back to sign in
                   </Link>
                 </Button>

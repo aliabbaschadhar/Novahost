@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { Header } from '@/components/layout/Header';
-import { Hero } from '@/components/landing/Hero';
-import { UptimeChart } from '@/components/landing/UptimeChart';
-import { Features } from '@/components/landing/Features';
-import { CTA } from '@/components/landing/CTA';
-import { TracingBeam } from '@/components/ui/tracing-beam';
+import { Header } from "@/components/layout/Header";
+import { Hero } from "@/components/landing/Hero";
+import { UptimeChart } from "@/components/landing/UptimeChart";
+import { Features } from "@/components/landing/Features";
+import { CTA } from "@/components/landing/CTA";
+import { TracingBeam } from "@/components/ui/tracing-beam";
 // import { SessionTest } from "@/components/providers/SessionTest"
 
 export default function HomePage() {

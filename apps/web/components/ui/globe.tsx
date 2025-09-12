@@ -254,13 +254,16 @@ export function World(props: WorldProps) {
         position: [0, 0, cameraZ],
         fov: 50,
         near: 180,
-        far: 1800
+        far: 1800,
       }}
-      style={{ background: 'transparent' }}
+      style={{ background: "transparent" }}
     >
       <WebGLRendererConfig />
       {/* @ts-ignore */}
-      <ambientLight color={globeConfig.ambientLight || "#ffffff"} intensity={0.6} />
+      <ambientLight
+        color={globeConfig.ambientLight || "#ffffff"}
+        intensity={0.6}
+      />
       {/* @ts-ignore */}
       <directionalLight
         color={globeConfig.directionalLeftLight || "#ffffff"}
@@ -301,10 +304,10 @@ export function hexToRgb(hex: string) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16),
-    }
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
     : null;
 }
 

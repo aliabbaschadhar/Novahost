@@ -1,24 +1,23 @@
-import { NextAuthOptions } from "next-auth"
-import { PrismaAdapter } from "@auth/prisma-adapter"
-import { prisma } from "@repo/prismadb/client"
-import GoogleProvider from "next-auth/providers/google"
-import GitHubProvider from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials"
-import { Resend } from "resend"
-import bcrypt from "bcryptjs"
-import { cookies } from "next/headers"
-import { REMEMBER_ME_COOKIE } from "./server-cookie-utils"
+import { NextAuthOptions } from "next-auth";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@repo/prismadb/client";
+import GoogleProvider from "next-auth/providers/google";
+import GitHubProvider from "next-auth/providers/github";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { Resend } from "resend";
+import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
+import { REMEMBER_ME_COOKIE } from "./server-cookie-utils";
 
-
-const nextAuthUrl = process.env.NEXTAUTH_URL
-const nextAuthSecret = process.env.NEXTAUTH_SECRET
-const databaseUrl = process.env.DATABASE_URL
-const googleClientId = process.env.GOOGLE_CLIENT_ID
-const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET
-const githubClientId = process.env.GITHUB_CLIENT_ID
-const githubClientSecret = process.env.GITHUB_CLIENT_SECRET
-const resendApiKey = process.env.RESEND_API_KEY
-const emailFrom = process.env.EMAIL_FROM
+const nextAuthUrl = process.env.NEXTAUTH_URL;
+const nextAuthSecret = process.env.NEXTAUTH_SECRET;
+const databaseUrl = process.env.DATABASE_URL;
+const googleClientId = process.env.GOOGLE_CLIENT_ID;
+const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+const githubClientId = process.env.GITHUB_CLIENT_ID;
+const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
+const resendApiKey = process.env.RESEND_API_KEY;
+const emailFrom = process.env.EMAIL_FROM;
 
 if (
   !nextAuthUrl ||
@@ -31,9 +30,8 @@ if (
   !resendApiKey ||
   !emailFrom
 ) {
-  throw new Error("Missing required environment variables")
+  throw new Error("Missing required environment variables");
 }
-
 
 const resend = new Resend(resendApiKey);
 
@@ -42,48 +40,49 @@ export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: googleClientId,
-      clientSecret: googleClientSecret
+      clientSecret: googleClientSecret,
     }),
     GitHubProvider({
       clientId: githubClientId,
-      clientSecret: githubClientSecret
+      clientSecret: githubClientSecret,
     }),
-    CredentialsProvider(
-      {
-        name: "credentials",
-        credentials: {
-          email: { label: "Email", type: "email" },
-          password: { label: "Password", type: "password" }
-        },
-        // Check whether the user exists in the database
-        async authorize(credentials) {
-          if (!credentials?.email || !credentials.password) {
-            return null;
-          }
-          const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email
-            }
-          })
-          if (!user || !user.password) {
-            return null;
-          }
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password,
-            user.password
-          )
-          if (!isPasswordValid) {
-            return null
-          }
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.firstName && user.lastName ? (`
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      // Check whether the user exists in the database
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) {
+          return null;
+        }
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+        if (!user || !user.password) {
+          return null;
+        }
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
+        if (!isPasswordValid) {
+          return null;
+        }
+        return {
+          id: user.id,
+          email: user.email,
+          name:
+            user.firstName && user.lastName
+              ? `
               ${user.firstName} ${user.lastName}` || "Shaka G"
-            ) : user.email
-          }
-        },
-      })
+              : user.email,
+        };
+      },
+    }),
   ],
   // Configure the session to use JWTs
   session: {
@@ -100,15 +99,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
+        token.id = user.id;
 
         // Check rememberMe cookie and extend session
         const cookieStore = await cookies();
-        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
+        const rememberMe =
+          cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
         if (rememberMe) {
           //Extend the expiry for remember me(90 days)
-          const extendedExpiry = Math.floor(Date.now() / 1000) + (90 * 24 * 60 * 60)
-          token.exp = extendedExpiry
+          const extendedExpiry =
+            Math.floor(Date.now() / 1000) + 90 * 24 * 60 * 60;
+          token.exp = extendedExpiry;
         }
       }
       return token;
@@ -117,18 +118,21 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token && session.user) {
         //@ts-ignore
-        session.user.id = token.id as string
+        session.user.id = token.id as string;
 
         // Check if this an extended session
-        const cookieStore = await cookies()
-        const rememberMe = cookieStore.get(REMEMBER_ME_COOKIE)?.value === 'true'
+        const cookieStore = await cookies();
+        const rememberMe =
+          cookieStore.get(REMEMBER_ME_COOKIE)?.value === "true";
 
         if (rememberMe) {
           //update the session expiry
-          session.expires = new Date(Date.now() + (90 * 24 * 60 * 60 * 1000)).toISOString()
+          session.expires = new Date(
+            Date.now() + 90 * 24 * 60 * 60 * 1000,
+          ).toISOString();
         }
       }
-      return session
+      return session;
     },
   },
   events: {
@@ -149,14 +153,14 @@ export const authOptions: NextAuthOptions = {
               <a href="#" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Get Started</a>
             </div>
           </body>
-        `
-        })
+        `,
+        });
       }
     },
     async signOut() {
       //Clear remember me cookie to sign out
       const cookieStore = await cookies();
-      cookieStore.delete(REMEMBER_ME_COOKIE)
+      cookieStore.delete(REMEMBER_ME_COOKIE);
     },
-  }
-}
+  },
+};

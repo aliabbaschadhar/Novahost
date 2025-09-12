@@ -1,31 +1,40 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Zap, Eye, EyeOff, Github, Mail } from 'lucide-react';
-import Loading from '@/app/loading';
-import { toast } from "sonner"
-import { signIn } from 'next-auth/react';
-import { setClientRememberMeCookie, getClientRememberMeCookie } from '@/lib/client-cookie-utils';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Zap, Eye, EyeOff, Github, Mail } from "lucide-react";
+import Loading from "@/app/loading";
+import { toast } from "sonner";
+import { signIn } from "next-auth/react";
+import {
+  setClientRememberMeCookie,
+  getClientRememberMeCookie,
+} from "@/lib/client-cookie-utils";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || '/dashboard'
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   // Flow ==> when user tries to access a protected page, they might be redirected to the login page with a callbackUrl parameter in the URL (e.g. /auth/login?callbackUrl=/protected-page)
   // After successful logIn, in our code at line 44 router.push(callback) we send the user back to the page they wanted to visit. (Isn't it awesome?)
   // If there is not callback we send them by default to dashboard
   enum Provider {
     GOOGLE = "google",
-    GITHUB = "github"
+    GITHUB = "github",
   }
 
   useEffect(() => {
@@ -50,16 +59,18 @@ export default function LoginPage() {
         redirect: false, // Important: prevent automatic redirect
       });
 
-      console.log('SignIn result:', result); // Debug log
+      console.log("SignIn result:", result); // Debug log
 
       if (result?.error) {
         // Handle different types of errors
-        if (result.error === 'CredentialsSignin') {
+        if (result.error === "CredentialsSignin") {
           toast.error("Invalid email or password. Please try again.");
-        } else if (result.error === 'AccessDenied') {
+        } else if (result.error === "AccessDenied") {
           toast.error("Access denied. Please verify your email first.");
-        } else if (result.error === 'Configuration') {
-          toast.error("Authentication configuration error. Please contact support.");
+        } else if (result.error === "Configuration") {
+          toast.error(
+            "Authentication configuration error. Please contact support.",
+          );
         } else {
           toast.error("Authentication failed. Please try again.");
         }
@@ -73,7 +84,7 @@ export default function LoginPage() {
         toast.error("Something went wrong. Please try again.");
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
@@ -85,7 +96,7 @@ export default function LoginPage() {
       setIsLoading(true);
       await signIn(provider, { callbackUrl: callbackUrl });
     } catch (error) {
-      toast.error(`Failed to signIn using ${provider}`)
+      toast.error(`Failed to signIn using ${provider}`);
       setIsLoading(false);
     }
     //! how it works:
@@ -94,9 +105,9 @@ export default function LoginPage() {
     // This starts the OAuth login flow(redirects the user to the provider's login page).
     // callbackUrl tells NextAuth where to send the user after successful authentication.
     // If the sign -in fails(e.g., network error), it shows a toast notification with an error message.
-  }
+  };
   if (isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -119,7 +130,10 @@ export default function LoginPage() {
         <Card className="bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 text-white">
           <CardHeader className="space-y-4 pb-8">
             <div className="flex justify-center">
-              <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <Link
+                href="/"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
                 <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
@@ -127,7 +141,9 @@ export default function LoginPage() {
               </Link>
             </div>
             <div className="text-center">
-              <CardTitle className="text-2xl font-bold text-white">Welcome back</CardTitle>
+              <CardTitle className="text-2xl font-bold text-white">
+                Welcome back
+              </CardTitle>
               <CardDescription className="text-gray-300 mt-2">
                 Sign in to your NovaHost account
               </CardDescription>
@@ -143,7 +159,7 @@ export default function LoginPage() {
                   </Label>
                   <Input
                     id="email"
-                    name='email'
+                    name="email"
                     type="email"
                     placeholder="Enter your email"
                     required
@@ -152,25 +168,34 @@ export default function LoginPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-200 font-medium">
+                  <Label
+                    htmlFor="password"
+                    className="text-gray-200 font-medium"
+                  >
                     Password
                   </Label>
                   <div className="relative">
                     <Input
                       id="password"
-                      name='password'
-                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      type={showPassword ? "text" : "password"}
                       placeholder="Enter your password"
                       required
                       className="h-12 pr-12 bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
                     />
                     <button
                       type="button"
-                      aria-label={showPassword ? "Hide password" : "Show password"}
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
                     >
-                      {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                      {showPassword ? (
+                        <EyeOff className="h-5 w-5" />
+                      ) : (
+                        <Eye className="h-5 w-5" />
+                      )}
                     </button>
                   </div>
                 </div>
@@ -200,7 +225,7 @@ export default function LoginPage() {
                 className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-semibold transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer"
                 disabled={isLoading}
               >
-                {isLoading ? 'Signing in...' : 'Sign in'}
+                {isLoading ? "Signing in..." : "Sign in"}
               </Button>
 
               <div className="relative">
@@ -208,7 +233,9 @@ export default function LoginPage() {
                   <div className="w-full border-t border-white/20" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-transparent text-gray-400">Or continue with</span>
+                  <span className="px-2 bg-transparent text-gray-400">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
@@ -236,8 +263,11 @@ export default function LoginPage() {
               </div>
 
               <div className="text-center text-sm text-gray-300">
-                Don't have an account?{' '}
-                <Link href="/auth/signup" className="text-blue-400 hover:text-blue-300 font-medium">
+                Don't have an account?{" "}
+                <Link
+                  href="/auth/signup"
+                  className="text-blue-400 hover:text-blue-300 font-medium"
+                >
                   Sign up
                 </Link>
               </div>

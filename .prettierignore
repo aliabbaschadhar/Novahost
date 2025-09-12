@@ -1,0 +1,73 @@
+# Node modules and caches
+node_modules/
+**/node_modules/
+
+# Next.js build output and cache
+.next/
+**/.next/
+.next/**
+
+# Next.js new output (when using output: 'export' / app dir server build)
+.output/
+.output/**
+
+# Turborepo cache and build cache
+.turbo/
+**/.turbo/
+
+# General build/dist folders
+dist/
+**/dist/
+build/
+**/build/
+
+# TypeScript build info
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Package manager caches / lock binaries
+.pnpm-store/
+.bun/
+bun.lockb
+
+# Vercel / serverless / other deployment artifacts
+.vercel/
+.vercel/**
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage and test artifacts
+coverage/
+**/coverage/
+
+# Env files (secrets)
+.env
+.env.*
+.env.local
+.env.production.local
+.env.development.local
+
+# Other caches
+.cache/
+**/.cache/
+.parcel-cache/
+
+# Ignore Next server / output server artifacts
+server/
+server/**
+
+# Ignore generated .next/server / static build folders
+**/server/
+**/static/
+
+# Optional: IDE files
+.vscode/
+.idea/

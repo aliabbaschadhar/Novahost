@@ -1,119 +1,121 @@
-'use client';
+"use client";
 
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
-import { ProjectCard } from '@/components/dashboard/ProjectCard';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { ProjectCard } from "@/components/dashboard/ProjectCard";
 import {
-  Plus,
-  Search,
-  Filter,
-  Grid3X3,
-  List,
-  SortAsc
-} from 'lucide-react';
-import { useState } from 'react';
-import Link from 'next/link';
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus, Search, Filter, Grid3X3, List, SortAsc } from "lucide-react";
+import { useState } from "react";
+import Link from "next/link";
 
 export default function ProjectsPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Mock project data
   const projects = [
     {
-      id: '1',
-      name: 'my-react-app',
-      description: 'A modern React application with TypeScript and Tailwind CSS',
-      status: 'deployed' as const,
-      url: 'https://my-react-app.novahost.app',
-      repository: 'github.com/user/my-react-app',
-      framework: 'React',
-      lastDeploy: '2 minutes ago',
+      id: "1",
+      name: "my-react-app",
+      description:
+        "A modern React application with TypeScript and Tailwind CSS",
+      status: "deployed" as const,
+      url: "https://my-react-app.novahost.app",
+      repository: "github.com/user/my-react-app",
+      framework: "React",
+      lastDeploy: "2 minutes ago",
       deployments: 24,
     },
     {
-      id: '2',
-      name: 'portfolio-site',
-      description: 'Personal portfolio built with Next.js and showcasing my work',
-      status: 'building' as const,
-      repository: 'github.com/user/portfolio',
-      framework: 'Next.js',
-      lastDeploy: '1 hour ago',
+      id: "2",
+      name: "portfolio-site",
+      description:
+        "Personal portfolio built with Next.js and showcasing my work",
+      status: "building" as const,
+      repository: "github.com/user/portfolio",
+      framework: "Next.js",
+      lastDeploy: "1 hour ago",
       deployments: 8,
     },
     {
-      id: '3',
-      name: 'vue-dashboard',
-      description: 'Admin dashboard using Vue 3 and Composition API',
-      status: 'failed' as const,
-      repository: 'github.com/user/vue-dashboard',
-      framework: 'Vue',
-      lastDeploy: '3 hours ago',
+      id: "3",
+      name: "vue-dashboard",
+      description: "Admin dashboard using Vue 3 and Composition API",
+      status: "failed" as const,
+      repository: "github.com/user/vue-dashboard",
+      framework: "Vue",
+      lastDeploy: "3 hours ago",
       deployments: 15,
     },
     {
-      id: '4',
-      name: 'e-commerce-store',
-      description: 'Full-stack e-commerce application with payment integration',
-      status: 'deployed' as const,
-      url: 'https://e-commerce-store.novahost.app',
-      repository: 'github.com/user/e-commerce-store',
-      framework: 'Next.js',
-      lastDeploy: '1 day ago',
+      id: "4",
+      name: "e-commerce-store",
+      description: "Full-stack e-commerce application with payment integration",
+      status: "deployed" as const,
+      url: "https://e-commerce-store.novahost.app",
+      repository: "github.com/user/e-commerce-store",
+      framework: "Next.js",
+      lastDeploy: "1 day ago",
       deployments: 42,
     },
     {
-      id: '5',
-      name: 'blog-platform',
-      description: 'Content management system built with Nuxt.js',
-      status: 'deployed' as const,
-      url: 'https://blog-platform.novahost.app',
-      repository: 'github.com/user/blog-platform',
-      framework: 'Nuxt',
-      lastDeploy: '2 days ago',
+      id: "5",
+      name: "blog-platform",
+      description: "Content management system built with Nuxt.js",
+      status: "deployed" as const,
+      url: "https://blog-platform.novahost.app",
+      repository: "github.com/user/blog-platform",
+      framework: "Nuxt",
+      lastDeploy: "2 days ago",
       deployments: 18,
     },
     {
-      id: '6',
-      name: 'weather-app',
-      description: 'Real-time weather application with geolocation',
-      status: 'deployed' as const,
-      url: 'https://weather-app.novahost.app',
-      repository: 'github.com/user/weather-app',
-      framework: 'React',
-      lastDeploy: '1 week ago',
+      id: "6",
+      name: "weather-app",
+      description: "Real-time weather application with geolocation",
+      status: "deployed" as const,
+      url: "https://weather-app.novahost.app",
+      repository: "github.com/user/weather-app",
+      framework: "React",
+      lastDeploy: "1 week ago",
       deployments: 7,
     },
   ];
 
-  const filteredProjects = projects.filter(project =>
-    project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    project.description.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProjects = projects.filter(
+    (project) =>
+      project.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      project.description.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const stats = [
     {
-      label: 'Total Projects',
+      label: "Total Projects",
       value: projects.length,
-      color: 'text-blue-400',
+      color: "text-blue-400",
     },
     {
-      label: 'Active Deployments',
-      value: projects.filter(p => p.status === 'deployed').length,
-      color: 'text-green-400',
+      label: "Active Deployments",
+      value: projects.filter((p) => p.status === "deployed").length,
+      color: "text-green-400",
     },
     {
-      label: 'Building',
-      value: projects.filter(p => p.status === 'building').length,
-      color: 'text-blue-400',
+      label: "Building",
+      value: projects.filter((p) => p.status === "building").length,
+      color: "text-blue-400",
     },
     {
-      label: 'Failed',
-      value: projects.filter(p => p.status === 'failed').length,
-      color: 'text-red-400',
+      label: "Failed",
+      value: projects.filter((p) => p.status === "failed").length,
+      color: "text-red-400",
     },
   ];
 
@@ -138,15 +140,20 @@ export default function ProjectsPage() {
         onToggle={setSidebarCollapsed}
       />
 
-      <div className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? 'md:ml-16 p-6' : 'md:ml-64 pl-12 pr-6 pt-6 pb-6'
-        } ml-0`}>
+      <div
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h1 className="text-3xl font-bold text-white mb-2">Projects</h1>
-                <p className="text-gray-300">Manage and monitor all your deployed projects</p>
+                <p className="text-gray-300">
+                  Manage and monitor all your deployed projects
+                </p>
               </div>
               <Link href="/dashboard/new-project">
                 <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer">
@@ -159,10 +166,15 @@ export default function ProjectsPage() {
             {/* Stats */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {stats.map((stat, index) => (
-                <Card key={index} className="bg-white/5 backdrop-blur-sm border border-white/10">
+                <Card
+                  key={index}
+                  className="bg-white/5 backdrop-blur-sm border border-white/10"
+                >
                   <CardContent className="p-4">
                     <div className="text-center">
-                      <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+                      <p className={`text-2xl font-bold ${stat.color}`}>
+                        {stat.value}
+                      </p>
                       <p className="text-gray-400 text-sm">{stat.label}</p>
                     </div>
                   </CardContent>
@@ -201,18 +213,18 @@ export default function ProjectsPage() {
                 </Button>
                 <div className="flex items-center bg-white/5 rounded-lg p-1">
                   <Button
-                    variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                    variant={viewMode === "grid" ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setViewMode('grid')}
-                    className={`cursor-pointer ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                    onClick={() => setViewMode("grid")}
+                    className={`cursor-pointer ${viewMode === "grid" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"}`}
                   >
                     <Grid3X3 className="h-4 w-4" />
                   </Button>
                   <Button
-                    variant={viewMode === 'list' ? 'default' : 'ghost'}
+                    variant={viewMode === "list" ? "default" : "ghost"}
                     size="sm"
-                    onClick={() => setViewMode('list')}
-                    className={`cursor-pointer ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white'}`}
+                    onClick={() => setViewMode("list")}
+                    className={`cursor-pointer ${viewMode === "list" ? "bg-blue-600 text-white" : "text-gray-400 hover:text-white"}`}
                   >
                     <List className="h-4 w-4" />
                   </Button>
@@ -229,9 +241,13 @@ export default function ProjectsPage() {
                   <div className="w-16 h-16 bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Search className="h-8 w-8 text-gray-400" />
                   </div>
-                  <h3 className="text-white text-lg font-medium mb-2">No projects found</h3>
+                  <h3 className="text-white text-lg font-medium mb-2">
+                    No projects found
+                  </h3>
                   <p className="text-gray-400 mb-6">
-                    {searchQuery ? 'Try adjusting your search criteria' : 'Get started by creating your first project'}
+                    {searchQuery
+                      ? "Try adjusting your search criteria"
+                      : "Get started by creating your first project"}
                   </p>
                   {!searchQuery && (
                     <Link href="/dashboard/new-project">
@@ -245,7 +261,13 @@ export default function ProjectsPage() {
               </CardContent>
             </Card>
           ) : (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+            <div
+              className={
+                viewMode === "grid"
+                  ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                  : "space-y-4"
+              }
+            >
               {filteredProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}

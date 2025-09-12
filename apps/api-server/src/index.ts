@@ -1,21 +1,17 @@
-import "dotenv/config"
-import express from "express"
-import cors from "cors"
-import { userRouter } from "./routes/user"
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import { userRouter } from "./routes/user";
 
+const app = express();
+const PORT = 9000;
 
-
-const app = express()
-const PORT = 6000
-
-
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 // Routes
-app.use("/user", userRouter)
-
+app.use("/user", userRouter);
 
 app.listen(PORT, () => {
-  console.log("Server is listening on port: ", PORT)
-})
+  console.log("Server is listening on port: ", PORT);
+});

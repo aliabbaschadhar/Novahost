@@ -21,7 +21,7 @@ export const GoogleGeminiEffect = ({
   const router = useRouter();
 
   const handleGetStarted = () => {
-    router.push('/auth/signup');
+    router.push("/auth/signup");
   };
 
   // Don't render advanced animations on tablet and mobile devices
@@ -31,14 +31,16 @@ export const GoogleGeminiEffect = ({
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 w-full">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2 mb-6">
-              <span className="text-emerald-400 text-sm font-medium">✨ Deploy with Confidence</span>
+              <span className="text-emerald-400 text-sm font-medium">
+                ✨ Deploy with Confidence
+              </span>
             </div>
             <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
               Experience Lightning Fast Deployments
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">
-              Watch our deployment magic come to life. Zero configuration, infinite possibilities.
-              Your code, deployed in seconds.
+              Watch our deployment magic come to life. Zero configuration,
+              infinite possibilities. Your code, deployed in seconds.
             </p>
             <button
               onClick={handleGetStarted}
@@ -56,14 +58,16 @@ export const GoogleGeminiEffect = ({
     <div className="sticky top-0 h-screen flex items-center justify-center">
       <div className="text-center relative z-10">
         <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-2 mb-6">
-          <span className="text-md font-medium text-emerald-400">Deploy Anything</span>
+          <span className="text-md font-medium text-emerald-400">
+            Deploy Anything
+          </span>
         </div>
         <h2 className="text-4xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-emerald-100 to-emerald-200 bg-clip-text text-transparent">
           Experience Lightning Fast Deployments
         </h2>
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-          Watch our deployment magic come to life. Zero configuration, infinite possibilities.
-          Your code, deployed in seconds.
+          Watch our deployment magic come to life. Zero configuration, infinite
+          possibilities. Your code, deployed in seconds.
         </p>
         <button
           onClick={handleGetStarted}

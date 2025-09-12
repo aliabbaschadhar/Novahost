@@ -1,15 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-  Home,
-  RefreshCw,
-  AlertTriangle,
-  Bug,
-  Zap
-} from 'lucide-react';
+import { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Home, RefreshCw, AlertTriangle, Bug, Zap } from "lucide-react";
 
 export default function Error({
   error,
@@ -20,7 +14,7 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Application Error:', error);
+    console.error("Application Error:", error);
   }, [error]);
 
   return (
@@ -58,10 +52,12 @@ export default function Error({
             Something went wrong!
           </h1>
           <p className="text-gray-300 text-lg md:text-xl mb-4">
-            Houston, we have a problem! Our servers encountered an unexpected error.
+            Houston, we have a problem! Our servers encountered an unexpected
+            error.
           </p>
           <p className="text-gray-400 text-base">
-            Don't worry, our engineering team has been notified and is working on a fix.
+            Don't worry, our engineering team has been notified and is working
+            on a fix.
           </p>
         </div>
 
@@ -134,11 +130,14 @@ export default function Error({
         {/* Footer Message */}
         <div className="mt-12 text-gray-500 text-sm">
           <p>
-            If this problem persists, please{' '}
-            <Link href="/contact" className="text-red-400 hover:text-red-300 transition-colors underline">
+            If this problem persists, please{" "}
+            <Link
+              href="/contact"
+              className="text-red-400 hover:text-red-300 transition-colors underline"
+            >
               contact our support team
-            </Link>
-            {' '}with the error ID above.
+            </Link>{" "}
+            with the error ID above.
           </p>
         </div>
       </div>

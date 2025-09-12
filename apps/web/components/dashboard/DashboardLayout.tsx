@@ -1,10 +1,10 @@
 // Update: apps/web/components/dashboard/DashboardLayout.tsx
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { DashboardSidebar } from './DashboardSidebar';
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { DashboardSidebar } from "./DashboardSidebar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,13 +16,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
   useEffect(() => {
     // Redirect to login if not authenticated
-    if (status === 'unauthenticated') {
-      router.push('/auth/login');
+    if (status === "unauthenticated") {
+      router.push("/auth/login");
     }
   }, [status, router]);
 
   // Show loading while checking authentication
-  if (status === 'loading') {
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
         <div className="text-center space-y-4">
@@ -34,7 +34,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   }
 
   // Don't render dashboard if not authenticated
-  if (status === 'unauthenticated') {
+  if (status === "unauthenticated") {
     return null;
   }
 
@@ -42,9 +42,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="min-h-screen bg-gray-950 flex">
       <DashboardSidebar />
       <main className="flex-1 overflow-auto">
-        <div className="h-full">
-          {children}
-        </div>
+        <div className="h-full">{children}</div>
       </main>
     </div>
   );

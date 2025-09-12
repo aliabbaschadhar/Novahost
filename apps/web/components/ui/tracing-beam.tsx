@@ -10,11 +10,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useIsDesktop } from "@/hooks/use-mobile";
 
-export const TracingBeam = ({
-  className,
-}: {
-  className?: string;
-}) => {
+export const TracingBeam = ({ className }: { className?: string }) => {
   const isDesktop = useIsDesktop();
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
@@ -32,18 +28,18 @@ export const TracingBeam = ({
         document.body.offsetHeight,
         document.documentElement.clientHeight,
         document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight
+        document.documentElement.offsetHeight,
       );
       setSvgHeight(documentHeight);
     };
     updateHeight();
-    window.addEventListener('resize', updateHeight);
+    window.addEventListener("resize", updateHeight);
     // Also update on content changes
     const observer = new MutationObserver(updateHeight);
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
-      window.removeEventListener('resize', updateHeight);
+      window.removeEventListener("resize", updateHeight);
       observer.disconnect();
     };
   }, []);
@@ -72,7 +68,10 @@ export const TracingBeam = ({
 
   return (
     <motion.div
-      className={cn("fixed top-0 left-4 h-full w-48 pointer-events-none z-40", className)}
+      className={cn(
+        "fixed top-0 left-4 h-full w-48 pointer-events-none z-40",
+        className,
+      )}
     >
       <div className="relative top-20">
         <motion.div

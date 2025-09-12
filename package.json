@@ -5,8 +5,12 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "format": "prettier --write \"**/*.{ts,tsx,md,json,js,jsx,css,html}\"",
+    "check-types": "turbo run check-types",
+    "db:generate": "cd packages/prismaDB && bunx prisma generate && cd ../..",
+    "start:web": "cd apps/web && bun run start",
+    "start:api": "cd apps/api-server && bun run start",
+    "start:proxy": "cd apps/reverse-proxy && bun run start"
   },
   "devDependencies": {
     "prettier": "^3.6.2",

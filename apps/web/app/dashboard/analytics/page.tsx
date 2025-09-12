@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   TrendingUp,
   TrendingDown,
@@ -17,8 +23,8 @@ import {
   MousePointer,
   Smartphone,
   Monitor,
-  RefreshCw
-} from 'lucide-react';
+  RefreshCw,
+} from "lucide-react";
 
 export default function AnalyticsPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -26,66 +32,86 @@ export default function AnalyticsPage() {
   // Mock analytics data
   const projects = [
     {
-      id: '1',
-      name: 'my-react-app',
-      url: 'https://my-react-app.novahost.app',
+      id: "1",
+      name: "my-react-app",
+      url: "https://my-react-app.novahost.app",
       visitors: 15420,
       visitorsChange: 12.5,
       pageViews: 45830,
       pageViewsChange: 8.3,
       bounceRate: 32.1,
       bounceRateChange: -4.2,
-      avgSessionDuration: '3m 24s',
+      avgSessionDuration: "3m 24s",
       uptime: 99.8,
     },
     {
-      id: '2',
-      name: 'portfolio-site',
-      url: 'https://portfolio-site.novahost.app',
+      id: "2",
+      name: "portfolio-site",
+      url: "https://portfolio-site.novahost.app",
       visitors: 8930,
       visitorsChange: -2.1,
       pageViews: 23440,
       pageViewsChange: 5.7,
       bounceRate: 28.9,
       bounceRateChange: -1.8,
-      avgSessionDuration: '4m 12s',
+      avgSessionDuration: "4m 12s",
       uptime: 99.9,
     },
     {
-      id: '3',
-      name: 'vue-dashboard',
-      url: 'https://vue-dashboard.novahost.app',
+      id: "3",
+      name: "vue-dashboard",
+      url: "https://vue-dashboard.novahost.app",
       visitors: 3240,
       visitorsChange: 18.7,
       pageViews: 12890,
       pageViewsChange: 15.2,
       bounceRate: 41.3,
       bounceRateChange: 2.4,
-      avgSessionDuration: '2m 48s',
+      avgSessionDuration: "2m 48s",
       uptime: 98.9,
     },
   ];
 
   const topPages = [
-    { page: '/', views: 12340, percentage: 35.2 },
-    { page: '/dashboard', views: 8920, percentage: 25.4 },
-    { page: '/projects', views: 6780, percentage: 19.3 },
-    { page: '/analytics', views: 4230, percentage: 12.1 },
-    { page: '/settings', views: 2800, percentage: 8.0 },
+    { page: "/", views: 12340, percentage: 35.2 },
+    { page: "/dashboard", views: 8920, percentage: 25.4 },
+    { page: "/projects", views: 6780, percentage: 19.3 },
+    { page: "/analytics", views: 4230, percentage: 12.1 },
+    { page: "/settings", views: 2800, percentage: 8.0 },
   ];
 
   const deviceData = [
-    { device: 'Desktop', users: 18240, percentage: 62.1 },
-    { device: 'Mobile', users: 8930, percentage: 30.4 },
-    { device: 'Tablet', users: 2200, percentage: 7.5 },
+    { device: "Desktop", users: 18240, percentage: 62.1 },
+    { device: "Mobile", users: 8930, percentage: 30.4 },
+    { device: "Tablet", users: 2200, percentage: 7.5 },
   ];
 
   const recentActivity = [
-    { action: 'Page view', page: '/dashboard', time: '2 minutes ago', country: 'US' },
-    { action: 'User signup', page: '/signup', time: '5 minutes ago', country: 'CA' },
-    { action: 'Page view', page: '/', time: '7 minutes ago', country: 'UK' },
-    { action: 'Form submission', page: '/contact', time: '12 minutes ago', country: 'DE' },
-    { action: 'Page view', page: '/projects', time: '15 minutes ago', country: 'AU' },
+    {
+      action: "Page view",
+      page: "/dashboard",
+      time: "2 minutes ago",
+      country: "US",
+    },
+    {
+      action: "User signup",
+      page: "/signup",
+      time: "5 minutes ago",
+      country: "CA",
+    },
+    { action: "Page view", page: "/", time: "7 minutes ago", country: "UK" },
+    {
+      action: "Form submission",
+      page: "/contact",
+      time: "12 minutes ago",
+      country: "DE",
+    },
+    {
+      action: "Page view",
+      page: "/projects",
+      time: "15 minutes ago",
+      country: "AU",
+    },
   ];
 
   return (
@@ -109,15 +135,22 @@ export default function AnalyticsPage() {
         onToggle={setSidebarCollapsed}
       />
 
-      <div className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? 'md:ml-16 p-6' : 'md:ml-64 pl-12 pr-6 pt-6 pb-6'
-        } ml-0`}>
+      <div
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Analytics</h1>
-                <p className="text-gray-300">Monitor your website performance and user engagement</p>
+                <h1 className="text-3xl font-bold text-white mb-2">
+                  Analytics
+                </h1>
+                <p className="text-gray-300">
+                  Monitor your website performance and user engagement
+                </p>
               </div>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer">
                 <RefreshCw className="h-4 w-4 mr-2" />
@@ -129,14 +162,23 @@ export default function AnalyticsPage() {
           {/* Project Analytics Cards */}
           <div className="space-y-8">
             {projects.map((project) => (
-              <Card key={project.id} className="bg-white/5 backdrop-blur-sm border border-white/10">
+              <Card
+                key={project.id}
+                className="bg-white/5 backdrop-blur-sm border border-white/10"
+              >
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-white text-xl">{project.name}</CardTitle>
-                      <CardDescription className="text-gray-300">{project.url}</CardDescription>
+                      <CardTitle className="text-white text-xl">
+                        {project.name}
+                      </CardTitle>
+                      <CardDescription className="text-gray-300">
+                        {project.url}
+                      </CardDescription>
                     </div>
-                    <Badge className={`${project.uptime >= 99.5 ? 'bg-green-500/20 text-green-300' : 'bg-yellow-500/20 text-yellow-300'}`}>
+                    <Badge
+                      className={`${project.uptime >= 99.5 ? "bg-green-500/20 text-green-300" : "bg-yellow-500/20 text-yellow-300"}`}
+                    >
                       {project.uptime}% Uptime
                     </Badge>
                   </div>
@@ -147,36 +189,60 @@ export default function AnalyticsPage() {
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <Users className="h-5 w-5 text-blue-400" />
-                        <div className={`flex items-center text-sm ${project.visitorsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {project.visitorsChange >= 0 ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+                        <div
+                          className={`flex items-center text-sm ${project.visitorsChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {project.visitorsChange >= 0 ? (
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                          ) : (
+                            <TrendingDown className="h-4 w-4 mr-1" />
+                          )}
                           {Math.abs(project.visitorsChange)}%
                         </div>
                       </div>
-                      <p className="text-2xl font-bold text-white">{project.visitors.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-white">
+                        {project.visitors.toLocaleString()}
+                      </p>
                       <p className="text-gray-400 text-sm">Unique Visitors</p>
                     </div>
 
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <Eye className="h-5 w-5 text-purple-400" />
-                        <div className={`flex items-center text-sm ${project.pageViewsChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {project.pageViewsChange >= 0 ? <TrendingUp className="h-4 w-4 mr-1" /> : <TrendingDown className="h-4 w-4 mr-1" />}
+                        <div
+                          className={`flex items-center text-sm ${project.pageViewsChange >= 0 ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {project.pageViewsChange >= 0 ? (
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                          ) : (
+                            <TrendingDown className="h-4 w-4 mr-1" />
+                          )}
                           {Math.abs(project.pageViewsChange)}%
                         </div>
                       </div>
-                      <p className="text-2xl font-bold text-white">{project.pageViews.toLocaleString()}</p>
+                      <p className="text-2xl font-bold text-white">
+                        {project.pageViews.toLocaleString()}
+                      </p>
                       <p className="text-gray-400 text-sm">Page Views</p>
                     </div>
 
                     <div className="bg-white/5 rounded-lg p-4">
                       <div className="flex items-center justify-between mb-2">
                         <MousePointer className="h-5 w-5 text-orange-400" />
-                        <div className={`flex items-center text-sm ${project.bounceRateChange <= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {project.bounceRateChange <= 0 ? <TrendingDown className="h-4 w-4 mr-1" /> : <TrendingUp className="h-4 w-4 mr-1" />}
+                        <div
+                          className={`flex items-center text-sm ${project.bounceRateChange <= 0 ? "text-green-400" : "text-red-400"}`}
+                        >
+                          {project.bounceRateChange <= 0 ? (
+                            <TrendingDown className="h-4 w-4 mr-1" />
+                          ) : (
+                            <TrendingUp className="h-4 w-4 mr-1" />
+                          )}
                           {Math.abs(project.bounceRateChange)}%
                         </div>
                       </div>
-                      <p className="text-2xl font-bold text-white">{project.bounceRate}%</p>
+                      <p className="text-2xl font-bold text-white">
+                        {project.bounceRate}%
+                      </p>
                       <p className="text-gray-400 text-sm">Bounce Rate</p>
                     </div>
 
@@ -184,7 +250,9 @@ export default function AnalyticsPage() {
                       <div className="flex items-center justify-between mb-2">
                         <Clock className="h-5 w-5 text-green-400" />
                       </div>
-                      <p className="text-2xl font-bold text-white">{project.avgSessionDuration}</p>
+                      <p className="text-2xl font-bold text-white">
+                        {project.avgSessionDuration}
+                      </p>
                       <p className="text-gray-400 text-sm">Avg. Session</p>
                     </div>
                   </div>
@@ -206,7 +274,10 @@ export default function AnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {topPages.map((page, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex-1">
                         <p className="text-white font-medium">{page.page}</p>
                         <div className="w-full bg-gray-700 rounded-full h-2 mt-1">
@@ -217,8 +288,12 @@ export default function AnalyticsPage() {
                         </div>
                       </div>
                       <div className="ml-4 text-right">
-                        <p className="text-white font-medium">{page.views.toLocaleString()}</p>
-                        <p className="text-gray-400 text-sm">{page.percentage}%</p>
+                        <p className="text-white font-medium">
+                          {page.views.toLocaleString()}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {page.percentage}%
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -237,16 +312,29 @@ export default function AnalyticsPage() {
               <CardContent>
                 <div className="space-y-4">
                   {deviceData.map((device, index) => (
-                    <div key={index} className="flex items-center justify-between">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between"
+                    >
                       <div className="flex items-center space-x-3">
-                        {device.device === 'Desktop' && <Monitor className="h-5 w-5 text-blue-400" />}
-                        {device.device === 'Mobile' && <Smartphone className="h-5 w-5 text-green-400" />}
-                        {device.device === 'Tablet' && <Smartphone className="h-5 w-5 text-purple-400" />}
+                        {device.device === "Desktop" && (
+                          <Monitor className="h-5 w-5 text-blue-400" />
+                        )}
+                        {device.device === "Mobile" && (
+                          <Smartphone className="h-5 w-5 text-green-400" />
+                        )}
+                        {device.device === "Tablet" && (
+                          <Smartphone className="h-5 w-5 text-purple-400" />
+                        )}
                         <span className="text-white">{device.device}</span>
                       </div>
                       <div className="text-right">
-                        <p className="text-white font-medium">{device.users.toLocaleString()}</p>
-                        <p className="text-gray-400 text-sm">{device.percentage}%</p>
+                        <p className="text-white font-medium">
+                          {device.users.toLocaleString()}
+                        </p>
+                        <p className="text-gray-400 text-sm">
+                          {device.percentage}%
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -269,12 +357,17 @@ export default function AnalyticsPage() {
                       <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                       <div className="flex-1">
                         <p className="text-white text-sm">
-                          <span className="font-medium">{activity.action}</span> on {activity.page}
+                          <span className="font-medium">{activity.action}</span>{" "}
+                          on {activity.page}
                         </p>
                         <div className="flex items-center space-x-2 mt-1">
-                          <p className="text-gray-400 text-xs">{activity.time}</p>
+                          <p className="text-gray-400 text-xs">
+                            {activity.time}
+                          </p>
                           <span className="text-gray-500">•</span>
-                          <p className="text-gray-400 text-xs">{activity.country}</p>
+                          <p className="text-gray-400 text-xs">
+                            {activity.country}
+                          </p>
                         </div>
                       </div>
                     </div>

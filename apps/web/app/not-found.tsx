@@ -1,14 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import {
-  Home,
-  ArrowLeft,
-  Search,
-  Zap,
-  Globe
-} from 'lucide-react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Home, ArrowLeft, Search, Zap, Globe } from "lucide-react";
 
 export default function NotFound() {
   return (
@@ -46,7 +40,8 @@ export default function NotFound() {
             Oops! Page Not Found
           </h2>
           <p className="text-gray-300 text-lg md:text-xl mb-2">
-            The page you're looking for seems to have vanished into the digital void.
+            The page you're looking for seems to have vanished into the digital
+            void.
           </p>
           <p className="text-gray-400 text-base">
             Don't worry, even the best rockets sometimes miss their target! 🚀
@@ -107,8 +102,11 @@ export default function NotFound() {
         {/* Footer Message */}
         <div className="mt-12 text-gray-500 text-sm">
           <p>
-            If you believe this is an error, please{' '}
-            <Link href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors underline">
+            If you believe this is an error, please{" "}
+            <Link
+              href="/contact"
+              className="text-blue-400 hover:text-blue-300 transition-colors underline"
+            >
               contact our support team
             </Link>
           </p>

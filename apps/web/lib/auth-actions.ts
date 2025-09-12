@@ -1,12 +1,12 @@
-"use server"
+"use server";
 
-import { prisma } from "@repo/prismadb/client"
-import bcrypt from "bcryptjs"
-import { Resend } from "resend"
-import { z } from "zod"
-import crypto from "crypto"
+import { prisma } from "@repo/prismadb/client";
+import bcrypt from "bcryptjs";
+import { Resend } from "resend";
+import { z } from "zod";
+import crypto from "crypto";
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Validation schemas
 const signupSchema = z.object({
@@ -14,16 +14,16 @@ const signupSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-})
+});
 
 const resetPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
-})
+});
 
 const newPasswordSchema = z.object({
   token: z.string().min(1, "Token is required"),
   password: z.string().min(8, "Password must be at least 8 characters"),
-})
+});
 
 // Signup action
 export async function signupAction(formData: FormData) {
@@ -33,25 +33,25 @@ export async function signupAction(formData: FormData) {
       lastName: formData.get("lastName") as string,
       email: formData.get("email") as string,
       password: formData.get("password") as string,
-    }
+    };
 
     // Validate input
-    const validatedData = signupSchema.parse(data)
+    const validatedData = signupSchema.parse(data);
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+      where: { email: validatedData.email },
+    });
 
     if (existingUser) {
       return {
         success: false,
-        message: "User with this email already exists"
-      }
+        message: "User with this email already exists",
+      };
     }
 
     // Hash password
-    const hashedPassword = await bcrypt.hash(validatedData.password, 12)
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
 
     // Create user
     const user = await prisma.user.create({
@@ -61,20 +61,20 @@ export async function signupAction(formData: FormData) {
         email: validatedData.email,
         password: hashedPassword,
         name: `${validatedData.firstName} ${validatedData.lastName}`,
-      }
-    })
+      },
+    });
 
     // Generate verification token
-    const verificationToken = crypto.randomBytes(32).toString('hex')
-    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
     await prisma.verificationToken.create({
       data: {
         identifier: user.email,
         token: verificationToken,
         expires,
-      }
-    })
+      },
+    });
 
     // Send verification email
     await resend.emails.send({
@@ -95,56 +95,57 @@ export async function signupAction(formData: FormData) {
           <p>This link expires in 24 hours.</p>
           <p>Best regards,<br>The NovaHost Team</p>
         </div>
-      `
-    })
+      `,
+    });
 
     return {
       success: true,
-      message: "Account created successfully! Please check your email to verify your account."
-    }
-
+      message:
+        "Account created successfully! Please check your email to verify your account.",
+    };
   } catch (error) {
-    console.error("Signup error:", error)
+    console.error("Signup error:", error);
     if (error instanceof z.ZodError) {
       return {
         success: false,
-        message: error.message
-      }
+        message: error.message,
+      };
     }
     return {
       success: false,
-      message: "Something went wrong. Please try again."
-    }
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
 // Password reset request
 export async function requestPasswordReset(formData: FormData) {
   try {
-    const email = formData.get("email") as string
-    const validatedData = resetPasswordSchema.parse({ email })
+    const email = formData.get("email") as string;
+    const validatedData = resetPasswordSchema.parse({ email });
 
     // Check if user exists
     const user = await prisma.user.findUnique({
-      where: { email: validatedData.email }
-    })
+      where: { email: validatedData.email },
+    });
 
     if (!user) {
       // Don't reveal if user exists or not
       return {
         success: true,
-        message: "If an account with this email exists, you will receive a password reset link."
-      }
+        message:
+          "If an account with this email exists, you will receive a password reset link.",
+      };
     }
 
     // Generate reset token
-    const resetToken = crypto.randomBytes(32).toString('hex')
-    const expires = new Date(Date.now() + 60 * 60 * 1000) // 1 hour
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
     // Delete any existing reset tokens for this user
     await prisma.verificationToken.deleteMany({
-      where: { identifier: user.email }
-    })
+      where: { identifier: user.email },
+    });
 
     // Create new reset token
     await prisma.verificationToken.create({
@@ -152,8 +153,8 @@ export async function requestPasswordReset(formData: FormData) {
         identifier: user.email,
         token: resetToken,
         expires,
-      }
-    })
+      },
+    });
 
     // Send password reset email
     await resend.emails.send({
@@ -163,7 +164,7 @@ export async function requestPasswordReset(formData: FormData) {
       html: `
         <div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
           <h1 style="color: #10b981;">Reset Your Password</h1>
-          <p>Hi ${user.firstName || 'there'},</p>
+          <p>Hi ${user.firstName || "there"},</p>
           <p>We received a request to reset your password. Click the button below to create a new password:</p>
           <a href="${process.env.NEXTAUTH_URL}/auth/reset-password?token=${resetToken}" 
              style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">
@@ -175,20 +176,20 @@ export async function requestPasswordReset(formData: FormData) {
           <p>If you didn't request this, please ignore this email.</p>
           <p>Best regards,<br>The NovaHost Team</p>
         </div>
-      `
-    })
+      `,
+    });
 
     return {
       success: true,
-      message: "If an account with this email exists, you will receive a password reset link."
-    }
-
+      message:
+        "If an account with this email exists, you will receive a password reset link.",
+    };
   } catch (error) {
-    console.error("Password reset error:", error)
+    console.error("Password reset error:", error);
     return {
       success: false,
-      message: "Something went wrong. Please try again."
-    }
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
@@ -199,59 +200,59 @@ export async function setNewPassword(formData: FormData) {
       // Added token to formData on reset-password page
       token: formData.get("token") as string,
       password: formData.get("password") as string,
-    }
+    };
 
-    const validatedData = newPasswordSchema.parse(data)
+    const validatedData = newPasswordSchema.parse(data);
 
     // Find valid reset token
     const resetToken = await prisma.verificationToken.findUnique({
-      where: { token: validatedData.token }
-    })
+      where: { token: validatedData.token },
+    });
 
     if (!resetToken || resetToken.expires < new Date()) {
       return {
         success: false,
-        message: "Invalid or expired reset token."
-      }
+        message: "Invalid or expired reset token.",
+      };
     }
 
     // Find user
     const user = await prisma.user.findUnique({
-      where: { email: resetToken.identifier }
-    })
+      where: { email: resetToken.identifier },
+    });
 
     if (!user) {
       return {
         success: false,
-        message: "User not found."
-      }
+        message: "User not found.",
+      };
     }
 
     // Hash new password
-    const hashedPassword = await bcrypt.hash(validatedData.password, 12)
+    const hashedPassword = await bcrypt.hash(validatedData.password, 12);
 
     // Update user password
     await prisma.user.update({
       where: { id: user.id },
-      data: { password: hashedPassword }
-    })
+      data: { password: hashedPassword },
+    });
 
     // Delete the reset token
     await prisma.verificationToken.delete({
-      where: { token: validatedData.token }
-    })
+      where: { token: validatedData.token },
+    });
 
     return {
       success: true,
-      message: "Password updated successfully! You can now sign in with your new password."
-    }
-
+      message:
+        "Password updated successfully! You can now sign in with your new password.",
+    };
   } catch (error) {
-    console.error("Set new password error:", error)
+    console.error("Set new password error:", error);
     return {
       success: false,
-      message: "Something went wrong. Please try again."
-    }
+      message: "Something went wrong. Please try again.",
+    };
   }
 }
 
@@ -260,37 +261,36 @@ export async function verifyEmail(token: string) {
   try {
     // Find verification token
     const verificationToken = await prisma.verificationToken.findUnique({
-      where: { token }
-    })
+      where: { token },
+    });
 
     if (!verificationToken || verificationToken.expires < new Date()) {
       return {
         success: false,
-        message: "Invalid or expired verification token."
-      }
+        message: "Invalid or expired verification token.",
+      };
     }
 
     // Update user as verified
     await prisma.user.update({
       where: { email: verificationToken.identifier },
-      data: { emailVerified: new Date() }
-    })
+      data: { emailVerified: new Date() },
+    });
 
     // Delete the verification token
     await prisma.verificationToken.delete({
-      where: { token }
-    })
+      where: { token },
+    });
 
     return {
       success: true,
-      message: "Email verified successfully! You can now sign in."
-    }
-
+      message: "Email verified successfully! You can now sign in.",
+    };
   } catch (error) {
-    console.error("Email verification error:", error)
+    console.error("Email verification error:", error);
     return {
       success: false,
-      message: "Something went wrong. Please try again."
-    }
+      message: "Something went wrong. Please try again.",
+    };
   }
 }

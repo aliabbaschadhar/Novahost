@@ -1,10 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { DashboardSidebar } from '@/components/dashboard/DashboardSidebar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { useState } from "react";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   CheckCircle,
   Clock,
@@ -14,8 +20,8 @@ import {
   GitBranch,
   Calendar,
   Timer,
-  RefreshCw
-} from 'lucide-react';
+  RefreshCw,
+} from "lucide-react";
 
 export default function DeploymentsPage() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -23,73 +29,73 @@ export default function DeploymentsPage() {
   // Mock deployment data
   const deployments = [
     {
-      id: '1',
-      project: 'my-react-app',
-      commit: 'feat: add user authentication',
-      commitHash: 'a3b2c1d',
-      branch: 'main',
-      status: 'deployed' as const,
-      url: 'https://my-react-app-abc123.novahost.app',
-      deployedAt: '2 minutes ago',
-      duration: '45s',
-      initiator: 'aliabbaschadhar',
+      id: "1",
+      project: "my-react-app",
+      commit: "feat: add user authentication",
+      commitHash: "a3b2c1d",
+      branch: "main",
+      status: "deployed" as const,
+      url: "https://my-react-app-abc123.novahost.app",
+      deployedAt: "2 minutes ago",
+      duration: "45s",
+      initiator: "aliabbaschadhar",
     },
     {
-      id: '2',
-      project: 'portfolio-site',
-      commit: 'update: redesign landing page',
-      commitHash: 'f4e5d6c',
-      branch: 'main',
-      status: 'building' as const,
-      deployedAt: '5 minutes ago',
-      duration: '1m 20s',
-      initiator: 'aliabbaschadhar',
+      id: "2",
+      project: "portfolio-site",
+      commit: "update: redesign landing page",
+      commitHash: "f4e5d6c",
+      branch: "main",
+      status: "building" as const,
+      deployedAt: "5 minutes ago",
+      duration: "1m 20s",
+      initiator: "aliabbaschadhar",
     },
     {
-      id: '3',
-      project: 'vue-dashboard',
-      commit: 'fix: API integration issues',
-      commitHash: 'g7h8i9j',
-      branch: 'develop',
-      status: 'failed' as const,
-      deployedAt: '1 hour ago',
-      duration: '30s',
-      initiator: 'aliabbaschadhar',
-      error: 'Build failed: Missing environment variables',
+      id: "3",
+      project: "vue-dashboard",
+      commit: "fix: API integration issues",
+      commitHash: "g7h8i9j",
+      branch: "develop",
+      status: "failed" as const,
+      deployedAt: "1 hour ago",
+      duration: "30s",
+      initiator: "aliabbaschadhar",
+      error: "Build failed: Missing environment variables",
     },
     {
-      id: '4',
-      project: 'my-react-app',
-      commit: 'chore: update dependencies',
-      commitHash: 'k1l2m3n',
-      branch: 'main',
-      status: 'deployed' as const,
-      url: 'https://my-react-app-def456.novahost.app',
-      deployedAt: '3 hours ago',
-      duration: '1m 15s',
-      initiator: 'aliabbaschadhar',
+      id: "4",
+      project: "my-react-app",
+      commit: "chore: update dependencies",
+      commitHash: "k1l2m3n",
+      branch: "main",
+      status: "deployed" as const,
+      url: "https://my-react-app-def456.novahost.app",
+      deployedAt: "3 hours ago",
+      duration: "1m 15s",
+      initiator: "aliabbaschadhar",
     },
     {
-      id: '5',
-      project: 'portfolio-site',
-      commit: 'feat: add blog section',
-      commitHash: 'o4p5q6r',
-      branch: 'feature/blog',
-      status: 'deployed' as const,
-      url: 'https://portfolio-site-ghi789.novahost.app',
-      deployedAt: '1 day ago',
-      duration: '2m 10s',
-      initiator: 'aliabbaschadhar',
+      id: "5",
+      project: "portfolio-site",
+      commit: "feat: add blog section",
+      commitHash: "o4p5q6r",
+      branch: "feature/blog",
+      status: "deployed" as const,
+      url: "https://portfolio-site-ghi789.novahost.app",
+      deployedAt: "1 day ago",
+      duration: "2m 10s",
+      initiator: "aliabbaschadhar",
     },
   ];
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'deployed':
+      case "deployed":
         return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'building':
+      case "building":
         return <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />;
-      case 'failed':
+      case "failed":
         return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
         return <Clock className="h-4 w-4 text-gray-500" />;
@@ -98,14 +104,14 @@ export default function DeploymentsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'deployed':
-        return 'bg-green-500/20 text-green-300 border-green-500/30';
-      case 'building':
-        return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-      case 'failed':
-        return 'bg-red-500/20 text-red-300 border-red-500/30';
+      case "deployed":
+        return "bg-green-500/20 text-green-300 border-green-500/30";
+      case "building":
+        return "bg-blue-500/20 text-blue-300 border-blue-500/30";
+      case "failed":
+        return "bg-red-500/20 text-red-300 border-red-500/30";
       default:
-        return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+        return "bg-gray-500/20 text-gray-300 border-gray-500/30";
     }
   };
 
@@ -130,15 +136,22 @@ export default function DeploymentsPage() {
         onToggle={setSidebarCollapsed}
       />
 
-      <div className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? 'md:ml-16 p-6' : 'md:ml-64 pl-12 pr-6 pt-6 pb-6'
-        } ml-0`}>
+      <div
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
+      >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Deployments</h1>
-                <p className="text-gray-300">Track and manage your deployment history</p>
+                <h1 className="text-3xl font-bold text-white mb-2">
+                  Deployments
+                </h1>
+                <p className="text-gray-300">
+                  Track and manage your deployment history
+                </p>
               </div>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer">
                 <RefreshCw className="h-4 w-4 mr-2" />
@@ -150,30 +163,43 @@ export default function DeploymentsPage() {
           {/* Deployments List */}
           <div className="space-y-4">
             {deployments.map((deployment) => (
-              <Card key={deployment.id} className="bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300">
+              <Card
+                key={deployment.id}
+                className="bg-white/5 backdrop-blur-sm border border-white/10 hover:bg-white/10 transition-all duration-300"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center space-x-3 mb-3">
                         <div className="flex items-center space-x-2">
                           {getStatusIcon(deployment.status)}
-                          <Badge variant="outline" className={getStatusColor(deployment.status)}>
-                            {deployment.status.charAt(0).toUpperCase() + deployment.status.slice(1)}
+                          <Badge
+                            variant="outline"
+                            className={getStatusColor(deployment.status)}
+                          >
+                            {deployment.status.charAt(0).toUpperCase() +
+                              deployment.status.slice(1)}
                           </Badge>
                         </div>
                         <span className="text-gray-400">•</span>
-                        <span className="text-white font-semibold">{deployment.project}</span>
+                        <span className="text-white font-semibold">
+                          {deployment.project}
+                        </span>
                       </div>
 
                       <div className="mb-4">
-                        <p className="text-gray-300 mb-2">{deployment.commit}</p>
+                        <p className="text-gray-300 mb-2">
+                          {deployment.commit}
+                        </p>
                         <div className="flex items-center space-x-4 text-sm text-gray-400">
                           <div className="flex items-center space-x-1">
                             <GitBranch className="h-4 w-4" />
                             <span>{deployment.branch}</span>
                           </div>
                           <div className="flex items-center space-x-1">
-                            <span className="font-mono">{deployment.commitHash}</span>
+                            <span className="font-mono">
+                              {deployment.commitHash}
+                            </span>
                           </div>
                           <div className="flex items-center space-x-1">
                             <Calendar className="h-4 w-4" />
@@ -188,7 +214,9 @@ export default function DeploymentsPage() {
 
                       {deployment.error && (
                         <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
-                          <p className="text-red-300 text-sm">{deployment.error}</p>
+                          <p className="text-red-300 text-sm">
+                            {deployment.error}
+                          </p>
                         </div>
                       )}
 
@@ -210,7 +238,7 @@ export default function DeploymentsPage() {
                         >
                           View Logs
                         </Button>
-                        {deployment.status === 'failed' && (
+                        {deployment.status === "failed" && (
                           <Button
                             size="sm"
                             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer"
@@ -223,7 +251,9 @@ export default function DeploymentsPage() {
 
                     <div className="text-right">
                       <p className="text-sm text-gray-400 mb-1">Deployed by</p>
-                      <p className="text-white font-medium">{deployment.initiator}</p>
+                      <p className="text-white font-medium">
+                        {deployment.initiator}
+                      </p>
                     </div>
                   </div>
                 </CardContent>

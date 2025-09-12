@@ -1,14 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import {
-  Home,
-  RefreshCw,
-  AlertTriangle,
-  Skull,
-  Zap
-} from 'lucide-react';
+import { useEffect } from "react";
+import Link from "next/link";
+import { Home, RefreshCw, AlertTriangle, Skull, Zap } from "lucide-react";
 
 export default function GlobalError({
   error,
@@ -19,7 +13,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Global Application Error:', error);
+    console.error("Global Application Error:", error);
   }, [error]);
 
   return (
@@ -59,7 +53,8 @@ export default function GlobalError({
                 System Failure Detected
               </p>
               <p className="text-gray-300 text-lg mb-2">
-                A critical error has occurred that prevented the application from functioning.
+                A critical error has occurred that prevented the application
+                from functioning.
               </p>
               <p className="text-gray-400 text-base">
                 This is a severe issue that requires immediate attention.
@@ -71,7 +66,9 @@ export default function GlobalError({
               <div className="bg-red-500/20 backdrop-blur-sm border border-red-500/40 rounded-2xl p-4 mb-8">
                 <div className="flex items-center justify-center mb-2">
                   <AlertTriangle className="h-5 w-5 text-red-300 mr-2" />
-                  <span className="text-red-200 font-medium">Critical Error ID</span>
+                  <span className="text-red-200 font-medium">
+                    Critical Error ID
+                  </span>
                 </div>
                 <code className="text-red-100 text-sm font-mono bg-black/50 px-4 py-2 rounded block">
                   {error.digest}
@@ -126,11 +123,14 @@ export default function GlobalError({
                 ⚠️ This is a critical system error
               </p>
               <p className="text-gray-300 text-sm">
-                Please{' '}
-                <a href="mailto:support@novahost.dev" className="text-red-400 hover:text-red-300 transition-colors underline font-medium">
+                Please{" "}
+                <a
+                  href="mailto:support@novahost.dev"
+                  className="text-red-400 hover:text-red-300 transition-colors underline font-medium"
+                >
                   contact emergency support
-                </a>
-                {' '}immediately with the error ID above.
+                </a>{" "}
+                immediately with the error ID above.
               </p>
             </div>
           </div>

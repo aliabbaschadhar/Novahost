@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono", Menlo,
+    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
   --color-background: 0 0% 100%;
   --color-foreground: 0 0% 3.9%;
@@ -94,7 +98,13 @@
 }
 
 * {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Roboto",
+    sans-serif;
 }
 
 body {
@@ -119,11 +129,11 @@ body {
 }
 
 .green-gradient {
-  background: linear-gradient(135deg, #10B981, #34D399);
+  background: linear-gradient(135deg, #10b981, #34d399);
 }
 
 .green-gradient-hover {
-  background: linear-gradient(135deg, #059669, #10B981);
+  background: linear-gradient(135deg, #059669, #10b981);
 }
 
 :root {
@@ -161,34 +171,61 @@ body {
 
 /* Enhanced Premium Sonner Toast Customization */
 [data-sonner-toaster] {
-  --normal-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.12) 100%);
+  --normal-bg: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
   --normal-border: rgba(255, 255, 255, 0.25);
   --normal-text: #ffffff;
-  --normal-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  --normal-shadow:
+    0 32px 64px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
 
-  --success-bg: linear-gradient(135deg, rgba(34, 197, 94, 0.12) 0%, rgba(16, 185, 129, 0.18) 100%);
+  --success-bg: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.12) 0%,
+    rgba(16, 185, 129, 0.18) 100%
+  );
   --success-border: rgba(34, 197, 94, 0.4);
   --success-text: #ffffff;
   --success-accent: #22c55e;
-  --success-shadow: 0 32px 64px -12px rgba(34, 197, 94, 0.25), 0 0 0 1px rgba(34, 197, 94, 0.1);
+  --success-shadow:
+    0 32px 64px -12px rgba(34, 197, 94, 0.25), 0 0 0 1px rgba(34, 197, 94, 0.1);
 
-  --error-bg: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(220, 38, 38, 0.18) 100%);
+  --error-bg: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.12) 0%,
+    rgba(220, 38, 38, 0.18) 100%
+  );
   --error-border: rgba(239, 68, 68, 0.4);
   --error-text: #ffffff;
   --error-accent: #ef4444;
-  --error-shadow: 0 32px 64px -12px rgba(239, 68, 68, 0.25), 0 0 0 1px rgba(239, 68, 68, 0.1);
+  --error-shadow:
+    0 32px 64px -12px rgba(239, 68, 68, 0.25), 0 0 0 1px rgba(239, 68, 68, 0.1);
 
-  --warning-bg: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(217, 119, 6, 0.18) 100%);
+  --warning-bg: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.12) 0%,
+    rgba(217, 119, 6, 0.18) 100%
+  );
   --warning-border: rgba(245, 158, 11, 0.4);
   --warning-text: #ffffff;
   --warning-accent: #f59e0b;
-  --warning-shadow: 0 32px 64px -12px rgba(245, 158, 11, 0.25), 0 0 0 1px rgba(245, 158, 11, 0.1);
+  --warning-shadow:
+    0 32px 64px -12px rgba(245, 158, 11, 0.25),
+    0 0 0 1px rgba(245, 158, 11, 0.1);
 
-  --info-bg: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.18) 100%);
+  --info-bg: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.12) 0%,
+    rgba(37, 99, 235, 0.18) 100%
+  );
   --info-border: rgba(59, 130, 246, 0.4);
   --info-text: #ffffff;
   --info-accent: #3b82f6;
-  --info-shadow: 0 32px 64px -12px rgba(59, 130, 246, 0.25), 0 0 0 1px rgba(59, 130, 246, 0.1);
+  --info-shadow:
+    0 32px 64px -12px rgba(59, 130, 246, 0.25),
+    0 0 0 1px rgba(59, 130, 246, 0.1);
 }
 
 [data-sonner-toast] {
@@ -210,15 +247,24 @@ body {
 
 /* Animated gradient border effect */
 [data-sonner-toast]::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.4)
+  );
   border-radius: inherit;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   mask-composite: xor;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   animation: border-glow 3s ease-in-out infinite alternate;
 }
@@ -231,7 +277,12 @@ body {
 }
 
 [data-sonner-toast][data-type="success"]::before {
-  background: linear-gradient(135deg, var(--success-accent), rgba(34, 197, 94, 0.2), var(--success-accent));
+  background: linear-gradient(
+    135deg,
+    var(--success-accent),
+    rgba(34, 197, 94, 0.2),
+    var(--success-accent)
+  );
 }
 
 [data-sonner-toast][data-type="error"] {
@@ -242,7 +293,12 @@ body {
 }
 
 [data-sonner-toast][data-type="error"]::before {
-  background: linear-gradient(135deg, var(--error-accent), rgba(239, 68, 68, 0.2), var(--error-accent));
+  background: linear-gradient(
+    135deg,
+    var(--error-accent),
+    rgba(239, 68, 68, 0.2),
+    var(--error-accent)
+  );
 }
 
 [data-sonner-toast][data-type="warning"] {
@@ -253,7 +309,12 @@ body {
 }
 
 [data-sonner-toast][data-type="warning"]::before {
-  background: linear-gradient(135deg, var(--warning-accent), rgba(245, 158, 11, 0.2), var(--warning-accent));
+  background: linear-gradient(
+    135deg,
+    var(--warning-accent),
+    rgba(245, 158, 11, 0.2),
+    var(--warning-accent)
+  );
 }
 
 [data-sonner-toast][data-type="info"] {
@@ -264,7 +325,12 @@ body {
 }
 
 [data-sonner-toast][data-type="info"]::before {
-  background: linear-gradient(135deg, var(--info-accent), rgba(59, 130, 246, 0.2), var(--info-accent));
+  background: linear-gradient(
+    135deg,
+    var(--info-accent),
+    rgba(59, 130, 246, 0.2),
+    var(--info-accent)
+  );
 }
 
 /* Toast content styling */
@@ -416,7 +482,6 @@ body {
 }
 
 @keyframes border-glow {
-
   0%,
   100% {
     opacity: 0.5;
@@ -429,7 +494,11 @@ body {
 
 /* Progress bar styling */
 [data-sonner-toast] [data-progress] {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)) !important;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1)
+  ) !important;
   height: 2px !important;
   border-radius: 2px !important;
   position: absolute !important;
