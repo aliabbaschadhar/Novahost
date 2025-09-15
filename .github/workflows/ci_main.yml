@@ -60,15 +60,19 @@ jobs:
             api-server:
               - 'apps/api-server/**'
               - 'packages/**'
+              - 'docker/Dockerfile.api-server'
             web:
               - 'apps/web/**'
               - 'packages/**'
+              - 'docker/Dockerfile.web'
             reverse-proxy:
               - 'apps/reverse-proxy/**'
               - 'packages/typescript-config/**'
               - 'packages/eslint-config/**'
+              - 'docker/Dockerfile.reverse-proxy'
             build-server:
               - 'apps/build-server/**'
+              - 'docker/Dockerfile.build-server'
 
       - name: Build and push Docker image
         if: steps.filter.outputs[matrix.service.name] == 'true'

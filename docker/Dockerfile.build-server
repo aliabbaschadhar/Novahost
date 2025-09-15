@@ -1,13 +1,14 @@
-FROM oven/bun:alpine
+FROM oven/bun:alpine AS baseimage
+
+# Stage 1: Install dependencies
+FROM baseimage AS deps
 
 WORKDIR /home/app
 
 RUN apk add --no-cache git
 
-#Copy Package.json files
-COPY package.json bun.lock turbo.json ./
 
-#Copy all workspaces package.json file maintaining directory structure
+COPY package.json bun.lock turbo.json ./
 COPY apps/build-server/package.json ./apps/build-server/
 COPY apps/web/package.json ./apps/web/
 COPY apps/api-server/package.json ./apps/api-server/
@@ -16,11 +17,27 @@ COPY packages/prismaDB/package.json ./packages/prismaDB/
 COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
 
-RUN bun install
+RUN bun install --frozen-lockfile --production=false
+
+
+# Stage 2: Build the application
+FROM baseimage AS runner
+WORKDIR /home/app
+
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --ingroup nodejs bun
+
+COPY --from=deps --chown=bun:nodejs /home/app/node_modules ./node_modules
+COPY --from=deps  --chown=bun:nodejs /home/app/bun.lock ./bun.lock
+COPY --from=deps --chown=bun:nodejs /home/app/package.json ./package.json
+COPY --from=deps --chown=bun:nodejs /home/app/turbo.json ./turbo.json
 
 #Copy Source code
-COPY apps/build-server ./apps/build-server
-COPY packages ./packages
+COPY --chown=bun:nodejs apps/build-server ./apps/build-server
+COPY --chown=bun:nodejs packages ./packages
+
+USER bun
+
 
 RUN chmod +x ./apps/build-server/src/index.ts
 

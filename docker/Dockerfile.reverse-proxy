@@ -1,28 +1,44 @@
-FROM oven/bun:alpine
+FROM oven/bun:alpine AS baseimage
+
+
+# Stage 1: Install dependencies
+FROM baseimage AS deps
 
 WORKDIR /home/app
 
-
-# Copy main *.json files
 COPY package.json bun.lock turbo.json ./
-
-# Maintain directory structure
 COPY apps/web/package.json ./apps/web/
-COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY apps/api-server/package.json ./apps/api-server/
+COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
 COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
 
-# Install deps
-RUN bun install
+RUN bun install --frozen-lockfile --production=false
 
-# Copy Source code
-COPY apps/reverse-proxy ./apps/reverse-proxy
-COPY packages/ ./packages
 
-# TODO: Add the correct exposing endpoint
+# Stage 2: Production runtime
+FROM baseimage AS runner
+
+WORKDIR /home/app
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --ingroup nodejs bun
+
+# Copy dependencies and source with proper ownership
+COPY --from=deps --chown=bun:nodejs /home/app/node_modules ./node_modules
+COPY --from=deps --chown=bun:nodejs /home/app/package.json ./package.json
+COPY --from=deps --chown=bun:nodejs /home/app/bun.lock ./bun.lock
+COPY --from=deps --chown=bun:nodejs /home/app/turbo.json ./turbo.json
+
+# Copy source code with proper ownership
+COPY --chown=bun:nodejs apps/reverse-proxy/ ./apps/reverse-proxy
+COPY --chown=bun:nodejs packages/ ./packages
+
+# Switch to non-root user
+USER bun
 
 EXPOSE 9010
 
-CMD [ "bun", "run", "start:proxy" ]
+CMD ["bun", "run", "start:proxy"]

@@ -1,36 +1,65 @@
-FROM oven/bun:alpine
+FROM oven/bun:alpine AS baseimage
+
+# Stage 1: Install deps
+FROM baseimage AS deps
 
 WORKDIR /home/app
 
-ARG DATABASE_URL
-
 COPY package.json bun.lock turbo.json ./
-
-# Maintaining Directory Structure
+COPY apps/web/package.json ./apps/web/
 COPY apps/api-server/package.json ./apps/api-server/
 COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
-COPY apps/web/package.json ./apps/web/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
 COPY packages/eslint-config/package.json ./packages/eslint-config/
 COPY packages/typescript-config/package.json ./packages/typescript-config/
 
-#Install deps
-RUN bun install
+RUN bun install --frozen-lockfile --production=false
+
+# Stage 2: Build stage
+FROM baseimage AS builder
+
+WORKDIR /home/app
+
+RUN apk add --no-cache openssl
+
+COPY --from=deps /home/app/node_modules ./node_modules
+COPY --from=deps /home/app/package.json ./package.json
+COPY --from=deps /home/app/turbo.json ./turbo.json
+COPY --from=deps /home/app/bun.lock ./bun.lock
+
+# Copy source code (fix: remove /home/app prefix)
+COPY packages ./packages
+COPY apps/web ./apps/web
+
+ARG DATABASE_URL
+
+RUN bun run db:generate
 
 #Pass the DB url while building the docker image of nextJS project bcz it needs to talk to the DB(Server Side Rendering)
 # If you don't provide it the building pipe line will fail
 
-# Copy source code
-COPY packages ./packages
-COPY apps/web ./apps/web
+RUN DATABASE_URL=${DATABASE_URL} bun run build
 
-# Install openssl on alpine
+# Stage 3: Production Runtime
+FROM baseimage AS runner
+
+WORKDIR /home/app
+
 RUN apk add --no-cache openssl
 
-RUN bun run db:generate
-RUN DATABASE_URL=${DATABASE_URL} bun run build
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 --ingroup nodejs nextjs
+
+# Copy built Next.js app
+COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/.next ./apps/web/.next
+COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/package.json ./apps/web/package.json
+COPY --from=builder --chown=nextjs:nodejs /home/app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /home/app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /home/app/packages ./packages
+
+USER nextjs
 
 EXPOSE 3000
 
-# Command to run the backend
-CMD [ "bun","run","start:web" ]
+CMD ["bun", "run", "start:web"]
