@@ -24,19 +24,19 @@ RUN bun install --frozen-lockfile --production=false
 FROM baseimage AS runner
 WORKDIR /home/app
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 --ingroup nodejs bun
+RUN addgroup --system --gid 1001 novahost && \
+    adduser --system --uid 1001 --ingroup novahost appUser
 
-COPY --from=deps --chown=bun:nodejs /home/app/node_modules ./node_modules
-COPY --from=deps  --chown=bun:nodejs /home/app/bun.lock ./bun.lock
-COPY --from=deps --chown=bun:nodejs /home/app/package.json ./package.json
-COPY --from=deps --chown=bun:nodejs /home/app/turbo.json ./turbo.json
+COPY --from=deps --chown=appUser:novahost /home/app/node_modules ./node_modules
+COPY --from=deps  --chown=appUser:novahost /home/app/bun.lock ./bun.lock
+COPY --from=deps --chown=appUser:novahost /home/app/package.json ./package.json
+COPY --from=deps --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
 #Copy Source code
-COPY --chown=bun:nodejs apps/build-server ./apps/build-server
-COPY --chown=bun:nodejs packages ./packages
+COPY --chown=appUser:novahost apps/build-server ./apps/build-server
+COPY --chown=appUser:novahost packages ./packages
 
-USER bun
+USER appUser
 
 
 RUN chmod +x ./apps/build-server/src/index.ts

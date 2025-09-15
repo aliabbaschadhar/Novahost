@@ -23,21 +23,21 @@ FROM baseimage AS runner
 WORKDIR /home/app
 
 # Create non-root user
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 --ingroup nodejs bun
+RUN addgroup --system --gid 1001 novahost && \
+    adduser --system --uid 1001 --ingroup novahost appUser
 
 # Copy dependencies and source with proper ownership
-COPY --from=deps --chown=bun:nodejs /home/app/node_modules ./node_modules
-COPY --from=deps --chown=bun:nodejs /home/app/package.json ./package.json
-COPY --from=deps --chown=bun:nodejs /home/app/bun.lock ./bun.lock
-COPY --from=deps --chown=bun:nodejs /home/app/turbo.json ./turbo.json
+COPY --from=deps --chown=appUser:novahost /home/app/node_modules ./node_modules
+COPY --from=deps --chown=appUser:novahost /home/app/package.json ./package.json
+COPY --from=deps --chown=appUser:novahost /home/app/bun.lock ./bun.lock
+COPY --from=deps --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
 # Copy source code with proper ownership
-COPY --chown=bun:nodejs apps/reverse-proxy/ ./apps/reverse-proxy
-COPY --chown=bun:nodejs packages/ ./packages
+COPY --chown=appUser:novahost apps/reverse-proxy/ ./apps/reverse-proxy
+COPY --chown=appUser:novahost packages/ ./packages
 
 # Switch to non-root user
-USER bun
+USER appUser
 
 EXPOSE 9010
 

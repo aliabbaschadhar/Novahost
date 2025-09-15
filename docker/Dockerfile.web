@@ -47,18 +47,18 @@ WORKDIR /home/app
 
 RUN apk add --no-cache openssl
 
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 --ingroup nodejs nextjs
+RUN addgroup --system --gid 1001 novahost && \
+    adduser --system --uid 1001 --ingroup novahost appUser
 
 # Copy built Next.js app
-COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/.next ./apps/web/.next
-COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/public ./apps/web/public
-COPY --from=builder --chown=nextjs:nodejs /home/app/apps/web/package.json ./apps/web/package.json
-COPY --from=builder --chown=nextjs:nodejs /home/app/node_modules ./node_modules
-COPY --from=builder --chown=nextjs:nodejs /home/app/package.json ./package.json
-COPY --from=builder --chown=nextjs:nodejs /home/app/packages ./packages
+COPY --from=builder --chown=appUser:novahost /home/app/apps/web/.next ./apps/web/.next
+COPY --from=builder --chown=appUser:novahost /home/app/apps/web/public ./apps/web/public
+COPY --from=builder --chown=appUser:novahost /home/app/apps/web/package.json ./apps/web/package.json
+COPY --from=builder --chown=appUser:novahost /home/app/node_modules ./node_modules
+COPY --from=builder --chown=appUser:novahost /home/app/package.json ./package.json
+COPY --from=builder --chown=appUser:novahost /home/app/packages ./packages
 
-USER nextjs
+USER appUser
 
 EXPOSE 3000
 

@@ -28,25 +28,25 @@ WORKDIR /home/app
 RUN apk add --no-cache openssl
 
 # Create a non-root user and group with specific IDs
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 --ingroup nodejs bun
+RUN addgroup --system --gid 1001 novahost && \
+    adduser --system --uid 1001 --ingroup novahost appUser
 
 # Copy the dependencies from the deps stage
 
-COPY --from=deps --chown=bun:nodejs /home/app/node_modules ./node_modules
-COPY --from=deps --chown=bun:nodejs /home/app/package.json ./package.json
-COPY --from=deps --chown=bun:nodejs /home/app/bun.lock ./bun.lock
-COPY --from=deps  --chown=bun:nodejs /home/app/turbo.json ./turbo.json
+COPY --from=deps --chown=appUser:novahost /home/app/node_modules ./node_modules
+COPY --from=deps --chown=appUser:novahost /home/app/package.json ./package.json
+COPY --from=deps --chown=appUser:novahost /home/app/bun.lock ./bun.lock
+COPY --from=deps  --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
 # Source code
-COPY --chown=bun:nodejs apps/api-server ./apps/api-server/
-COPY --chown=bun:nodejs packages/ ./packages/
+COPY --chown=appUser:novahost apps/api-server ./apps/api-server/
+COPY --chown=appUser:novahost packages/ ./packages/
 
 
 RUN bun run db:generate
 
 # Use the non-root user
-USER bun
+USER appUser
 
 EXPOSE 9000
 
