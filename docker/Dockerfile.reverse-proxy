@@ -6,15 +6,20 @@ FROM baseimage AS deps
 
 WORKDIR /home/app
 
+# Copy workspace configuration
 COPY package.json bun.lock turbo.json ./
-COPY apps/web/package.json ./apps/web/
-COPY apps/api-server/package.json ./apps/api-server/
-COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
-COPY packages/prismaDB/package.json ./packages/prismaDB/
-COPY packages/eslint-config/package.json ./packages/eslint-config/
-COPY packages/typescript-config/package.json ./packages/typescript-config/
 
-RUN bun install --frozen-lockfile --production=false
+# Create directory structure and copy all package.json files
+COPY apps/web/package.json ./apps/web/package.json
+COPY apps/api-server/package.json ./apps/api-server/package.json
+COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/package.json
+COPY apps/build-server/package.json ./apps/build-server/package.json
+COPY packages/prismaDB/package.json ./packages/prismaDB/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+
+# Install dependencies
+RUN bun install --frozen-lockfile
 
 
 # Stage 2: Production runtime
