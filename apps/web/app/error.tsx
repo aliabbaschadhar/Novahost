@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Home, RefreshCw, AlertTriangle, Bug, Zap } from "lucide-react";
 
+
 export default function Error({
   error,
   reset,
