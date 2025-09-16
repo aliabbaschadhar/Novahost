@@ -82,7 +82,10 @@ deployRouter.post("/", async (req, res) => {
 
     res.json({
       status: "QUEUED",
-      data: { deploymentId: deployment.id }
+      data: {
+        deploymentId: deployment.id,
+        subDomain: project.subDomain
+      }
     })
 
     // Poll the pod status to check whether it is completed or not?
