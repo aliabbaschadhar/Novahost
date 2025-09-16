@@ -153,8 +153,9 @@ export default function DomainsPage() {
       />
 
       <div
-        className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
-          } ml-0`}
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
       >
         <div className="max-w-6xl mx-auto">
           {/* Header */}

@@ -56,8 +56,8 @@ export default function Error({
             error.
           </p>
           <p className="text-gray-400 text-base">
-            Don&apos;t worry, our engineering team has been notified and is working
-            on a fix.
+            Don&apos;t worry, our engineering team has been notified and is
+            working on a fix.
           </p>
         </div>
 

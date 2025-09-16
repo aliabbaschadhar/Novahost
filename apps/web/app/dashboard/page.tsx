@@ -135,8 +135,9 @@ export default function DashboardPage() {
       />
 
       <div
-        className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
-          } ml-0`}
+        className={`transition-all duration-300 ease-in-out relative z-10 ${
+          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+        } ml-0`}
       >
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -225,12 +226,13 @@ export default function DashboardPage() {
                       className="flex items-center space-x-3 p-3 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10"
                     >
                       <div
-                        className={`w-2 h-2 rounded-full ${activity.status === "deployed"
+                        className={`w-2 h-2 rounded-full ${
+                          activity.status === "deployed"
                             ? "bg-emerald-500"
                             : activity.status === "building"
                               ? "bg-blue-500"
                               : "bg-red-500"
-                          }`}
+                        }`}
                       />
                       <div className="flex-1">
                         <p className="text-white font-medium">

@@ -40,11 +40,12 @@ export default function NotFound() {
             Oops! Page Not Found
           </h2>
           <p className="text-gray-300 text-lg md:text-xl mb-2">
-            The page you&apos;re looking for seems to have vanished into the digital
-            void.
+            The page you&apos;re looking for seems to have vanished into the
+            digital void.
           </p>
           <p className="text-gray-400 text-base">
-            Don&apos;t worry, even the best rockets sometimes miss their target! 🚀
+            Don&apos;t worry, even the best rockets sometimes miss their target!
+            🚀
           </p>
         </div>
 
