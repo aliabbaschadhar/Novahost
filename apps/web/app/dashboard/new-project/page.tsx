@@ -119,9 +119,8 @@ export default function NewProjectPage() {
       />
 
       <div
-        className={`transition-all duration-300 ease-in-out relative z-10 ${
-          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
-        } ml-0`}
+        className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+          } ml-0`}
       >
         <div className="max-w-4xl mx-auto">
           {/* Header */}
@@ -148,19 +147,17 @@ export default function NewProjectPage() {
             {[1, 2, 3].map((stepNumber) => (
               <div key={stepNumber} className="flex items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    step >= stepNumber
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= stepNumber
                       ? "bg-emerald-600 text-white"
                       : "bg-gray-800 text-gray-400"
-                  }`}
+                    }`}
                 >
                   {stepNumber}
                 </div>
                 {stepNumber < 3 && (
                   <div
-                    className={`w-16 h-0.5 mx-2 ${
-                      step > stepNumber ? "bg-emerald-600" : "bg-gray-800"
-                    }`}
+                    className={`w-16 h-0.5 mx-2 ${step > stepNumber ? "bg-emerald-600" : "bg-gray-800"
+                      }`}
                   />
                 )}
               </div>
@@ -263,7 +260,7 @@ export default function NewProjectPage() {
 
               <div className="text-center">
                 <p className="text-gray-500 mb-4">
-                  Don't have a repository? Start with a template
+                  Don&apos;t have a repository? Start with a template
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {frameworks.map((framework, index) => (

@@ -46,7 +46,7 @@ export const GoogleGeminiEffect = ({
               onClick={handleGetStarted}
               className="font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-700 text-white rounded-full px-8 py-4 text-base transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-emerald-500/30 cursor-pointer"
             >
-              Let's Deploy
+              Let&apos;s Deploy
             </button>
           </div>
         </div>
@@ -73,7 +73,7 @@ export const GoogleGeminiEffect = ({
           onClick={handleGetStarted}
           className="font-bold bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-700 text-white rounded-full px-8 py-4 md:px-10 md:py-5 text-base md:text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-emerald-500/30 z-50 cursor-pointer relative"
         >
-          Let's Deploy
+          Let&apos;s Deploy
         </button>
       </div>
 

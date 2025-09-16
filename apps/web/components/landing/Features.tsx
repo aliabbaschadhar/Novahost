@@ -605,7 +605,7 @@ export function Features() {
           </h2>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            From development to production, we've got your entire workflow
+            From development to production, we&apos;ve got your entire workflow
             covered with premium tools and monitoring.
           </p>
         </div>

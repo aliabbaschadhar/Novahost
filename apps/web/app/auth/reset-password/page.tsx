@@ -135,12 +135,12 @@ export default function ResetPasswordPage() {
 
                 <div className="space-y-2">
                   <p className="text-gray-300">
-                    We've sent a password reset link to your email address.
+                    We&apos;ve sent a password reset link to your email address.
                     Please check your inbox and click the link to reset your
                     password.
                   </p>
                   <p className="text-sm text-gray-400">
-                    Didn't receive the email? Check your spam folder or try
+                    Didn&apos;t receive the email? Check your spam folder or try
                     again.
                   </p>
                 </div>

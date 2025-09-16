@@ -153,9 +153,8 @@ export default function DomainsPage() {
       />
 
       <div
-        className={`transition-all duration-300 ease-in-out relative z-10 ${
-          sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
-        } ml-0`}
+        className={`transition-all duration-300 ease-in-out relative z-10 ${sidebarCollapsed ? "md:ml-16 p-6" : "md:ml-64 pl-12 pr-6 pt-6 pb-6"
+          } ml-0`}
       >
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -342,7 +341,7 @@ export default function DomainsPage() {
                     <p className="text-gray-400 mb-4">
                       {searchTerm
                         ? "No domains match your search."
-                        : "You haven't added any domains yet."}
+                        : "You haven\'t added any domains yet."}
                     </p>
                     {!searchTerm && (
                       <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white cursor-pointer">
@@ -385,7 +384,7 @@ export default function DomainsPage() {
                     <h5 className="text-white font-medium mb-2">
                       Certificate Authority
                     </h5>
-                    <p className="text-gray-300">Let's Encrypt</p>
+                    <p className="text-gray-300">Let&apos;s Encrypt</p>
                   </div>
                   <div className="bg-white/5 rounded-lg p-4">
                     <h5 className="text-white font-medium mb-2">

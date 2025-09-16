@@ -43,7 +43,7 @@ export function UptimeChart() {
           </h2>
 
           <p className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto px-4">
-            Monitor your application's health with beautiful, real-time
+            Monitor your application&apos;s health with beautiful, real-time
             analytics. Simple graphs that tell the complete story.
           </p>
         </div>
