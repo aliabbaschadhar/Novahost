@@ -1,10 +1,5 @@
 import { projectRouter } from "./project";
 import { deployRouter } from "./deploy";
-import { logsRouter } from "./logs"
+import { logsRouter } from "./logs";
 
-
-export {
-  projectRouter,
-  deployRouter,
-  logsRouter
-}
+export { projectRouter, deployRouter, logsRouter };

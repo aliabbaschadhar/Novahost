@@ -2,7 +2,7 @@ import { Router } from "express";
 import { clickhouseClient } from "../utils/clickhouse";
 import { StatusCodes } from "http-status-codes";
 
-export const logsRouter = Router()
+export const logsRouter = Router();
 
 logsRouter.get("/:id", async (req, res) => {
   const id = req.params.id;
@@ -10,13 +10,13 @@ logsRouter.get("/:id", async (req, res) => {
     const logs = await clickhouseClient.query({
       query: `SELECT event_id, deployment_id, log, timestamp FROM log_events WHERE deployment_id = {deployment_id:String}`,
       query_params: {
-        deployment_id: id
+        deployment_id: id,
       },
-      format: "JSONEachRow"
+      format: "JSONEachRow",
     });
     const rawLogs = await logs.json();
     return res.status(StatusCodes.OK).json({
-      logs: rawLogs
+      logs: rawLogs,
     });
   } catch (error) {
     console.error("Error fetching logs:", error);

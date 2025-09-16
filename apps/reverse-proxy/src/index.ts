@@ -1,7 +1,7 @@
 import "dotenv/config";
-import express from 'express'
-import httpProxy from "http-proxy"
-import { prisma } from "@repo/prismadb/client"
+import express from "express";
+import httpProxy from "http-proxy";
+import { prisma } from "@repo/prismadb/client";
 
 const app = express();
 const PORT = 8000;
@@ -16,17 +16,17 @@ app.use((req, res) => {
   //TODO: Then use that projectId
 
   if (req.path === "/") {
-    req.url = '/index.html';
+    req.url = "/index.html";
   }
 
   const resolveTo = `${BASE_PATH}/${projectId}`;
 
   return proxy.web(req, res, {
     target: resolveTo,
-    changeOrigin: true
+    changeOrigin: true,
   });
-})
+});
 
 app.listen(PORT, () => {
-  console.log(`Reverse proxy is running on ${PORT}`)
-})
+  console.log(`Reverse proxy is running on ${PORT}`);
+});

@@ -71,3 +71,5 @@ server/**
 # Optional: IDE files
 .vscode/
 .idea/
+
+packages/prismaDB/generated

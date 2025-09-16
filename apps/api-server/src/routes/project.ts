@@ -1,18 +1,18 @@
 import { Router } from "express";
 import { projectSchema } from "../schemas/schema";
-import { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from "http-status-codes";
 import { prisma } from "@repo/prismadb/client";
-import { generateSlug } from "random-word-slugs"
+import { generateSlug } from "random-word-slugs";
 
-export const projectRouter = Router()
+export const projectRouter = Router();
 
-projectRouter.post('/', async (req, res) => {
+projectRouter.post("/", async (req, res) => {
   const safeParseResult = projectSchema.safeParse(req.body);
 
   if (safeParseResult.error) {
     return res.status(StatusCodes.BAD_REQUEST).json({
-      error: safeParseResult.error
-    })
+      error: safeParseResult.error,
+    });
   }
 
   try {
@@ -22,16 +22,15 @@ projectRouter.post('/', async (req, res) => {
       data: {
         name: name,
         gitURL: gitURL,
-        subdomain: generateSlug()
-      }
-    })
+        subdomain: generateSlug(),
+      },
+    });
 
     res.status(StatusCodes.CREATED).json({
       msg: "Project created!",
-      data: { project }
-    })
-
+      data: { project },
+    });
   } catch (error) {
-    console.error("Error while creating a project", error)
+    console.error("Error while creating a project", error);
   }
-})
+});
