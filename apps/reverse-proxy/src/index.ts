@@ -4,7 +4,7 @@ import httpProxy from "http-proxy";
 import { prisma } from "@repo/prismadb/client";
 
 const app = express();
-const PORT = 8000;
+const PORT = 8080;
 const BASE_PATH = process.env.BASE_PATH;
 const proxy = httpProxy.createProxyServer();
 
