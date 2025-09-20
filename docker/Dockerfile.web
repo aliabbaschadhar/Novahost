@@ -29,17 +29,28 @@ COPY apps/web ./apps/web
 
 RUN bun run db:generate
 
-# Build Next.js with dummy environment variables for compilation
-ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" 
-ENV NEXTAUTH_URL="https://localhost:3000" 
-ENV NEXTAUTH_SECRET="dummy-secret-for-build" 
-ENV GOOGLE_CLIENT_ID="dummy-google-client-id" 
-ENV GOOGLE_CLIENT_SECRET="dummy-google-client-secret" 
-ENV GITHUB_CLIENT_ID="dummy-github-client-id" 
-ENV GITHUB_CLIENT_SECRET="dummy-github-client-secret" 
-ENV RESEND_API_KEY="dummy-resend-api-key" 
-ENV EMAIL_FROM="noreply@example.com" 
-RUN bun run build
+# Build arguments for compilation (not secrets)
+ARG BUILD_DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ARG BUILD_NEXTAUTH_URL="https://localhost:3000"
+ARG BUILD_NEXTAUTH_VALUE="dummy-auth-value-for-build"
+ARG BUILD_GOOGLE_CLIENT_ID="dummy-google-client-id"
+ARG BUILD_GOOGLE_CLIENT_VALUE="dummy-google-client-value"
+ARG BUILD_GITHUB_CLIENT_ID="dummy-github-client-id"
+ARG BUILD_GITHUB_CLIENT_VALUE="dummy-github-client-value"
+ARG BUILD_RESEND_VALUE="dummy-resend-value"
+ARG BUILD_EMAIL_FROM="noreply@example.com"
+
+# Build Next.js with build arguments
+RUN DATABASE_URL="$BUILD_DATABASE_URL" \
+    NEXTAUTH_URL="$BUILD_NEXTAUTH_URL" \
+    NEXTAUTH_SECRET="$BUILD_NEXTAUTH_VALUE" \
+    GOOGLE_CLIENT_ID="$BUILD_GOOGLE_CLIENT_ID" \
+    GOOGLE_CLIENT_SECRET="$BUILD_GOOGLE_CLIENT_VALUE" \
+    GITHUB_CLIENT_ID="$BUILD_GITHUB_CLIENT_ID" \
+    GITHUB_CLIENT_SECRET="$BUILD_GITHUB_CLIENT_VALUE" \
+    RESEND_API_KEY="$BUILD_RESEND_VALUE" \
+    EMAIL_FROM="$BUILD_EMAIL_FROM" \
+    bun run build:web
 
 # Stage 3: Production Runtime (OPTIMIZED)
 FROM oven/bun:alpine AS runner
