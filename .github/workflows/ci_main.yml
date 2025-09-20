@@ -82,8 +82,8 @@ jobs:
           file: ${{ matrix.service.dockerfile }}
           push: true
           tags: |
-            aliabbaschadhar/novahost-${{ matrix.service.name }}:latest
-            aliabbaschadhar/novahost-${{ matrix.service.name }}:${{ github.sha }}
+            aliabbaschadhar003/novahost-${{ matrix.service.name }}:latest
+            aliabbaschadhar003/novahost-${{ matrix.service.name }}:${{ github.sha }}
 
       - name: Debug build
         run: |
