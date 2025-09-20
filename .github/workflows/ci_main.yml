@@ -39,7 +39,7 @@ jobs:
   
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # ensures full git commit history is fetched
       

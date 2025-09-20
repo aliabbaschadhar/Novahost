@@ -27,17 +27,17 @@ COPY --from=deps /home/app/package.json ./package.json
 COPY --from=deps /home/app/turbo.json ./turbo.json
 COPY --from=deps /home/app/bun.lock ./bun.lock
 
-# Copy source code (fix: remove /home/app prefix)
+# Copy source code
 COPY packages ./packages
 COPY apps/web ./apps/web
 
 RUN bun run db:generate
 
-    # Build Next.js with placeholder DATABASE_URL (real values come from Kubernetes secrets at runtime)
-    RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
-        NEXTAUTH_URL="https://novahost.ybro.tech" \
-        NEXTAUTH_SECRET="placeholder-secret" \
-        bun run build# Stage 3: Production Runtime
+# Build Next.js with placeholder DATABASE_URL (Prisma client will skip connection during build)
+RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
+    NEXTAUTH_URL="https://novahost.ybro.tech" \
+    NEXTAUTH_SECRET="placeholder-secret" \
+    bun run build# Stage 3: Production Runtime
 FROM baseimage AS runner
 
 WORKDIR /home/app
