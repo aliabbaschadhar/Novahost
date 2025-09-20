@@ -2,7 +2,7 @@ const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Removed 'output: export' - incompatible with NextAuth
+  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },

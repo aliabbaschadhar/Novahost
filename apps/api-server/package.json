@@ -5,7 +5,10 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@repo/prismadb": "workspace:*"
+    "@repo/prismadb": "workspace:*",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "prisma": "^6.15.0"
   },
   "scripts": {
     "start": "bun run src/index.ts"
@@ -16,14 +19,11 @@
   "dependencies": {
     "@clickhouse/client": "^1.12.1",
     "@kubernetes/client-node": "^1.3.0",
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "http-status-codes": "^2.3.0",
     "kafkajs": "^2.2.4",
-    "prisma": "^6.15.0",
     "random-word-slugs": "^0.1.7",
     "uuid": "^13.0.0"
   }

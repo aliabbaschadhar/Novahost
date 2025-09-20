@@ -5,7 +5,10 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@repo/prismadb": "workspace:*"
+    "@repo/prismadb": "workspace:*",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/http-proxy": "^1.17.16"
   },
   "scripts": {
     "start": "bun run src/index.ts"
@@ -14,9 +17,6 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^5.0.3",
-    "@types/http-proxy": "^1.17.16",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
