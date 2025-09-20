@@ -29,10 +29,16 @@ COPY apps/web ./apps/web
 
 RUN bun run db:generate
 
-# Build Next.js with placeholder DATABASE_URL
-RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
-    NEXTAUTH_URL="https://novahost.ybro.tech" \
-    NEXTAUTH_SECRET="placeholder-secret" \
+# Build Next.js with dummy environment variables for compilation
+RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" \
+    NEXTAUTH_URL="https://localhost:3000" \
+    NEXTAUTH_SECRET="dummy-secret-for-build" \
+    GOOGLE_CLIENT_ID="dummy-google-client-id" \
+    GOOGLE_CLIENT_SECRET="dummy-google-client-secret" \
+    GITHUB_CLIENT_ID="dummy-github-client-id" \
+    GITHUB_CLIENT_SECRET="dummy-github-client-secret" \
+    RESEND_API_KEY="dummy-resend-api-key" \
+    EMAIL_FROM="noreply@example.com" \
     bun run build
 
 # Stage 3: Production Runtime (OPTIMIZED)
