@@ -84,9 +84,3 @@ jobs:
           tags: |
             aliabbaschadhar003/novahost-${{ matrix.service.name }}:latest
             aliabbaschadhar003/novahost-${{ matrix.service.name }}:${{ github.sha }}
-
-      - name: Debug build
-        run: |
-          echo "Node version: $(node --version)"
-          echo "Bun version: $(bun --version)"
-          ls -la apps/web/

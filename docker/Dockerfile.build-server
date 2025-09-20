@@ -14,8 +14,6 @@ COPY apps/web/package.json ./apps/web/
 COPY apps/api-server/package.json ./apps/api-server/
 COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
-COPY packages/eslint-config/package.json ./packages/eslint-config/
-COPY packages/typescript-config/package.json ./packages/typescript-config/
 
 RUN bun install
 
@@ -34,7 +32,6 @@ COPY --from=deps --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
 #Copy Source code
 COPY --chown=appUser:novahost apps/build-server ./apps/build-server
-COPY --chown=appUser:novahost packages ./packages
 
 USER appUser
 

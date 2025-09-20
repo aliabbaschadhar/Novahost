@@ -11,12 +11,8 @@ COPY apps/api-server/package.json ./apps/api-server/
 COPY apps/web/package.json ./apps/web/
 COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
-COPY packages/eslint-config/package.json ./packages/eslint-config/
-COPY packages/typescript-config/package.json ./packages/typescript-config/
 
-
-RUN bun install --production
-
+RUN bun install
 
 # Stage 2: Production runtime
 FROM oven/bun:alpine AS runner
