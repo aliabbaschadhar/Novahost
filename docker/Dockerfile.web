@@ -33,13 +33,11 @@ COPY apps/web ./apps/web
 
 RUN bun run db:generate
 
-# Build Next.js with placeholder DATABASE_URL (real values come from Kubernetes secrets at runtime)
-RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
-    NEXTAUTH_URL="https://placeholder.com" \
-    NEXTAUTH_SECRET="placeholder-secret" \
-    bun run build
-
-# Stage 3: Production Runtime
+    # Build Next.js with placeholder DATABASE_URL (real values come from Kubernetes secrets at runtime)
+    RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
+        NEXTAUTH_URL="https://novahost.ybro.tech" \
+        NEXTAUTH_SECRET="placeholder-secret" \
+        bun run build# Stage 3: Production Runtime
 FROM baseimage AS runner
 
 WORKDIR /home/app
