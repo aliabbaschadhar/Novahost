@@ -29,6 +29,7 @@ COPY apps/web ./apps/web
 
 RUN bun run db:generate
 
+
 # Build arguments for compilation (not secrets)
 ARG BUILD_DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
 ARG BUILD_NEXTAUTH_URL="https://localhost:3000"
