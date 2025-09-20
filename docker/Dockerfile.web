@@ -30,16 +30,16 @@ COPY apps/web ./apps/web
 RUN bun run db:generate
 
 # Build Next.js with dummy environment variables for compilation
-RUN DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" \
-    NEXTAUTH_URL="https://localhost:3000" \
-    NEXTAUTH_SECRET="dummy-secret-for-build" \
-    GOOGLE_CLIENT_ID="dummy-google-client-id" \
-    GOOGLE_CLIENT_SECRET="dummy-google-client-secret" \
-    GITHUB_CLIENT_ID="dummy-github-client-id" \
-    GITHUB_CLIENT_SECRET="dummy-github-client-secret" \
-    RESEND_API_KEY="dummy-resend-api-key" \
-    EMAIL_FROM="noreply@example.com" \
-    bun run build
+ENV DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy" 
+ENV NEXTAUTH_URL="https://localhost:3000" 
+ENV NEXTAUTH_SECRET="dummy-secret-for-build" 
+ENV GOOGLE_CLIENT_ID="dummy-google-client-id" 
+ENV GOOGLE_CLIENT_SECRET="dummy-google-client-secret" 
+ENV GITHUB_CLIENT_ID="dummy-github-client-id" 
+ENV GITHUB_CLIENT_SECRET="dummy-github-client-secret" 
+ENV RESEND_API_KEY="dummy-resend-api-key" 
+ENV EMAIL_FROM="noreply@example.com" 
+RUN bun run build
 
 # Stage 3: Production Runtime (OPTIMIZED)
 FROM oven/bun:alpine AS runner
