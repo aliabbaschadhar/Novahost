@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://novahost.ybro.tech/sitemap.xml

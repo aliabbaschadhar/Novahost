@@ -31,14 +31,13 @@ COPY --from=deps /home/app/bun.lock ./bun.lock
 COPY packages ./packages
 COPY apps/web ./apps/web
 
-ARG DATABASE_URL
-
 RUN bun run db:generate
 
-#Pass the DB url while building the docker image of nextJS project bcz it needs to talk to the DB(Server Side Rendering)
-# If you don't provide it the building pipe line will fail
-
-RUN DATABASE_URL=${DATABASE_URL} bun run build
+# Build Next.js with placeholder DATABASE_URL (real values come from Kubernetes secrets at runtime)
+RUN DATABASE_URL="postgresql://placeholder:placeholder@placeholder:5432/placeholder" \
+    NEXTAUTH_URL="https://placeholder.com" \
+    NEXTAUTH_SECRET="placeholder-secret" \
+    bun run build
 
 # Stage 3: Production Runtime
 FROM baseimage AS runner

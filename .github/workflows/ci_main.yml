@@ -81,6 +81,6 @@ jobs:
           context: .
           file: ${{ matrix.service.dockerfile }}
           push: true
-          tags: aliabbaschadhar003/novahost-${{ matrix.service.name }}:${{ github.sha }}
-          build-args: |
-            ${{ matrix.service.name == 'web' && format('DATABASE_URL={0}', secrets.DATABASE_URL) || '' }}
+          tags: |
+            aliabbaschadhar/novahost-${{ matrix.service.name }}:latest
+            aliabbaschadhar/novahost-${{ matrix.service.name }}:${{ github.sha }}
