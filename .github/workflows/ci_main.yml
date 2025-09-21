@@ -5,8 +5,9 @@ on:
     branches: [main]
     paths:
       - "apps/**"
-      - "packages/**"
+      - "packages/prismaDB/**"
       - "docker/**"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,20 +18,19 @@ jobs:
             dockerfile: docker/Dockerfile.api-server
             paths:
               - "apps/api-server/**"
-              - "packages/**"
+              - "packages/prismaDB/**"
 
           - name: web
             dockerfile: docker/Dockerfile.web
             paths:
               - "apps/web/**"
-              - "packages/**"
+              - "packages/prismaDB/**"
 
           - name: reverse-proxy
             dockerfile: docker/Dockerfile.reverse-proxy
             paths:
               - "apps/reverse-proxy/**"
-              - "packages/typescript-config/**"
-              - "packages/eslint-config/**"
+              - "packages/prismaDB/**"
           
           - name: build-server
             dockerfile: docker/Dockerfile.build-server
@@ -59,16 +59,15 @@ jobs:
           filters: |
             api-server:
               - 'apps/api-server/**'
-              - 'packages/**'
+              - 'packages/prismaDB/**'
               - 'docker/Dockerfile.api-server'
             web:
               - 'apps/web/**'
-              - 'packages/**'
+              - 'packages/prismaDB/**'
               - 'docker/Dockerfile.web'
             reverse-proxy:
               - 'apps/reverse-proxy/**'
-              - 'packages/typescript-config/**'
-              - 'packages/eslint-config/**'
+              - 'packages/prismaDB/**'
               - 'docker/Dockerfile.reverse-proxy'
             build-server:
               - 'apps/build-server/**'
@@ -82,5 +81,39 @@ jobs:
           file: ${{ matrix.service.dockerfile }}
           push: true
           tags: |
-            aliabbaschadhar003/novahost-${{ matrix.service.name }}:latest
             aliabbaschadhar003/novahost-${{ matrix.service.name }}:${{ github.sha }}
+            aliabbaschadhar003/novahost-${{ matrix.service.name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # Update my-infra repository with new image tags
+  update-deployment:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ needs.build.result == 'success' }}
+    
+    steps:
+      - name: Checkout my-infra repository
+        uses: actions/checkout@v4
+        with:
+          repository: aliabbaschadhar/my-infra
+          token: ${{ secrets.GH_PAT }}
+          path: my-infra
+
+      - name: Update image tags in values.yaml
+        run: |
+          cd my-infra/apps/novahost
+          
+          # Update image tags to latest commit SHA
+          sed -i "s|tag: \".*\"|tag: \"${{ github.sha }}\"|g" values.yaml
+          
+          # Commit changes
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add values.yaml
+          git commit -m "🚀 Update Novahost image tags to ${{ github.sha }}" || exit 0
+          git push
+
+      - name: ArgoCD Auto-Sync Notification
+        run: |
+          echo "✅ Values updated - ArgoCD App of Apps will auto-sync Novahost deployment"
