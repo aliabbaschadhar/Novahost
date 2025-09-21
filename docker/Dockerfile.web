@@ -1,6 +1,7 @@
 FROM oven/bun:alpine AS baseimage
 
 # Stage 1: Install ALL dependencies (needed for build)
+
 FROM baseimage AS deps
 WORKDIR /home/app
 COPY package.json bun.lock turbo.json ./
@@ -8,8 +9,6 @@ COPY apps/web/package.json ./apps/web/
 COPY apps/api-server/package.json ./apps/api-server/
 COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
-COPY packages/eslint-config/package.json ./packages/eslint-config/
-COPY packages/typescript-config/package.json ./packages/typescript-config/
 
 RUN bun install
 

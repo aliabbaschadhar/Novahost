@@ -12,6 +12,7 @@ COPY apps/build-server/package.json ./apps/build-server
 
 RUN bun install
 
+
 # Stage 2: Build the application
 FROM oven/bun:alpine AS runner
 WORKDIR /home/app
