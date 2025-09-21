@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Zap, ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail } from "lucide-react";
+import { LogoWithText } from "@/components/ui/logo";
 import Loading from "@/app/loading";
 import { useSearchParams, useRouter } from "next/navigation";
 import { requestPasswordReset, setNewPassword } from "@/lib/auth-actions";
@@ -102,12 +103,15 @@ export default function ResetPasswordPage() {
             <div className="flex justify-center">
               <Link
                 href="/"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity"
               >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-white font-bold text-xl">NovaHost</span>
+                <LogoWithText
+                  width={32}
+                  height={32}
+                  variant="white"
+                  textSize="text-xl"
+                  animate={true}
+                />
               </Link>
             </div>
             <div className="text-center">

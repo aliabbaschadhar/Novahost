@@ -6,7 +6,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { verifyEmail } from "@/lib/auth-actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle, Loader2, Zap } from "lucide-react";
+import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { LogoWithText } from "@/components/ui/logo";
 import Link from "next/link";
 
 export default function VerifyEmailPage() {
@@ -57,12 +58,15 @@ export default function VerifyEmailPage() {
             <div className="flex justify-center">
               <Link
                 href="/"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity"
               >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-white font-bold text-xl">NovaHost</span>
+                <LogoWithText
+                  width={32}
+                  height={32}
+                  variant="white"
+                  textSize="text-xl"
+                  animate={true}
+                />
               </Link>
             </div>
             <CardTitle className="text-2xl font-bold">

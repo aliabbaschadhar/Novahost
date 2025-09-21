@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { LogoWithText } from "@/components/ui/logo";
 
 export function Header() {
   const router = useRouter();
@@ -32,9 +33,14 @@ export function Header() {
             className="flex items-center cursor-pointer group"
             onClick={() => router.push("/")}
           >
-            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent hover:from-blue-300 hover:to-purple-400 transition-all duration-300 group-hover:scale-105">
-              NovaHost
-            </h1>
+            <LogoWithText
+              width={32}
+              height={32}
+              variant="white"
+              textSize="text-2xl md:text-3xl"
+              className="group-hover:scale-105 transition-transform duration-300"
+              animate={true}
+            />
           </div>
 
           <nav className="hidden md:flex items-center space-x-8">

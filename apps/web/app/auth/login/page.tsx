@@ -13,7 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Zap, Eye, EyeOff, Github, Mail } from "lucide-react";
+import { Eye, EyeOff, Github, Mail } from "lucide-react";
 import Loading from "@/app/loading";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
@@ -21,6 +21,7 @@ import {
   setClientRememberMeCookie,
   getClientRememberMeCookie,
 } from "@/lib/client-cookie-utils";
+import { LogoWithText } from "@/components/ui/logo";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -132,12 +133,15 @@ export default function LoginPage() {
             <div className="flex justify-center">
               <Link
                 href="/"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity"
               >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-white font-bold text-xl">NovaHost</span>
+                <LogoWithText
+                  width={32}
+                  height={32}
+                  variant="white"
+                  textSize="text-xl"
+                  animate={true}
+                />
               </Link>
             </div>
             <div className="text-center">

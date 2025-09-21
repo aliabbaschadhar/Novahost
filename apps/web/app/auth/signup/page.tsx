@@ -13,11 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Zap, Eye, EyeOff, Github, Mail, Check } from "lucide-react";
+import { Eye, EyeOff, Github, Mail, Check } from "lucide-react";
 import { signupAction } from "@/lib/auth-actions";
 import { toast } from "sonner";
 import LoadingPage from "@/app/loading";
 import { signIn } from "next-auth/react";
+import { LogoWithText } from "@/components/ui/logo";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -85,12 +86,15 @@ export default function SignUpPage() {
             <div className="flex justify-center">
               <Link
                 href="/"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity"
               >
-                <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-2 rounded-lg">
-                  <Zap className="h-6 w-6 text-white" />
-                </div>
-                <span className="text-white font-bold text-xl">NovaHost</span>
+                <LogoWithText
+                  width={32}
+                  height={32}
+                  variant="white"
+                  textSize="text-xl"
+                  animate={true}
+                />
               </Link>
             </div>
             <div className="text-center">
