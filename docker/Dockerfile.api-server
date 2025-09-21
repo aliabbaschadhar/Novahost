@@ -9,7 +9,7 @@ COPY package.json bun.lock turbo.json ./
 COPY apps/api-server/package.json ./apps/api-server/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
 
-RUN bun install --production --frozen-lockfile
+RUN bun install 
 
 # Generate Prisma client
 # COPY packages/prismaDB ./packages/prismaDB/
