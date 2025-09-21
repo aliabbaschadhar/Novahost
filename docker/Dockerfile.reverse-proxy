@@ -7,17 +7,14 @@ WORKDIR /home/app
 
 # Copy workspace configuration
 COPY package.json bun.lock turbo.json ./
-
-# Create directory structure and copy all package.json files
-COPY apps/web/package.json ./apps/web/package.json
-COPY apps/api-server/package.json ./apps/api-server/package.json
 COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/package.json
-COPY apps/build-server/package.json ./apps/build-server/package.json
 COPY packages/prismaDB/package.json ./packages/prismaDB/package.json
 
 # Install dependencies
 RUN bun install 
 
+COPY packages/prismaDB ./packages/prismaDB
+RUN bun run db:generate
 
 # Stage 2: Production runtime
 FROM oven/bun:alpine AS runner
@@ -31,16 +28,14 @@ RUN addgroup --system --gid 1001 novahost && \
 # Copy dependencies and source with proper ownership
 COPY --from=deps --chown=appUser:novahost /home/app/node_modules ./node_modules
 COPY --from=deps --chown=appUser:novahost /home/app/package.json ./package.json
-COPY --from=deps --chown=appUser:novahost /home/app/bun.lock ./bun.lock
-COPY --from=deps --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
 # Copy source code with proper ownership
 COPY --chown=appUser:novahost apps/reverse-proxy/ ./apps/reverse-proxy
-COPY --chown=appUser:novahost packages/ ./packages
+COPY --chown=appUser:novahost packages/prismaDB/ ./packages/prismaDB/
 
 # Switch to non-root user
 USER appUser
 
-EXPOSE 9010
+EXPOSE 8080
 
 CMD ["bun", "run", "start:proxy"]

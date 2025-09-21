@@ -1,7 +1,6 @@
-FROM oven/bun:alpine AS baseimage
+FROM oven/bun:alpine AS deps
 
 # Stage 1: Install production dependencies only
-FROM baseimage AS deps
 WORKDIR /home/app
 
 # Copy only necessary package files for dependency resolution
