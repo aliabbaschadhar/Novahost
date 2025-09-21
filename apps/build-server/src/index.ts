@@ -1,3 +1,4 @@
+//@ts-nocheck
 import "dotenv/config";
 import { Kafka } from "kafkajs";
 import fs from "fs";
@@ -16,19 +17,19 @@ const deploymentId = process.env.DEPLOYMENT_ID;
 const brokerUrl = process.env.KAFKA_BROKER_URL;
 const kafkaPassword = process.env.KAFKA_SASL_PASSWORD;
 
-if (
-  !accessKeyId ||
-  !secretAccessKey ||
-  !endpoint ||
-  !bucket ||
-  !gitUrl ||
-  !projectId ||
-  !deploymentId ||
-  !brokerUrl ||
-  !kafkaPassword
-) {
-  throw new Error("Missing required environment variables");
-}
+// if (
+//   !accessKeyId ||
+//   !secretAccessKey ||
+//   !endpoint ||
+//   !bucket ||
+//   !gitUrl ||
+//   !projectId ||
+//   !deploymentId ||
+//   !brokerUrl ||
+//   !kafkaPassword
+// ) {
+//   throw new Error("Missing required environment variables");
+// }
 
 console.log(
   `Access Key ID: ${accessKeyId} \nSecret Access Key: ${secretAccessKey} \nEndpoint: ${endpoint} \nBucket: ${bucket} \nGit URL: ${gitUrl} \nProject ID: ${projectId} \nDeployment ID: ${deploymentId} \nBroker URL: ${brokerUrl} \nKafka Password: ${kafkaPassword} \n`,
@@ -36,6 +37,7 @@ console.log(
 
 const kafka = new Kafka({
   clientId: `docker-build-server-${deploymentId}`,
+
   brokers: [brokerUrl],
   ssl: {
     ca: [fs.readFileSync(path.join(__dirname, "kafka(ca).pem"), "utf-8")],

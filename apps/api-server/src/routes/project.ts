@@ -22,7 +22,7 @@ projectRouter.post("/", async (req, res) => {
       data: {
         name: name,
         gitURL: gitURL,
-        subdomain: generateSlug(),
+        subDomain: generateSlug(),
       },
     });
 

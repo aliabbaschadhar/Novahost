@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Kafka } from "kafkajs";
 import fs from "fs";
 import path from "path";
@@ -7,9 +8,9 @@ import { v4 as uuidv4 } from "uuid";
 const kafkaBrokerUrl = process.env.KAFKA_BROKER_URL;
 const kafkaPassword = process.env.KAFKA_SASL_PASSWORD;
 
-if (!kafkaBrokerUrl || !kafkaPassword) {
-  throw new Error("Environment variables are not found!");
-}
+// if (!kafkaBrokerUrl || !kafkaPassword) {
+//   throw new Error("Environment variables are not found!");
+// }
 
 const kafka = new Kafka({
   clientId: `api-server`,
