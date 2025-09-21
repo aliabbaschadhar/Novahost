@@ -6,7 +6,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { execSync } from "child_process";
 import mime from "mime-types";
 import { configDotenv } from "dotenv";
-configDotenv()
+configDotenv();
 
 const accessKeyId = process.env.S3_ACCESS_KEY_ID;
 const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
