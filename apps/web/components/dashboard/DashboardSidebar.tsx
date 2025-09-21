@@ -125,8 +125,9 @@ export function DashboardSidebar({
     <>
       {/* Toggle Button - Fixed positioning */}
       <button
-        className={`fixed top-4 z-50 bg-white/10 backdrop-blur-sm border border-white/20 text-white p-2 rounded-lg transition-all hover:bg-white/20 cursor-pointer ${isCollapsed ? "left-20" : "left-4"
-          }`}
+        className={`fixed top-4 z-50 bg-white/10 backdrop-blur-sm border border-white/20 text-white p-2 rounded-lg transition-all hover:bg-white/20 cursor-pointer ${
+          isCollapsed ? "left-20" : "left-4"
+        }`}
         onClick={toggleSidebar}
         aria-label={isCollapsed ? "Open sidebar" : "Close sidebar"}
       >
@@ -135,12 +136,13 @@ export function DashboardSidebar({
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-40 bg-white/10 backdrop-blur-xl border-r border-white/20 transition-all duration-300 ease-in-out ${isCollapsed
+        className={`fixed inset-y-0 left-0 z-40 bg-white/10 backdrop-blur-xl border-r border-white/20 transition-all duration-300 ease-in-out ${
+          isCollapsed
             ? isMobile
               ? "-translate-x-full w-64"
               : "w-16"
             : "w-64 translate-x-0"
-          }`}
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -158,12 +160,7 @@ export function DashboardSidebar({
               />
             ) : (
               <Link href="/" className="hover:opacity-80 transition-opacity">
-                <Logo
-                  width={24}
-                  height={24}
-                  variant="white"
-                  animate={true}
-                />
+                <Logo width={24} height={24} variant="white" animate={true} />
               </Link>
             )}
           </div>
@@ -178,11 +175,13 @@ export function DashboardSidebar({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex items-center rounded-lg transition-all duration-200 group cursor-pointer ${isCollapsed ? "justify-center p-3" : "space-x-3 px-3 py-2"
-                    } ${isActive
+                  className={`flex items-center rounded-lg transition-all duration-200 group cursor-pointer ${
+                    isCollapsed ? "justify-center p-3" : "space-x-3 px-3 py-2"
+                  } ${
+                    isActive
                       ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-600/25"
                       : "text-gray-300 hover:text-white hover:bg-white/10"
-                    }`}
+                  }`}
                   title={isCollapsed ? item.name : undefined}
                 >
                   <item.icon
@@ -201,8 +200,9 @@ export function DashboardSidebar({
             className={`border-t border-white/10 space-y-2 ${isCollapsed ? "p-2" : "p-4"}`}
           >
             <Button
-              className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer ${isCollapsed ? "justify-center p-3" : "justify-start"
-                }`}
+              className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/25 cursor-pointer ${
+                isCollapsed ? "justify-center p-3" : "justify-start"
+              }`}
               onClick={() => router.push("/dashboard/new-project")}
               title={isCollapsed ? "New Project" : undefined}
             >
@@ -212,8 +212,9 @@ export function DashboardSidebar({
 
             <Button
               variant="ghost"
-              className={`w-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ${isCollapsed ? "justify-center p-3" : "justify-start"
-                }`}
+              className={`w-full text-gray-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ${
+                isCollapsed ? "justify-center p-3" : "justify-start"
+              }`}
               onClick={handleLogout}
               title={isCollapsed ? "Sign out" : undefined}
             >

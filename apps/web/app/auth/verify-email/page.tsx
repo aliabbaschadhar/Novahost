@@ -56,10 +56,7 @@ export default function VerifyEmailPage() {
         <Card className="bg-white/10 backdrop-blur-xl border border-white/20 text-white">
           <CardHeader className="text-center space-y-4">
             <div className="flex justify-center">
-              <Link
-                href="/"
-                className="hover:opacity-80 transition-opacity"
-              >
+              <Link href="/" className="hover:opacity-80 transition-opacity">
                 <LogoWithText
                   width={32}
                   height={32}

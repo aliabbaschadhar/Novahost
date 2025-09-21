@@ -36,7 +36,7 @@ export function Logo({
       className={cn(
         "relative flex items-center justify-center",
         animate && "transition-transform duration-300 hover:scale-105",
-        className
+        className,
       )}
     >
       <Image
@@ -47,7 +47,7 @@ export function Logo({
         priority={priority}
         className={cn(
           "object-contain",
-          animate && "transition-all duration-300"
+          animate && "transition-all duration-300",
         )}
       />
     </div>
@@ -90,7 +90,7 @@ export function LogoInline({
       className={cn(
         "relative flex items-center justify-center",
         animate && "transition-transform duration-300 hover:scale-105",
-        className
+        className,
       )}
     >
       <svg
@@ -138,7 +138,13 @@ export function LogoInline({
         {/* Orbital dots */}
         {animate && (
           <>
-            <circle cx="28" cy="60" r="2.5" fill={currentColors.text} opacity="0.9">
+            <circle
+              cx="28"
+              cy="60"
+              r="2.5"
+              fill={currentColors.text}
+              opacity="0.9"
+            >
               <animate
                 attributeName="opacity"
                 values="0.5;1;0.5"
@@ -146,7 +152,13 @@ export function LogoInline({
                 repeatCount="indefinite"
               />
             </circle>
-            <circle cx="92" cy="60" r="2" fill={currentColors.text} opacity="0.7">
+            <circle
+              cx="92"
+              cy="60"
+              r="2"
+              fill={currentColors.text}
+              opacity="0.7"
+            >
               <animate
                 attributeName="opacity"
                 values="0.3;0.8;0.3"
@@ -154,7 +166,13 @@ export function LogoInline({
                 repeatCount="indefinite"
               />
             </circle>
-            <circle cx="60" cy="28" r="2.5" fill={currentColors.text} opacity="0.8">
+            <circle
+              cx="60"
+              cy="28"
+              r="2.5"
+              fill={currentColors.text}
+              opacity="0.8"
+            >
               <animate
                 attributeName="opacity"
                 values="0.6;1;0.6"
@@ -162,7 +180,13 @@ export function LogoInline({
                 repeatCount="indefinite"
               />
             </circle>
-            <circle cx="60" cy="92" r="2" fill={currentColors.text} opacity="0.6">
+            <circle
+              cx="60"
+              cy="92"
+              r="2"
+              fill={currentColors.text}
+              opacity="0.6"
+            >
               <animate
                 attributeName="opacity"
                 values="0.4;0.9;0.4"
@@ -175,10 +199,34 @@ export function LogoInline({
 
         {!animate && (
           <>
-            <circle cx="28" cy="60" r="2.5" fill={currentColors.text} opacity="0.9" />
-            <circle cx="92" cy="60" r="2" fill={currentColors.text} opacity="0.7" />
-            <circle cx="60" cy="28" r="2.5" fill={currentColors.text} opacity="0.8" />
-            <circle cx="60" cy="92" r="2" fill={currentColors.text} opacity="0.6" />
+            <circle
+              cx="28"
+              cy="60"
+              r="2.5"
+              fill={currentColors.text}
+              opacity="0.9"
+            />
+            <circle
+              cx="92"
+              cy="60"
+              r="2"
+              fill={currentColors.text}
+              opacity="0.7"
+            />
+            <circle
+              cx="60"
+              cy="28"
+              r="2.5"
+              fill={currentColors.text}
+              opacity="0.8"
+            />
+            <circle
+              cx="60"
+              cy="92"
+              r="2"
+              fill={currentColors.text}
+              opacity="0.6"
+            />
           </>
         )}
 
@@ -199,13 +247,25 @@ export function LogoInline({
               <stop offset="100%" stopColor="#1E40AF" />
             </radialGradient>
 
-            <linearGradient id="outerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="outerGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#8B5CF6" />
               <stop offset="50%" stopColor="#3B82F6" />
               <stop offset="100%" stopColor="#06B6D4" />
             </linearGradient>
 
-            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="ringGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#A855F7" />
               <stop offset="50%" stopColor="#60A5FA" />
               <stop offset="100%" stopColor="#3B82F6" />
@@ -234,18 +294,13 @@ export function LogoWithText({
 
   return (
     <div className={cn("flex items-center space-x-2", className)}>
-      <Logo
-        width={width}
-        height={height}
-        variant={variant}
-        animate={animate}
-      />
+      <Logo width={width} height={height} variant={variant} animate={animate} />
       <span
         className={cn(
           "font-bold",
           textSize,
           textColors[variant],
-          animate && "transition-colors duration-300"
+          animate && "transition-colors duration-300",
         )}
       >
         NovaHost

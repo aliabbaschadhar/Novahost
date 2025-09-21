@@ -101,10 +101,7 @@ export default function ResetPasswordPage() {
         <Card className="bg-white/10 backdrop-blur-xl shadow-2xl border border-white/20 text-white">
           <CardHeader className="space-y-4 pb-8">
             <div className="flex justify-center">
-              <Link
-                href="/"
-                className="hover:opacity-80 transition-opacity"
-              >
+              <Link href="/" className="hover:opacity-80 transition-opacity">
                 <LogoWithText
                   width={32}
                   height={32}
