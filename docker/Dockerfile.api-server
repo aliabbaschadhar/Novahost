@@ -1,20 +1,21 @@
 FROM oven/bun:alpine AS baseimage
 
-# Stage 1: Install dependencies
+# Stage 1: Install production dependencies only
 FROM baseimage AS deps
-
 WORKDIR /home/app
 
-# Copy package files for dependency resolution
+# Copy only necessary package files for dependency resolution
 COPY package.json bun.lock turbo.json ./
 COPY apps/api-server/package.json ./apps/api-server/
-COPY apps/web/package.json ./apps/web/
-COPY apps/reverse-proxy/package.json ./apps/reverse-proxy/
 COPY packages/prismaDB/package.json ./packages/prismaDB/
 
-RUN bun install
+RUN bun install --production --frozen-lockfile
 
-# Stage 2: Production runtime
+# Generate Prisma client
+# COPY packages/prismaDB ./packages/prismaDB/
+RUN bun run db:generate
+
+# Stage 2: Production runtime (OPTIMIZED)
 FROM oven/bun:alpine AS runner
 WORKDIR /home/app
 
@@ -22,23 +23,15 @@ RUN apk add --no-cache openssl && \
     addgroup --system --gid 1001 novahost && \
     adduser --system --uid 1001 --ingroup novahost appUser
 
-# Copy the dependencies from the deps stage
-
+# Copy production dependencies and generated Prisma client
 COPY --from=deps --chown=appUser:novahost /home/app/node_modules ./node_modules
 COPY --from=deps --chown=appUser:novahost /home/app/package.json ./package.json
-COPY --from=deps --chown=appUser:novahost /home/app/bun.lock ./bun.lock
-COPY --from=deps  --chown=appUser:novahost /home/app/turbo.json ./turbo.json
 
-# Source code
+# Copy only necessary source code and package files
 COPY --chown=appUser:novahost apps/api-server ./apps/api-server/
-COPY --chown=appUser:novahost packages/ ./packages/
+COPY --chown=appUser:novahost packages/prismaDB ./packages/prismaDB/
 
-
-RUN bun run db:generate
-
-# Use the non-root user
 USER appUser
-
 EXPOSE 9000
 
-CMD [ "bun", "run", "start:api" ]
+CMD ["bun", "run", "start:api"]
