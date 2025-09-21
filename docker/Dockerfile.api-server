@@ -12,7 +12,7 @@ COPY packages/prismaDB/package.json ./packages/prismaDB/
 RUN bun install 
 
 # Generate Prisma client
-# COPY packages/prismaDB ./packages/prismaDB/
+COPY packages/prismaDB ./packages/prismaDB/
 RUN bun run db:generate
 
 # Stage 2: Production runtime (OPTIMIZED)
