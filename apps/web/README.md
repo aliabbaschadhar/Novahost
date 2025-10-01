@@ -21,7 +21,7 @@ This guide covers the complete implementation of authentication in NovaHost usin
 Before starting, ensure you have:
 
 - Next.js 15+ project setup
-- PostgreSQL database
+- timescaleDb database
 - Prisma ORM configured
 - Resend account for email services
 - Google OAuth credentials
@@ -45,7 +45,7 @@ Create `apps/web/.env.local`:
 
 ```env
 # Database
-DATABASE_URL="postgresql://username:password@localhost:5432/novahost"
+DATABASE_URL="timescaleDb://username:password@localhost:5432/novahost"
 
 # NextAuth Configuration
 NEXTAUTH_URL="http://localhost:3000"
@@ -217,7 +217,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "timescaleDb"
   url      = env("DATABASE_URL")
 }
 
@@ -1106,7 +1106,7 @@ npx prisma generate
 ✅ **Protected Routes**: Middleware-based route protection  
 ✅ **Session Management**: Server-side session handling  
 ✅ **Type Safety**: Full TypeScript integration  
-✅ **Database Integration**: Prisma ORM with PostgreSQL  
+✅ **Database Integration**: Prisma ORM with timescaleDb  
 ✅ **Security**: Password hashing, CSRF protection, secure cookies
 
 ## Production Deployment
@@ -1114,7 +1114,7 @@ npx prisma generate
 ### Environment Variables for Production
 
 ```env
-DATABASE_URL="postgresql://user:pass@host:port/db"
+DATABASE_URL="timescaleDb://user:pass@host:port/db"
 NEXTAUTH_URL="https://yourdomain.com"
 NEXTAUTH_SECRET="super-secret-production-key"
 GOOGLE_CLIENT_ID="production-google-client-id"
