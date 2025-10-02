@@ -30,7 +30,7 @@ RUN bun run db:generate
 
 
 # Build arguments for compilation (not secrets)
-ARG BUILD_DATABASE_URL="postgresql://dummy:dummy@localhost:5432/dummy"
+ARG BUILD_DATABASE_URL="timescaleDb://dummy:dummy@localhost:5432/dummy"
 ARG BUILD_NEXTAUTH_URL="https://localhost:3000"
 ARG BUILD_NEXTAUTH_VALUE="dummy-auth-value-for-build"
 ARG BUILD_GOOGLE_CLIENT_ID="dummy-google-client-id"

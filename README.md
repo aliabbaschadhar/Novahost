@@ -26,7 +26,7 @@ docker/             # Dockerfiles for deployment
 
 - [Bun](https://bun.sh/) v1.2+
 - [Node.js](https://nodejs.org/) v18+
-- [PostgreSQL](https://www.postgresql.org/) database
+- [timescaleDb](https://www.timescaleDb.org/) database
 
 ### Install Dependencies
 
